@@ -3,4 +3,17 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="enter_user_id">Enter user id (email)</string>
+    <string name="enter_password">Enter password</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="create_user">Create new user</string>
+    <string name="login">Login</string>
+    <string name="conf_password">Confirm password</string>
+    <string name="enter_sec_question">Enter security question</string>
+    <string name="enter_answer">Enter answer</string>
+    <string name="agreement">By clicking I Accept, you confirm that you understand that we automatically or passively collect information using your geographic location and camera to keep track of your movement. Programming code that is temporarily downloaded onto a device, and is active only while you are connected to wifi or the carrier. We may share your data, including your personal information solely for academic purposes by University of Washington Tacoma.</string>
+    <string name="accept">I Accept</string>
+    <string name="btn_continue">Continue</string>
+    <string name="btn_cancel">Cancel</string>
 </resources>
