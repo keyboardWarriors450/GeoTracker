@@ -24,4 +24,13 @@ public class HomeScreen extends ActionBarActivity {
             }
         });
     }
+
+    // Responding to Log in button, it should direct to user input for map view
+    public void selectStartEndDate() {
+        Intent intent = new Intent(this, pickDateActivity.class);
+       // EditText editText = (EditText) findViewById(R.id.edit_message);
+      //  String message = editText.getText().toString();
+     //   intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+    }
 }
