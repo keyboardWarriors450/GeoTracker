@@ -21,8 +21,17 @@
             android:label="@string/title_activity_register" >
             <intent-filter>
                 <action android:name="geoTracker.RegisterActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MyAccountActivity"
+            android:label="@string/title_activity_my_account" >
+        </activity>
+        <activity
+            android:name=".ChangePassword"
+            android:label="@string/title_activity_change_password" >
         </activity>
     </application>
 

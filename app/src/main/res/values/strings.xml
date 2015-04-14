@@ -16,4 +16,6 @@
     <string name="accept">I Accept</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="title_activity_my_account">MyAccountActivity</string>
+    <string name="title_activity_change_password">ChangePassword</string>
 </resources>
