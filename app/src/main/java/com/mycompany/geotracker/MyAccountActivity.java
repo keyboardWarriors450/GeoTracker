@@ -1,9 +1,13 @@
 package com.mycompany.geotracker;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class MyAccountActivity extends ActionBarActivity {
@@ -12,6 +16,25 @@ public class MyAccountActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
+
+        final TextView change_password = (TextView)findViewById(R.id.change_password);
+
+        change_password.setOnClickListener(new TextView.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent("geoTracker.ChangePassword"));
+            }
+        });
+
+        final TextView log_out = (TextView)findViewById(R.id.log_out);
+
+        log_out.setOnClickListener(new TextView.OnClickListener() {
+            public void onClick(View v) {
+                //log out somehow from the user
+                startActivity(new Intent("geoTracker.HomeScreen"));
+            }
+        });
+
+
     }
 
 
