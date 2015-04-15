@@ -23,6 +23,13 @@ public class HomeScreen extends ActionBarActivity {
                 startActivity(new Intent("geoTracker.RegisterActivity"));
             }
         });
+
+        /*create_user.setOnClickListener(new TextView.OnClickListener() {
+            public void onClick(View v) {
+                create_user.setTextColor(Color.parseColor("#67818a"));
+                startActivity(new Intent("geoTracker.PasswordRetrieval"));
+            }
+        });*/
     }
 
     // Responding to Log in button, it should direct to user input for map view
