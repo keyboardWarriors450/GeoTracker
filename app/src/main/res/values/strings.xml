@@ -18,6 +18,4 @@
     <string name="btn_cancel">Cancel</string>
     <string name="title_activity_my_account">MyAccountActivity</string>
     <string name="title_activity_change_password">ChangePassword</string>
-    <string name="title_activity_pick_date">pickDateActivity</string>
-    <string name="title_activity_view_map">ViewMapActivity</string>
 </resources>
