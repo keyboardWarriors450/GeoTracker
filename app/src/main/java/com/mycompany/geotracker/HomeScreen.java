@@ -33,6 +33,7 @@ public class HomeScreen extends ActionBarActivity {
             }
         });*/
 
+        /* Viet's page log in listener*/
         final Button viewMap = (Button)findViewById(R.id.login);
 
         viewMap.setOnClickListener(new Button.OnClickListener() {
@@ -54,4 +55,6 @@ public class HomeScreen extends ActionBarActivity {
      //   intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }
+
+     /* Viet's page log in listener end here*/
 }
