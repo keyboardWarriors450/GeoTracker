@@ -44,6 +44,24 @@ public class HomeScreen extends ActionBarActivity {
                 selectStartEndDate();
             }
         });
+        // end log in button listener
+        final TextView forgotPass = (TextView)findViewById(R.id.forgot_password);
+
+/*        forgotPass.setOnClickListener(new TextView.OnClickListener() {
+            public void onClick(View v) {
+                forgotPass.setTextColor(Color.parseColor("#67818a"));
+                Intent intent = new Intent(this, PasswordRetrieval.class);
+                startActivity(intent);
+            }
+        });*/
+        forgotPass.setOnClickListener(new TextView.OnClickListener() {
+
+            public void onClick(View v) {
+                Log.i("test", "HomeScreen");
+                forgotPass.setTextColor(Color.parseColor("#67818a"));
+                toPassRetrieval();
+            }
+        });
     }
 
     // Responding to Log in button, it should direct to user input for map view
@@ -57,4 +75,12 @@ public class HomeScreen extends ActionBarActivity {
     }
 
      /* Viet's page log in listener end here*/
+
+    // Forgot Password Link
+    public void toPassRetrieval() {
+        // this indicate which page you want to link to
+        Intent intent = new Intent(this, PasswordRetrieval.class);
+        // reserve space for extra information here if need
+        startActivity(intent);
+    }
 }
