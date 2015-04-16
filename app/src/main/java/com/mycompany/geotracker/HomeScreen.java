@@ -43,9 +43,8 @@ public class HomeScreen extends ActionBarActivity {
         forgotPass.setOnClickListener(new TextView.OnClickListener() {
 
             public void onClick(View v) {
-                Log.i("test", "HomeScreen");
                 forgotPass.setTextColor(Color.parseColor("#67818a"));
-                toPassRetrieval();
+                toForgotPassword();
             }
         });
     }
@@ -62,12 +61,8 @@ public class HomeScreen extends ActionBarActivity {
 
      /* Viet's page log in listener end here*/
 
-    // Forgot Password Link
-    public void toPassRetrieval() {
-        // this indicate which page you want to link to
-        Intent intent = new Intent(this, PasswordRetrieval.class);
-        // reserve space for extra information here if need
-        startActivity(intent);
+    public void toForgotPassword() {
+        startActivity(new Intent(this, ForgotPassword.class));
     }
 
     public void toRegisterActivity() {
