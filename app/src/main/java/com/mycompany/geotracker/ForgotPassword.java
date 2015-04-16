@@ -9,41 +9,46 @@ import android.view.View;
 import android.widget.Button;
 
 
-public class ChangePassword extends ActionBarActivity {
+public class ForgotPassword extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_password);
+        setContentView(R.layout.activity_forgot_password);
 
-        final Button cancel_button = (Button)findViewById(R.id.cancel);
-        final Button submit_button = (Button)findViewById(R.id.submit);
+        final Button submit = (Button)findViewById(R.id.submit);
+        final Button go_back = (Button)findViewById(R.id.go_back);
 
-        cancel_button.setOnClickListener(new Button.OnClickListener() {
+        submit.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View view) {
+               toPasswordRetrieval();
+            }
+        });
+
+        go_back.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 finish();
             }
         });
-
-        submit_button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                //check old password
-                //check if new password match
-                //change password
-                toMyAccount();
-            }
-        });
-
     }
 
-    public void toMyAccount() {
-        startActivity(new Intent(this, MyAccountActivity.class));
+
+    public void toPasswordRetrieval() {
+        startActivity(new Intent(this, PasswordRetrieval.class));
     }
+
+
+
+
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_change_password, menu);
+        getMenuInflater().inflate(R.menu.menu_forgot_password, menu);
         return true;
     }
 

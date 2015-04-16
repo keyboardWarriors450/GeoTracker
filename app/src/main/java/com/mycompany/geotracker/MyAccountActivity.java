@@ -1,13 +1,12 @@
 package com.mycompany.geotracker;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.Button;
 
 
 public class MyAccountActivity extends ActionBarActivity {
@@ -17,26 +16,34 @@ public class MyAccountActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
 
-        final TextView change_password = (TextView)findViewById(R.id.change_password);
+        final Button change_password = (Button)findViewById(R.id.change_password);
 
-        change_password.setOnClickListener(new TextView.OnClickListener() {
+        change_password.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent("geoTracker.ChangePassword"));
+                toChangePassword();
+//     startActivity(new Intent("geoTracker.ChangePassword"));
             }
         });
 
-        final TextView log_out = (TextView)findViewById(R.id.log_out);
+        final Button log_out = (Button)findViewById(R.id.log_out);
 
-        log_out.setOnClickListener(new TextView.OnClickListener() {
+        log_out.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 //log out somehow from the user
-                startActivity(new Intent("geoTracker.HomeScreen"));
+                toHomeScreen();
             }
         });
 
 
     }
 
+    public void toHomeScreen() {
+        startActivity(new Intent(this, HomeScreen.class));
+    }
+
+    public void toChangePassword() {
+        startActivity(new Intent(this, ChangePassword.class));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -9,6 +9,11 @@
     <string name="forgot_password">Forgot password</string>
     <string name="create_user">Create new user</string>
     <string name="login">Login</string>
+    <string name="logout">Log Out</string>
+    <string name="change_password">Change Password</string>
+    <string name="view_data">View Movement Data</string>
+    <string name="submit">Submit</string>
+    <string name="go_back">Go Back</string>
     <string name="conf_password">Confirm password</string>
     <string name="enter_sec_question">Enter security question</string>
     <string name="enter_answer">Enter answer</string>
@@ -24,6 +29,7 @@
     <string name="password_retrieval">Password Retrieval</string>
     <string name="user_id">User ID</string>
     <string name="password">Password</string>
+    <string name="title_activity_forgot_password">ForgotPassword</string>
 
 
 </resources>
