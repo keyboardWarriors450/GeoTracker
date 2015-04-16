@@ -20,9 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/userID"
+        android:text="@string/enter_user_id"
         android:id="@+id/txt_userID"
-        android:layout_alignBottom="@id/user_name"
+        android:layout_alignBottom="@+id/user_name"
         android:layout_alignLeft="@id/user_name"
         android:layout_marginBottom="40dp" />
 
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_marginTop="30dp"
-        android:text="@string/password"
+        android:text="@string/enter_password"
         android:id="@+id/txt_password"
         android:layout_below="@id/user_name"
         android:layout_alignLeft="@id/user_name"
