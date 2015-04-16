@@ -16,6 +16,17 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/user_id"
+        android:id="@+id/txt_user_id"
+        android:layout_marginTop="94dp"
+        android:layout_below="@+id/login"
+        android:layout_alignLeft="@+id/user_name"
+        android:layout_alignStart="@+id/user_name" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,9 +34,18 @@
         android:hint="@string/enter_user_id"
         android:ems="10"
         android:id="@+id/user_name"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp" />
+        android:layout_below="@+id/txt_user_id"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/password"
+        android:id="@+id/txt_password"
+        android:layout_below="@+id/user_name"
+        android:layout_alignLeft="@+id/user_name"
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -33,9 +53,10 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/password"
-        android:layout_centerHorizontal="true"
         android:hint="@string/enter_password"
-        android:layout_below="@id/user_name" />
+        android:layout_below="@+id/txt_password"
+        android:layout_alignLeft="@+id/txt_password"
+        android:layout_alignStart="@+id/txt_password" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,6 +81,10 @@
         android:linksClickable="true"
         android:clickable="false"
         android:focusable="true" />
+
+
+
+
 
 
 </RelativeLayout>

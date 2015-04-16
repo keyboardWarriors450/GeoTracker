@@ -22,6 +22,8 @@
     <string name="title_activity_pick_date">Pick Date</string>
     <string name="title_activity_view_map">View Map</string>
     <string name="password_retrieval">Password Retrieval</string>
+    <string name="user_id">User ID</string>
+    <string name="password">Password</string>
 
 
 </resources>

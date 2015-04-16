@@ -22,16 +22,9 @@ public class HomeScreen extends ActionBarActivity {
         create_user.setOnClickListener(new TextView.OnClickListener() {
                 public void onClick(View v) {
                     create_user.setTextColor(Color.parseColor("#67818a"));
-                    startActivity(new Intent("geoTracker.RegisterActivity"));
+                    toRegisterActivity();
                 }
         });
-
-        /*create_user.setOnClickListener(new TextView.OnClickListener() {
-            public void onClick(View v) {
-                create_user.setTextColor(Color.parseColor("#67818a"));
-                startActivity(new Intent("geoTracker.PasswordRetrieval"));
-            }
-        });*/
 
         /* Viet's page log in listener*/
         final Button pickDate = (Button)findViewById(R.id.login);
@@ -75,5 +68,9 @@ public class HomeScreen extends ActionBarActivity {
         Intent intent = new Intent(this, PasswordRetrieval.class);
         // reserve space for extra information here if need
         startActivity(intent);
+    }
+
+    public void toRegisterActivity() {
+        startActivity(new Intent(this, RegisterActivity.class));
     }
 }
