@@ -15,12 +15,12 @@
         android:id="@+id/startDate"
         android:layout_marginTop="58dp"
         android:layout_alignParentTop="true"
-        android:text="Enter Start Date (mm/dd/yyyy)"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:hint="Enter Start Date (mm/dd/yyyy)" />
 
 
     <EditText
@@ -33,9 +33,9 @@
         android:layout_below="@+id/startDate"
         android:layout_alignLeft="@+id/startDate"
         android:layout_alignStart="@+id/startDate"
-        android:text="Enter End Date (mm/dd/yyyy)"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:hint="Enter Start Date (mm/dd/yyyy)" />
 
     <Button
         android:layout_width="wrap_content"

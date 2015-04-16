@@ -13,14 +13,14 @@ public class PasswordRetrieval extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_password_retrieval);
 
-        final Button btn_cancel = (Button)findViewById(R.id.reg_cancel);
+        /*final Button btn_cancel = (Button)findViewById(R.id.reg_cancel);
 
         btn_cancel.setOnClickListener(new TextView.OnClickListener() {
             public void onClick(View v) {
                 finish();
             }
-        });
+        });*/
     }
 }

@@ -34,26 +34,19 @@ public class HomeScreen extends ActionBarActivity {
         });*/
 
         /* Viet's page log in listener*/
-        final Button viewMap = (Button)findViewById(R.id.login);
+        final Button pickDate = (Button)findViewById(R.id.login);
 
-        viewMap.setOnClickListener(new Button.OnClickListener() {
+        pickDate.setOnClickListener(new Button.OnClickListener() {
 
             public void onClick(View v) {
                 Log.i("test", "HomeScreen");
-                viewMap.setTextColor(Color.parseColor("#67818a"));
+                pickDate.setTextColor(Color.parseColor("#67818a"));
                 selectStartEndDate();
             }
         });
-        // end log in button listener
-        final TextView forgotPass = (TextView)findViewById(R.id.forgot_password);
+         // end log in button listener
 
-/*        forgotPass.setOnClickListener(new TextView.OnClickListener() {
-            public void onClick(View v) {
-                forgotPass.setTextColor(Color.parseColor("#67818a"));
-                Intent intent = new Intent(this, PasswordRetrieval.class);
-                startActivity(intent);
-            }
-        });*/
+        final TextView forgotPass = (TextView)findViewById(R.id.forgot_password);
         forgotPass.setOnClickListener(new TextView.OnClickListener() {
 
             public void onClick(View v) {
