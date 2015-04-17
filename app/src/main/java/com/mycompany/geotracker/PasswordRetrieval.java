@@ -17,6 +17,7 @@ public class PasswordRetrieval extends ActionBarActivity {
 
         final Button btn_cancel = (Button)findViewById(R.id.button2);
 
+
         btn_cancel.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 finish();
