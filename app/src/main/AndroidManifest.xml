@@ -44,6 +44,11 @@
             android:name=".ForgotPassword"
             android:label="@string/title_activity_forgot_password" >
         </activity>
+        <activity
+            android:name=".PasswordEmailSent"
+            android:label="@string/title_activity_email_sent" >
+        </activity>
+
     </application>
 
 </manifest>
