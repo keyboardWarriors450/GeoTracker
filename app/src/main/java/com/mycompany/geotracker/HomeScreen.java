@@ -34,7 +34,7 @@ public class HomeScreen extends ActionBarActivity {
             public void onClick(View v) {
                 Log.i("test", "HomeScreen");
                 pickDate.setTextColor(Color.parseColor("#67818a"));
-                selectStartEndDate();
+                toMyAccountActivity();
             }
         });
          // end log in button listener
@@ -50,12 +50,8 @@ public class HomeScreen extends ActionBarActivity {
     }
 
     // Responding to Log in button, it should direct to user input for map view
-    public void selectStartEndDate() {
-       // Log.i("test", "HomeScreen");
-        Intent intent = new Intent(this, pickDateActivity.class);
-       // EditText editText = (EditText) findViewById(R.id.edit_message);
-      //  String message = editText.getText().toString();
-     //   intent.putExtra(EXTRA_MESSAGE, message);
+    public void toMyAccountActivity() {
+        Intent intent = new Intent(this, MyAccountActivity.class);
         startActivity(intent);
     }
 
