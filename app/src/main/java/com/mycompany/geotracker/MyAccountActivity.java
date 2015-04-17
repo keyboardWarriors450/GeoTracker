@@ -26,6 +26,7 @@ public class MyAccountActivity extends ActionBarActivity {
         });
 
         final Button log_out = (Button)findViewById(R.id.log_out);
+        final Button view_data = (Button)findViewById(R.id.movement_data);
 
         log_out.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -34,6 +35,11 @@ public class MyAccountActivity extends ActionBarActivity {
             }
         });
 
+        view_data.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                toMovementData();
+            }
+        });
 
     }
 
@@ -43,6 +49,10 @@ public class MyAccountActivity extends ActionBarActivity {
 
     public void toChangePassword() {
         startActivity(new Intent(this, ChangePassword.class));
+    }
+
+    public void toMovementData() {
+        startActivity(new Intent(this, pickDateActivity.class));
     }
 
     @Override
