@@ -21,7 +21,6 @@ public class MyAccountActivity extends ActionBarActivity {
         change_password.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 toChangePassword();
-//     startActivity(new Intent("geoTracker.ChangePassword"));
             }
         });
 
