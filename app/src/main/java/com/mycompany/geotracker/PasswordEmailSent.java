@@ -13,14 +13,14 @@ public class PasswordEmailSent extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_password_retrieval);
+        setContentView(R.layout.activity_password_email_sent);
 
-        final Button btn_ok = (Button)findViewById(R.id.reg_continue);
+        /*final Button btn_ok = (Button)findViewById(R.id.reg_continue);
 
         btn_ok.setOnClickListener(new TextView.OnClickListener() {
             public void onClick(View v) {
                 finish();
             }
-        });
+        });*/
     }
 }
