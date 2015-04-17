@@ -1,5 +1,6 @@
 package com.mycompany.geotracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -16,7 +17,7 @@ public class PasswordRetrieval extends ActionBarActivity {
         setContentView(R.layout.activity_password_retrieval);
 
         final Button btn_cancel = (Button)findViewById(R.id.button2);
-
+        final Button btn_ok = (Button)findViewById(R.id.button);
 
         btn_cancel.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -24,14 +25,15 @@ public class PasswordRetrieval extends ActionBarActivity {
             }
         });
 
-        /*final Button btn_cancel = (Button)findViewById(R.id.reg_cancel);
-
-        btn_cancel.setOnClickListener(new TextView.OnClickListener() {
+        btn_ok.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                finish();
-
-        });*/
+                toPassWordEmailSent();
+            }
+        });
     }
-
+    public void toPassWordEmailSent() {
+        Intent intent = new Intent(this, PasswordEmailSent.class);
+        startActivity(intent);
+    }
 
 }
