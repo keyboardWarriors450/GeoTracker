@@ -13,9 +13,11 @@ public class ViewMapActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_view_map);
+
         // get message from intent which were created from the previous activity
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(pickDateActivity.START_DATE);
+   /*     Intent intent = getIntent();
+        String message = intent.getStringExtra(PickDateActivity.START_DATE);
 
         // Create the text view
         TextView textView = new TextView(this);
@@ -23,7 +25,7 @@ public class ViewMapActivity extends ActionBarActivity {
         textView.setText(message);
 
         // Set the text view as the activity layout
-        setContentView(textView);
+        setContentView(textView);*/
     }
 
 

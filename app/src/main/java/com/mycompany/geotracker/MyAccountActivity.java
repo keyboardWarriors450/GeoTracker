@@ -55,7 +55,7 @@ public class MyAccountActivity extends ActionBarActivity {
     }
 
     public void toMovementData() {
-        startActivity(new Intent(this, pickDateActivity.class));
+        startActivity(new Intent(this, PickDateActivity.class));
     }
 
     @Override

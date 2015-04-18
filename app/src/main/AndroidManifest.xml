@@ -33,7 +33,7 @@
             android:label="@string/password_retrieval" >
         </activity>
         <activity
-            android:name=".pickDateActivity"
+            android:name=".PickDateActivity"
             android:label="@string/title_activity_pick_date" >
         </activity>
         <activity

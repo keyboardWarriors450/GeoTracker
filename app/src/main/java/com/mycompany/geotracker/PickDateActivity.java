@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
-public class pickDateActivity extends ActionBarActivity {
+public class PickDateActivity extends ActionBarActivity {
     public final static String START_DATE = "start date";
 
     @Override
