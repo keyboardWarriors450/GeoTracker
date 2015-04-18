@@ -11,6 +11,11 @@ import android.widget.Button;
 
 public class MyAccountActivity extends ActionBarActivity {
 
+    //log out somehow from the user
+//    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//    String test = sharedPreferences.getString("email", "");
+//    System.out.println(test);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +34,6 @@ public class MyAccountActivity extends ActionBarActivity {
 
         log_out.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                //log out somehow from the user
                 toHomeScreen();
             }
         });

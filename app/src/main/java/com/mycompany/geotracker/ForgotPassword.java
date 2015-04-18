@@ -1,12 +1,15 @@
 package com.mycompany.geotracker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 public class ForgotPassword extends ActionBarActivity {
@@ -21,7 +24,21 @@ public class ForgotPassword extends ActionBarActivity {
 
         submit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-               toPasswordRetrieval();
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+                TextView text = (TextView)findViewById(R.id.email_address);
+                String compared_string = sharedPreferences.getString("email", "");
+                String typed_email = text.getText().toString();
+
+                if (typed_email.equals(compared_string)) {
+                    toPasswordRetrieval();
+                } else {
+                    /*
+                    This system print should not be here, I am working on making an error in red font
+                    pop up if it is wrong saying that the email isnt in the data base.
+                     */
+                    System.out.println("wrong");
+                }
             }
         });
 
