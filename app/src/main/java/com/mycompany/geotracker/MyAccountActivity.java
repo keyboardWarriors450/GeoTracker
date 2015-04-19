@@ -25,6 +25,7 @@ public class MyAccountActivity extends ActionBarActivity {
 
         change_password.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
+                //set the preferences to the user that is currently logged in.
                 toChangePassword();
             }
         });
@@ -34,12 +35,14 @@ public class MyAccountActivity extends ActionBarActivity {
 
         log_out.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
+                //log out of the user somehow.
                 toHomeScreen();
             }
         });
 
         view_data.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                //check the movement for that particular user
                 toMovementData();
             }
         });
