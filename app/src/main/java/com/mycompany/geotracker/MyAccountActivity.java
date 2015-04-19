@@ -16,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
-
+/*
+ * Created by Alex on April 2015.
+ */
 public class MyAccountActivity extends ActionBarActivity {
 
     //log out somehow from the user

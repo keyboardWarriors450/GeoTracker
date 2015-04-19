@@ -1,9 +1,8 @@
 /*
- * Copyright (c) 2015. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) 2015. Keyboard Warriors (Alex Hong, Daniel Khieson, David Kim, Viet Nguyen).
+ * This file is part of GeoTracker.
+ * GeoTracker cannot be copied and/or distributed without the express permission
+ * of Keyboard Warriors.
  */
 
 package com.mycompany.geotracker;
@@ -18,8 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-
+/*
+ * Created by Alex on April 2015
+ */
 public class ChangePassword extends ActionBarActivity {
 
     @Override
@@ -49,20 +51,16 @@ public class ChangePassword extends ActionBarActivity {
                 String confirmed_new_password = check_new_password.getText().toString();
                 String current_password = sharedPreferences.getString("password", "");
 
-                if (entered_old_password.equals(current_password) &&
-                        entered_new_password.equals(confirmed_new_password)) {
+
+                if (!entered_old_password.equals(current_password)) {
+                    Toast.makeText(ChangePassword.this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
+                } else if (!entered_new_password.equals(confirmed_new_password)) {
+                    Toast.makeText(ChangePassword.this, R.string.no_match, Toast.LENGTH_SHORT).show();
+                } else {
                     sharedPreferenceEditor.putString("password", entered_new_password);
                     sharedPreferenceEditor.apply();
-//                    System.out.println(sharedPreferences.getString("password", ""));
                     toMyAccount();
-                } else {
-                    System.out.println("Wrong");
                 }
-
-                //check old password
-                //check if new password match
-                //change password
-//                toMyAccount();
             }
         });
 

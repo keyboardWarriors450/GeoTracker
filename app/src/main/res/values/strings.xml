@@ -39,6 +39,7 @@
     <string name="title_activity_forgot_password">ForgotPassword</string>
     <string name="title_activity_email_sent">Email Sent</string>
     <string name="no_blank">Cannot leave it blank</string>
+    <string name="wrong_password">The password is incorrect</string>
     <string name="curr_userID">curr_userID</string>
     <string name="curr_pass">curr_pass</string>
     <string name="no_check">Check \'I Accept\' to continue</string>
