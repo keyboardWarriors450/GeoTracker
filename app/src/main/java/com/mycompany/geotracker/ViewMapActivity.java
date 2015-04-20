@@ -15,7 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-
+/**
+ * Showing location of user base on start and end date
+ */
 public class ViewMapActivity extends ActionBarActivity {
 
     @Override

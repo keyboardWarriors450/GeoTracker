@@ -19,7 +19,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-
+/**
+ * this class will take user input; start date and end date to show location
+ */
 public class PickDateActivity extends ActionBarActivity {
     public final static String START_DATE = "start date";
 
@@ -40,6 +42,9 @@ public class PickDateActivity extends ActionBarActivity {
 
     }
 
+    /**
+     * This method will collect start date and end date then link to the sho map page
+     */
     public void toViewMap() {
         // this indicate which page you want to link to
         Intent intent = new Intent(this, ViewMapActivity.class);
