@@ -1,11 +1,10 @@
 /*
- * Copyright (c) 2015.
- * Viet Nguyen
- * David Kim
- * Daniel Khieuson
- * Alex Hong
+ * Copyright (c) 2015. Keyboard Warriors (Alex Hong, Daniel Khieuson, David Kim, Viet Nguyen).
+ * GeoTracker cannot be copied and/or distributed without the express permission
+ * of Keyboard Warriors.
  *
- * TCSS 450
+ * This file is take the user input for start and end date and showing a possible location list
+ * or point on the next view map screen.
  */
 package com.mycompany.geotracker;
 

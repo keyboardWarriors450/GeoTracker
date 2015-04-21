@@ -56,5 +56,7 @@
         <item>What was your childhood nickname?</item>
         <item>Who is your childhood sports hero?</item>
     </string-array>
+    <string name="start_date_hint">Enter Start Date (mmddyyyy)</string>
+    <string name="end_date_hint">Enter end Date (mmddyyyy)</string>
 
 </resources>

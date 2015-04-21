@@ -1,11 +1,9 @@
 /*
- * Copyright (c) 2015.
- * Viet Nguyen
- * David Kim
- * Daniel Khieuson
- * Alex Hong
+ * Copyright (c) 2015. Keyboard Warriors (Alex Hong, Daniel Khieuson, David Kim, Viet Nguyen).
+ * GeoTracker cannot be copied and/or distributed without the express permission
+ * of Keyboard Warriors.
  *
- * TCSS 450
+ * This showing a map and location points base on user start and end date
  */
 
 package com.mycompany.geotracker;
