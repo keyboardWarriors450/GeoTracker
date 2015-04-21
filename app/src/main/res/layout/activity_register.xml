@@ -1,9 +1,8 @@
 <!--
-  ~ Copyright (c) 2015. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  ~ Copyright (c) 2015. Keyboard Warriors (Alex Hong, Daniel Khieuson, David Kim, Viet Nguyen).
+  ~ This file is part of GeoTracker.
+  ~ GeoTracker cannot be copied and/or distributed without the express permission
+  ~ of Keyboard Warriors.
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,14 +47,22 @@
         android:layout_marginTop="20dp"
         android:hint="@string/conf_password" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/sec_question"
-        android:layout_marginTop="20dp"
-        android:hint="@string/enter_sec_question"
+        android:id="@+id/txt_securityQuest"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/txt_securityQuest"
         android:layout_below="@id/conf_password"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/reg_security_quest"
+        android:layout_below="@id/txt_securityQuest"
         android:layout_centerHorizontal="true" />
 
     <EditText
@@ -64,9 +71,9 @@
         android:ems="10"
         android:id="@+id/sec_answer"
         android:hint="@string/enter_answer"
-        android:layout_below="@id/sec_question"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/reg_security_quest" />
 
     <TextView
         android:id="@+id/agreement"
@@ -101,6 +108,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@id/agreement"
         android:layout_alignEnd="@id/agreement" />
+
+
 
 </RelativeLayout>
  </ScrollView>
