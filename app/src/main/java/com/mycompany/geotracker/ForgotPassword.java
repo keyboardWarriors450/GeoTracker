@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /*
  * Created by Alex on April 2015.
@@ -44,7 +45,7 @@ public class ForgotPassword extends ActionBarActivity {
                     This system print should not be here, I am working on making an error in red font
                     pop up if it is wrong saying that the email isnt in the data base.
                      */
-                    System.out.println("wrong");
+                    Toast.makeText(ForgotPassword.this, R.string.no_such_email, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -57,7 +58,7 @@ public class ForgotPassword extends ActionBarActivity {
     }
 
 
-    public void toPasswordRetrieval() {
+    private void toPasswordRetrieval() {
         startActivity(new Intent(this, PasswordRetrieval.class));
     }
 

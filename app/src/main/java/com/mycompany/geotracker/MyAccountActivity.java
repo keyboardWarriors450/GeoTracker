@@ -51,15 +51,15 @@ public class MyAccountActivity extends ActionBarActivity {
 
     }
 
-    public void toHomeScreen() {
+    private void toHomeScreen() {
         startActivity(new Intent(this, HomeScreen.class));
     }
 
-    public void toChangePassword() {
+    private void toChangePassword() {
         startActivity(new Intent(this, ChangePassword.class));
     }
 
-    public void toMovementData() {
+    private void toMovementData() {
         startActivity(new Intent(this, PickDateActivity.class));
     }
 

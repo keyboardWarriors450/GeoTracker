@@ -30,7 +30,11 @@
     <string name="btn_cancel">Cancel</string>
     <string name="title_activity_my_account">MyAccountActivity</string>
     <string name="title_activity_change_password">ChangePassword</string>
-
+    <string name="email_hint">Enter your email address</string>
+    <string name="old_pass_hint">Old Password</string>
+    <string name="new_pass_hint">New Desired Password</string>
+    <string name="repeated_pass_hint">Repeat New Password</string>
+    <string name="email">email</string>
     <string name="title_activity_pick_date">Pick Date</string>
     <string name="title_activity_view_map">View Map</string>
     <string name="password_retrieval">Password Retrieval</string>
@@ -40,6 +44,7 @@
     <string name="title_activity_email_sent">Email Sent</string>
     <string name="no_blank">Cannot leave it blank</string>
     <string name="wrong_password">The password is incorrect</string>
+    <string name="no_such_email">Email does not exist</string>
     <string name="curr_userID">curr_userID</string>
     <string name="curr_pass">curr_pass</string>
     <string name="no_check">Check \'I Accept\' to continue</string>

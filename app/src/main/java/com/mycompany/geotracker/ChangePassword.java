@@ -64,7 +64,7 @@ public class ChangePassword extends ActionBarActivity {
 
     }
 
-    public void toMyAccount() {
+    private void toMyAccount() {
         startActivity(new Intent(this, MyAccountActivity.class));
     }
 
