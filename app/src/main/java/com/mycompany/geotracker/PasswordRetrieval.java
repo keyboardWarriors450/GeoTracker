@@ -1,9 +1,8 @@
 /*
- * Copyright (c) 2015. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) 2015. Keyboard Warriors (Alex Hong, Daniel Khieuson, David Kim, Viet Nguyen).
+ * This file is part of GeoTracker.
+ * GeoTracker cannot be copied and/or distributed without the express permission
+ * of Keyboard Warriors.
  */
 
 package com.mycompany.geotracker;
@@ -13,11 +12,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
  * Created by Daniel on 4/13/2015.
+ *
+ * Asks user for the answer to the security question.
  */
 public class PasswordRetrieval extends ActionBarActivity {
     @Override
@@ -27,6 +30,12 @@ public class PasswordRetrieval extends ActionBarActivity {
 
         final Button btn_cancel = (Button)findViewById(R.id.button2);
         final Button btn_ok = (Button)findViewById(R.id.ok);
+
+        final Spinner spin_securityQuest = (Spinner) findViewById(R.id.reg_security_quest);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.arr_securityQuest, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin_securityQuest.setAdapter(adapter);
 
         btn_cancel.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -49,6 +58,11 @@ public class PasswordRetrieval extends ActionBarActivity {
         });
 
     }
+
+    /**
+     * When user enters the correct answer to the security question, the password
+     * is sent to the user's email.
+     */
     public void toPassWordEmailSent() {
         Intent intent = new Intent(this, PasswordEmailSent.class);
         startActivity(intent);

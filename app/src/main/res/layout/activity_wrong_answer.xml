@@ -17,14 +17,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText5"
         android:layout_weight="0.18"
-        android:hint="Wrong Answer" />
+        android:hint="@string/wrong_answer" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText6"
         android:layout_weight="0.18"
-        android:hint="Try Again" />
+        android:hint="@string/try_again" />
 
     <Button
         android:layout_width="wrap_content"

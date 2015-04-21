@@ -1,9 +1,8 @@
 /*
- * Copyright (c) 2015. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) 2015. Keyboard Warriors (Alex Hong, Daniel Khieuson, David Kim, Viet Nguyen).
+ * This file is part of GeoTracker.
+ * GeoTracker cannot be copied and/or distributed without the express permission
+ * of Keyboard Warriors.
  */
 
 package com.mycompany.geotracker;
@@ -16,6 +15,8 @@ import android.widget.TextView;
 
 /**
  * Created by Daniel on 4/13/2015.
+ *
+ * Screen that shows up when the user answers wrong.
  */
 public class WrongAnswer extends ActionBarActivity {
     @Override

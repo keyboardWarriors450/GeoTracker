@@ -44,6 +44,11 @@
     <string name="curr_pass">curr_pass</string>
     <string name="no_check">Check \'I Accept\' to continue</string>
     <string name="no_match">Passwords mismatch</string>
+    <string name="question">Question</string>
+    <string name="answer">Answer</string>
+    <string name="email_sent">The password has been sent to your email.</string>
+    <string name="wrong_answer">Wrong Answer</string>
+    <string name="try_again">Try Again</string>
     <string name="txt_securityQuest">Select a security question from the menu</string>
     <string-array name="arr_securityQuest">
         <item>What is your favorite pet\'s name?</item>
@@ -51,4 +56,5 @@
         <item>What was your childhood nickname?</item>
         <item>Who is your childhood sports hero?</item>
     </string-array>
+
 </resources>
