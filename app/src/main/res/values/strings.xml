@@ -63,5 +63,6 @@
     </string-array>
     <string name="start_date_hint">Enter Start Date (mmddyyyy)</string>
     <string name="end_date_hint">Enter end Date (mmddyyyy)</string>
+    <string name="title_activity_map">MapActivity</string>
 
 </resources>
