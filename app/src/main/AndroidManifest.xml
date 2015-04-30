@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) 2015. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
--->
+<!--
+  ~ Copyright (c) 2015. Keyboard Warriors (Alex Hong, Daniel Khieuson, David Kim, Viet Nguyen).
+  ~ This file is part of GeoTracker.
+  ~ GeoTracker cannot be copied and/or distributed without the express permission
+  ~ of Keyboard Warriors.
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mycompany.geotracker" >
 
@@ -66,7 +70,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAmNS2qr4r2Qs3LzLD3E_TYmDwhkO_XfIo" />
+            android:value="AIzaSyAapneXsg_iQMrGtrIsJTS9-31Ya4nSKU0" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
