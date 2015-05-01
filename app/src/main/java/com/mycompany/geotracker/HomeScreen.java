@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /**
  * Created by David on April 2015
  */
@@ -27,17 +29,18 @@ public class HomeScreen extends ActionBarActivity {
     private TextView create_user, forgotPass;
     private Button login;
     private EditText user_name, password;
-    private SharedPreferences mPreferences;
-    private String mCurrentUserID, mCurrentPass;
+    private MyData myData;
+    private Local local;
+    private String userIDStr, passwordStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        mPreferences = getPreferences(Context.MODE_PRIVATE);
-        mCurrentUserID = mPreferences.getString(getString(R.string.curr_userID), "");
-        mCurrentPass = mPreferences.getString(getString(R.string.curr_pass), "");
+        myData = new MyData(this);
+        user_name = (EditText) findViewById(R.id.user_name);
+        password = (EditText) findViewById(R.id.password);
         create_user = (TextView) findViewById(R.id.create_user);
         forgotPass = (TextView) findViewById(R.id.forgot_password);
         login = (Button) findViewById(R.id.login);
@@ -61,15 +64,25 @@ public class HomeScreen extends ActionBarActivity {
         login.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user_name = (EditText) findViewById(R.id.user_name);
-                password = (EditText) findViewById(R.id.password);
-                mCurrentUserID = user_name.getText().toString();
-                mCurrentPass = password.getText().toString();
+                userIDStr = user_name.getText().toString();
+                passwordStr = password.getText().toString();
 
                 if (isEmpty(user_name) || isEmpty(password)) {
                     Toast.makeText(HomeScreen.this, R.string.no_blank, Toast.LENGTH_SHORT).show();
-                } else
+                } else {
+                    local = new Local(userIDStr, passwordStr);
+
+                    try {
+                        myData.insert(userIDStr, passwordStr);
+                        myData.close();
+                    }
+                    catch (Exception e) {
+                        Toast.makeText(v.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     toMyAccountActivity();
+                }
+
             }
         });
     }
@@ -91,25 +104,27 @@ public class HomeScreen extends ActionBarActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mPreferences = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString(getString(R.string.curr_userID), mCurrentUserID);
-        editor.putString(getString(R.string.curr_pass), mCurrentPass);
-        editor.commit();
+    protected void onStart() {
+        super.onStart();
+
+        myData = new MyData(this);
+        final ArrayList<Local> allData = myData.selectAll();
+        if (allData.size() != 0) {
+            userIDStr = allData.get(0).getId();
+            passwordStr = allData.get(0).getPassword();
+        }
+      //    myData.close();
+//        myData.deleteAll();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mPreferences = getPreferences(Context.MODE_PRIVATE);
-        mCurrentUserID = mPreferences.getString(getString(R.string.curr_userID), "");
-        mCurrentPass = mPreferences.getString(getString(R.string.curr_pass), "");
 
         user_name = (EditText) findViewById(R.id.user_name);
         password = (EditText) findViewById(R.id.password);
-        user_name.setText(mCurrentUserID);
-        password.setText(mCurrentPass);
+        user_name.setText(userIDStr);
+        password.setText(passwordStr);
     }
 }
