@@ -77,15 +77,6 @@ public class HomeScreen extends ActionBarActivity {
                             toMyAccountActivity();
                         }
                     }
-//                    try {
-//                        myData.insert(userIDStr, passwordStr);
-//                        myData.close();
-//                    }
-//                    catch (Exception e) {
-//                        Toast.makeText(v.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//                    toMyAccountActivity();
                 }
 
             }

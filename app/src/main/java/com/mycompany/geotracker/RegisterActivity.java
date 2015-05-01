@@ -8,8 +8,6 @@
 package com.mycompany.geotracker;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,15 +22,15 @@ import android.widget.Toast;
  * Created by David on April 2015
  */
 public class RegisterActivity extends ActionBarActivity {
+    MyData myData;
     private String email, password, confirmed_password, answer;
-    private SharedPreferences preferenceSettings;
-    private SharedPreferences.Editor preferenceEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        myData = new MyData(this);
         Button btn_cancel = (Button)findViewById(R.id.reg_cancel);
         Button btn_continue = (Button) findViewById(R.id.reg_continue);
         final Spinner spin_securityQuest = (Spinner) findViewById(R.id.reg_security_quest);
@@ -49,8 +47,8 @@ public class RegisterActivity extends ActionBarActivity {
 
         btn_continue.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                preferenceSettings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                preferenceEditor = preferenceSettings.edit();
+  //              preferenceSettings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+  //              preferenceEditor = preferenceSettings.edit();
 
                 EditText reg_email = (EditText)findViewById(R.id.reg_email);
                 email = reg_email.getText().toString();
@@ -68,17 +66,6 @@ public class RegisterActivity extends ActionBarActivity {
                 Wasn't sure what you wanted to put here. For now I made it so that it just
                 accepts it no matter what.
                  */
-//                if(!password.equals(confirmed_password)) {
-//                    //passwords do not match
-//                } else {
-//
-//                }
-
-                preferenceEditor.putString("email", email);
-                preferenceEditor.putString("password", password);
-                preferenceEditor.putString("question", question);
-                preferenceEditor.putString("answer", answer);
-                preferenceEditor.commit();
 
                 if (!password.equals(confirmed_password)) {
                     Toast.makeText(RegisterActivity.this, R.string.no_match, Toast.
@@ -91,7 +78,17 @@ public class RegisterActivity extends ActionBarActivity {
                 else if (!check.isChecked())
                     Toast.makeText(RegisterActivity.this, R.string.no_check,
                             Toast.LENGTH_SHORT).show();
-                    else toMyAccountActivity();
+                    else {
+                    try {
+                        myData.insert(email, password);
+                        myData.close();
+                    }
+                    catch (Exception e) {
+                        Toast.makeText(v.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    toMyAccountActivity();
+                }
             }
         });
     }
