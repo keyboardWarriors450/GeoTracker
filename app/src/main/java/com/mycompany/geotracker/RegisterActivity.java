@@ -18,11 +18,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.mycompany.geotracker.data.MyData;
+
 /*
  * Created by David on April 2015
  */
 public class RegisterActivity extends ActionBarActivity {
-    MyData myData;
+    private MyData myData;
     private String email, password, confirmed_password, question, answer;
 
     @Override
@@ -100,3 +102,4 @@ public class RegisterActivity extends ActionBarActivity {
     }
 
 }
+

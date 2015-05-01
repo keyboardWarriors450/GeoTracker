@@ -8,7 +8,7 @@
  * TCSS 450
  */
 
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.model;
 
 /**
  * Created by viet on 4/16/2015.
@@ -35,12 +35,15 @@ public class User {
     /**
      * Hold secret question from user
      */
-    private String secretQuestion;
+    private String question;
 
     /**
      * Hold user's secret answer
      */
-    private String secretAnswer;
+    private String answer;
+
+    public static final String EMAIL = "email", PASSWORD = "password", QUESTION = "question",
+        ANSWER = "answer";
 
     /**
      * This constructing user account base on inputs
@@ -48,15 +51,15 @@ public class User {
      * //@param userID is user input ID as email address - Unique ID for creating userId
      * @param email is user email address
      * @param password is password user enter create
-     * @param secretQuestion is secret question
-     * @param secretAnswer is secret answer from user input
+     * @param question is secret question
+     * @param answer is secret answer from user input
      */
-    public User(String email, String password, String secretQuestion, String secretAnswer) {
+    public User(String email, String password, String question, String answer) {
 //        this.userID = userID;
         this.email = email;
         this.password = password;
-        this.secretQuestion = secretQuestion;
-        this.secretAnswer = secretAnswer;
+        this.question = question;
+        this.answer = answer;
     }
 
     /**
@@ -87,16 +90,16 @@ public class User {
      *
      * @return secret question
      */
-    public String getSecretQuestion() {
-        return secretQuestion;
+    public String getQuestion() {
+        return question;
     }
 
     /**
      *
      * @return secrete answer
      */
-    public String getSecretAnswer() {
-        return secretAnswer;
+    public String getAnswer() {
+        return answer;
     }
 
     /**
@@ -111,5 +114,15 @@ public class User {
      */
     public void clear() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "com.mycompany.geotracker.model.User{" +
+                "email='" + email + '\'' +
+                "password='" + password + '\'' +
+                "question='" + question + '\'' +
+                "answer='" + answer + '\'' +
+                '}';
     }
 }

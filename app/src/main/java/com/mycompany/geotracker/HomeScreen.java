@@ -17,6 +17,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mycompany.geotracker.data.MyData;
+import com.mycompany.geotracker.model.User;
+
 import java.util.ArrayList;
 
 /**
@@ -25,10 +28,8 @@ import java.util.ArrayList;
 public class HomeScreen extends ActionBarActivity {
 
     private TextView create_user, forgotPass;
-    private Button login;
     private EditText user_name, password;
     private MyData myData;
-    private User user;
     private String userIDStr, passwordStr;
 
     @Override
@@ -41,7 +42,7 @@ public class HomeScreen extends ActionBarActivity {
         password = (EditText) findViewById(R.id.password);
         create_user = (TextView) findViewById(R.id.create_user);
         forgotPass = (TextView) findViewById(R.id.forgot_password);
-        login = (Button) findViewById(R.id.login);
+        Button login = (Button) findViewById(R.id.login);
 
         create_user.setOnClickListener(new TextView.OnClickListener() {
             @Override
@@ -70,7 +71,7 @@ public class HomeScreen extends ActionBarActivity {
                     Toast.makeText(HomeScreen.this, R.string.no_blank, Toast.LENGTH_SHORT).show();
                 } else {
                     if (allData.size() != 0) {
-                        if (userIDStr.equals(allData.get(allData.size()-1).getEmail())) {
+                        if (userIDStr.equals(allData.get(allData.size() - 1).getEmail())) {
                             toMyAccountActivity();
                         }
                     }
@@ -106,9 +107,7 @@ public class HomeScreen extends ActionBarActivity {
             userIDStr = allData.get(allData.size()-1).getEmail();
             passwordStr = allData.get(allData.size()-1).getPassword();
         }
-      //    myData.close();
 //        myData.deleteAll();
-
     }
 
     @Override

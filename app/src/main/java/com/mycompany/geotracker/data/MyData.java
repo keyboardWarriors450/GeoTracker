@@ -5,7 +5,7 @@
  * of Keyboard Warriors.
  */
 
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.data;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -13,6 +13,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+
+import com.mycompany.geotracker.model.User;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,6 @@ public class MyData
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_NAME_USER = "user";
 
-    private Context context;
     private SQLiteDatabase db;
 
     private SQLiteStatement insertStmt;
@@ -35,8 +36,7 @@ public class MyData
 
     public MyData(Context context)
     {
-        this.context = context;
-        OpenHelper openHelper = new OpenHelper(this.context);
+        OpenHelper openHelper = new OpenHelper(context);
         this.db = openHelper.getWritableDatabase();
         this.insertStmt = this.db.compileStatement(INSERT);
     }
@@ -70,7 +70,7 @@ public class MyData
     /**
      * Return an array list of User objects from the
      * data returned from select query on example table.
-     * @return
+     * @return list
      */
     public ArrayList<User> selectAll()
     {
@@ -86,7 +86,7 @@ public class MyData
                 list.add(e);
             } while (cursor.moveToNext());
         }
-        if (cursor != null && !cursor.isClosed())
+        if (!cursor.isClosed())
         {
             cursor.close();
         }
@@ -96,8 +96,8 @@ public class MyData
     /**
      * Return the password when email is passed.
      * null if no record found.
-     * @param email
-     * @return
+     * @param email user's email
+     * @return null
      */
     public String selectByID(String email)
     {
@@ -112,7 +112,7 @@ public class MyData
                 return cursor.getString(0);
             } while (cursor.moveToNext());
         }
-        if (cursor != null && !cursor.isClosed())
+        if (!cursor.isClosed())
         {
             cursor.close();
         }
@@ -145,7 +145,7 @@ public class MyData
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
         {
-            Log.w("Local",
+            Log.w("User",
                     "Upgrading database, this will drop tables and recreate.");
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER);
             onCreate(db);
