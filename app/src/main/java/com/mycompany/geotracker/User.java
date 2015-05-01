@@ -45,14 +45,14 @@ public class User {
     /**
      * This constructing user account base on inputs
      *
-     * @param userID is user input ID as email address - Unique ID for creating userId
+     * //@param userID is user input ID as email address - Unique ID for creating userId
      * @param email is user email address
      * @param password is password user enter create
      * @param secretQuestion is secret question
      * @param secretAnswer is secret answer from user input
      */
-    public User(String userID, String email, String password, String secretQuestion, String secretAnswer) {
-        this.userID = userID;
+    public User(String email, String password, String secretQuestion, String secretAnswer) {
+//        this.userID = userID;
         this.email = email;
         this.password = password;
         this.secretQuestion = secretQuestion;

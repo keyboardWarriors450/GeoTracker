@@ -24,14 +24,14 @@ public class MyData
 
     private static final String DATABASE_NAME = "my.db";
     private static final int DATABASE_VERSION = 1;
-    private static final String TABLE_NAME_LOCAL = "local";
+    private static final String TABLE_NAME_USER = "user";
 
     private Context context;
     private SQLiteDatabase db;
 
     private SQLiteStatement insertStmt;
-    private static final String INSERT = "INSERT INTO " + TABLE_NAME_LOCAL
-            + "(user_name, password) VALUES (?, ?)";
+    private static final String INSERT = "INSERT INTO " + TABLE_NAME_USER
+            + "(email, password, secretQuestion, secretAnswer) VALUES (?, ?, ?, ?)";
 
     public MyData(Context context)
     {
@@ -41,13 +41,15 @@ public class MyData
         this.insertStmt = this.db.compileStatement(INSERT);
     }
 
-    /** Inserts the user_name and password into local
+    /** Inserts the email, password, secretQuestion, secretAnswer into User
      If successful, returns the rowid otherwise -1.
      */
-    public long insert(String user_name, String password) throws Exception
+    public long insert(String email, String password, String question, String answer) throws Exception
     {
-        this.insertStmt.bindString(1, user_name);
+        this.insertStmt.bindString(1, email);
         this.insertStmt.bindString(2, password);
+        this.insertStmt.bindString(3, question);
+        this.insertStmt.bindString(4, answer);
 
         long rowID = this.insertStmt.executeInsert();
         if (rowID == -1) {
@@ -61,26 +63,26 @@ public class MyData
      */
     public void deleteAll()
     {
-        this.db.delete(TABLE_NAME_LOCAL, null, null);
+        this.db.delete(TABLE_NAME_USER, null, null);
     }
 
 
     /**
-     * Return an array list of Local objects from the
+     * Return an array list of User objects from the
      * data returned from select query on example table.
      * @return
      */
-    public ArrayList<Local> selectAll()
+    public ArrayList<User> selectAll()
     {
-        ArrayList<Local> list = new ArrayList<>();
-        Cursor cursor = this.db.query(TABLE_NAME_LOCAL, new String[]
-                { "user_name", "password" }, null, null, null, null, null);
+        ArrayList<User> list = new ArrayList<>();
+        Cursor cursor = this.db.query(TABLE_NAME_USER, new String[]
+                { "email", "password", "secretQuestion", "secretAnswer" }, null, null, null, null, null);
         if (cursor.moveToFirst())
         {
             do
             {
-
-                Local e = new Local(cursor.getString(0), cursor.getString(1));
+                User e = new User(cursor.getString(0), cursor.getString(1), cursor.getString(2),
+                        cursor.getString(3));
                 list.add(e);
             } while (cursor.moveToNext());
         }
@@ -92,17 +94,17 @@ public class MyData
     }
 
     /**
-     * Return the password when user_name is passed.
+     * Return the password when email is passed.
      * null if no record found.
-     * @param user_name
+     * @param email
      * @return
      */
-    public String selectByID(String user_name)
+    public String selectByID(String email)
     {
-        Cursor cursor = this.db.query(TABLE_NAME_LOCAL, new String[]
-                        { "password" }, "user_name=?",
+        Cursor cursor = this.db.query(TABLE_NAME_USER, new String[]
+                        { "password" }, "email=?",
                 new String[]
-                        { user_name }, null, null, null);
+                        { email }, null, null, null);
         if (cursor.moveToFirst())
         {
             do
@@ -136,9 +138,8 @@ public class MyData
         @Override
         public void onCreate(SQLiteDatabase db)
         {
-            db.execSQL("CREATE TABLE " + TABLE_NAME_LOCAL
-                    + " (user_name TEXT PRIMARY KEY, password TEXT, created_at DATETIME DEFAULT " +
-                    "CURRENT_TIMESTAMP)");
+            db.execSQL("CREATE TABLE " + TABLE_NAME_USER
+               + " (email TEXT PRIMARY KEY, password TEXT, secretQuestion TEXT, secretAnswer TEXT)");
         }
 
         @Override
@@ -146,7 +147,7 @@ public class MyData
         {
             Log.w("Local",
                     "Upgrading database, this will drop tables and recreate.");
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_LOCAL);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER);
             onCreate(db);
         }
     }

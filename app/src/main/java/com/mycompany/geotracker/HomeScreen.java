@@ -7,9 +7,7 @@
 
 package com.mycompany.geotracker;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -30,7 +28,7 @@ public class HomeScreen extends ActionBarActivity {
     private Button login;
     private EditText user_name, password;
     private MyData myData;
-    private Local local;
+    private User user;
     private String userIDStr, passwordStr;
 
     @Override
@@ -64,16 +62,15 @@ public class HomeScreen extends ActionBarActivity {
         login.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ArrayList<Local> allData = myData.selectAll();
+                final ArrayList<User> allData = myData.selectAll();
                 userIDStr = user_name.getText().toString();
                 passwordStr = password.getText().toString();
 
                 if (isEmpty(user_name) || isEmpty(password)) {
                     Toast.makeText(HomeScreen.this, R.string.no_blank, Toast.LENGTH_SHORT).show();
                 } else {
-                    // local = new Local(userIDStr, passwordStr);
                     if (allData.size() != 0) {
-                        if (userIDStr.equals(allData.get(allData.size()-1).getId())) {
+                        if (userIDStr.equals(allData.get(allData.size()-1).getEmail())) {
                             toMyAccountActivity();
                         }
                     }
@@ -104,9 +101,9 @@ public class HomeScreen extends ActionBarActivity {
         super.onStart();
 
         myData = new MyData(this);
-        final ArrayList<Local> allData = myData.selectAll();
+        final ArrayList<User> allData = myData.selectAll();
         if (allData.size() != 0) {
-            userIDStr = allData.get(allData.size()-1).getId();
+            userIDStr = allData.get(allData.size()-1).getEmail();
             passwordStr = allData.get(allData.size()-1).getPassword();
         }
       //    myData.close();

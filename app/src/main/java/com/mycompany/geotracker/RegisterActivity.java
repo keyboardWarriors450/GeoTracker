@@ -23,7 +23,7 @@ import android.widget.Toast;
  */
 public class RegisterActivity extends ActionBarActivity {
     MyData myData;
-    private String email, password, confirmed_password, answer;
+    private String email, password, confirmed_password, question, answer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,6 @@ public class RegisterActivity extends ActionBarActivity {
 
         btn_continue.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-  //              preferenceSettings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-  //              preferenceEditor = preferenceSettings.edit();
 
                 EditText reg_email = (EditText)findViewById(R.id.reg_email);
                 email = reg_email.getText().toString();
@@ -56,7 +54,7 @@ public class RegisterActivity extends ActionBarActivity {
                 password = reg_pass.getText().toString();
                 EditText conf_pass = (EditText)findViewById(R.id.conf_password);
                 confirmed_password = conf_pass.getText().toString();
-                String question = (String) spin_securityQuest.getSelectedItem();
+                question = (String) spin_securityQuest.getSelectedItem();
                 EditText sec_answer = (EditText)findViewById(R.id.sec_answer);
                 answer = sec_answer.getText().toString();
                 CheckBox check = (CheckBox) findViewById(R.id.accept_checkBox);
@@ -80,7 +78,7 @@ public class RegisterActivity extends ActionBarActivity {
                             Toast.LENGTH_SHORT).show();
                     else {
                     try {
-                        myData.insert(email, password);
+                        myData.insert(email, password, question, answer);
                         myData.close();
                     }
                     catch (Exception e) {
