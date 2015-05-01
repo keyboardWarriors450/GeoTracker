@@ -64,23 +64,28 @@ public class HomeScreen extends ActionBarActivity {
         login.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ArrayList<Local> allData = myData.selectAll();
                 userIDStr = user_name.getText().toString();
                 passwordStr = password.getText().toString();
 
                 if (isEmpty(user_name) || isEmpty(password)) {
                     Toast.makeText(HomeScreen.this, R.string.no_blank, Toast.LENGTH_SHORT).show();
                 } else {
-                    local = new Local(userIDStr, passwordStr);
-
-                    try {
-                        myData.insert(userIDStr, passwordStr);
-                        myData.close();
+                    // local = new Local(userIDStr, passwordStr);
+                    if (allData.size() != 0) {
+                        if (userIDStr.equals(allData.get(allData.size()-1).getId())) {
+                            toMyAccountActivity();
+                        }
                     }
-                    catch (Exception e) {
-                        Toast.makeText(v.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    toMyAccountActivity();
+//                    try {
+//                        myData.insert(userIDStr, passwordStr);
+//                        myData.close();
+//                    }
+//                    catch (Exception e) {
+//                        Toast.makeText(v.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                    toMyAccountActivity();
                 }
 
             }
