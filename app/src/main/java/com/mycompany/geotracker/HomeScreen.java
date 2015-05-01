@@ -110,8 +110,8 @@ public class HomeScreen extends ActionBarActivity {
         myData = new MyData(this);
         final ArrayList<Local> allData = myData.selectAll();
         if (allData.size() != 0) {
-            userIDStr = allData.get(0).getId();
-            passwordStr = allData.get(0).getPassword();
+            userIDStr = allData.get(allData.size()-1).getId();
+            passwordStr = allData.get(allData.size()-1).getPassword();
         }
       //    myData.close();
 //        myData.deleteAll();
