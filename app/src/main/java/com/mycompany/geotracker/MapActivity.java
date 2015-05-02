@@ -32,7 +32,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap map) {
         map.addMarker(new MarkerOptions()
-                .position(new LatLng(0, -10))
+                .position(new LatLng(0, 0))
                 .title("Marker"));
 
         // Sets the map type to be "hybrid" show terrant
