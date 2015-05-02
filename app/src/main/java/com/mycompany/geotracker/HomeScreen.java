@@ -70,19 +70,10 @@ public class HomeScreen extends ActionBarActivity {
                 if (isEmpty(user_name) || isEmpty(password)) {
                     Toast.makeText(HomeScreen.this, R.string.no_blank, Toast.LENGTH_SHORT).show();
                 } else {
-                    if (allData.size() != 0) {
-                        if (userIDStr.equals(allData.get(allData.size() - 1).getEmail())) {
-                            toMyAccountActivity();
-                        }
-                    }
+                    new LoginToServer(HomeScreen.this).execute(userIDStr, passwordStr);
                 }
-
             }
         });
-    }
-
-    private void toMyAccountActivity() {
-        startActivity(new Intent(this, MyAccountActivity.class));
     }
 
     private void toForgotPassword() {
