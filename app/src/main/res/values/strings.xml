@@ -48,7 +48,8 @@
     <string name="curr_userID">curr_userID</string>
     <string name="curr_pass">curr_pass</string>
     <string name="no_check">Check \'I Accept\' to continue</string>
-    <string name="no_match">Passwords mismatch</string>
+    <string name="no_match">Password mismatch</string>
+    <string name="short_password">Passwords must be longer than 5 characters</string>
     <string name="question">Question</string>
     <string name="answer">Answer</string>
     <string name="email_sent">The password has been sent to your email.</string>
@@ -60,9 +61,10 @@
         <item>What was your favorite food as a child?</item>
         <item>What was your childhood nickname?</item>
         <item>Who is your childhood sports hero?</item>
+        <item>What is your favorite color</item>
     </string-array>
     <string name="start_date_hint">Enter Start Date (mmddyyyy)</string>
     <string name="end_date_hint">Enter end Date (mmddyyyy)</string>
     <string name="title_activity_map">MapActivity</string>
-
+    <string name="dialog_validate_email">Validate your email to register</string>
 </resources>
