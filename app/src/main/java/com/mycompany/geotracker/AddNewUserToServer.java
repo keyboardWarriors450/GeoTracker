@@ -12,8 +12,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.view.Window;
 
 /**
  * Created by David May 2015
@@ -78,6 +80,7 @@ public class AddNewUserToServer extends AsyncTask<String,Void,String>{
 
         AlertDialog alertDialog = new AlertDialog.Builder(AddNewUserToServer.this.context).create();
         alertDialog.setTitle("Validate Email...");
+        alertDialog.setIcon(R.drawable.launcher);
         alertDialog.setMessage("Validate your email from your inbox to finish registration.");
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
