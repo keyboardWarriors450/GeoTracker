@@ -1,48 +1,107 @@
 /*
  * Copyright (c) 2015. Keyboard Warriors (Alex Hong, Daniel Khieuson, David Kim, Viet Nguyen).
+ * This file is part of GeoTracker.
  * GeoTracker cannot be copied and/or distributed without the express permission
  * of Keyboard Warriors.
- *
- * This showing a map and location points base on user start and end date
  */
 
 package com.mycompany.geotracker;
 
-import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
+import  android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-/**
- * Showing location of user base on start and end date
- */
-public class ViewMapActivity extends ActionBarActivity {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
+
+
+public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCallback {
+
+    //  private LocationLog mLocationLog;
+    private GoogleMap mGoogleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_map);
 
-        // get message from intent which were created from the previous activity
-   /*     Intent intent = getIntent();
-        String message = intent.getStringExtra(PickDateActivity.START_DATE);
+        //   mLocationLog = (LocationLog) getIntent().getParcelableExtra("locations");
 
-        // Create the text view
-        TextView textView = new TextView(this);
-        textView.setTextSize(40);
-        textView.setText(message);
-
-        // Set the text view as the activity layout
-        setContentView(textView);*/
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.mapView);
+        mGoogleMap = mapFragment.getMap();
+        mapFragment.getMapAsync(this);
     }
 
 
     @Override
+    public void onMapReady(GoogleMap map) {
+
+        if (mGoogleMap != null) {
+            Log.i("Map Activity", "Inside mGoogleMap");
+            LatLng latlng = new LatLng(47.2528768,-122.4442906 ); // Tacoma coordinates
+            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                    .position(latlng)
+                    .title("Tacoma")
+                    .snippet("This is Tacoma location"));
+
+            // Move the camera instantly to tacoma with a zoom of 15.
+          //  mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
+        }
+
+        // initial location manager
+        LocationManager locationManager = (LocationManager) this.getSystemService(
+                Context.LOCATION_SERVICE);
+        Location myLocation1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        // exacting longitude and latitude from my current location
+        LatLng myLatlng = new LatLng(myLocation1.getLatitude(), myLocation1.getLongitude());
+        if (myLatlng != null) {
+
+            Log.i("Map Activity", "Inside mGoogleMap my current location");
+
+            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                    .position(myLatlng)
+                    .title("My Location")
+                    .snippet("This is my current location"));
+
+            // Move the camera instantly to my current location with a zoom of 15.
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
+        }
+        // Seattle coordinates - 47.6097, -122.3331
+
+      /*  if (mLocationLog != null) {
+
+            List<Location> locations = mLocationLog.getLocationList();
+            Location location = locations.get(0);
+            LatLng firstLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+            for (int i=0; i<locations.size(); i++) {
+                Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(locations.get(i).getLatitude()
+                                , locations.get(i).getLongitude()))
+                        .title("My Locations"));
+            }
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
+        }*/
+
+    }
+
+  /*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_view_map, menu);
+        getMenuInflater().inflate(R.menu.menu_location, menu);
         return true;
     }
 
@@ -59,5 +118,5 @@ public class ViewMapActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }
