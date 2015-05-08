@@ -8,21 +8,48 @@
 package com.mycompany.geotracker;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.mycompany.geotracker.data.MyData;
+import com.mycompany.geotracker.model.User;
+
+import java.util.ArrayList;
 
 /*
  * Created by Alex on April 2015.
  */
 public class MyAccountActivity extends ActionBarActivity {
 
+    private MyData myData;
+    private String user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
 
+        myData = new MyData(this);
+        final ArrayList<User> allData = myData.selectAllUsers();
+        user = allData.get(allData.size()-1).getEmail();
+
+        final TextView username = (TextView) findViewById(R.id.username_display);
+        int end = 0;
+
+        for(int i = 0; i < user.length(); i++) {
+            if (user.charAt(i) == '@') {
+                end = i;
+            }
+        }
+
+        user = user.substring(0, end);
+
+        username.setTextColor(Color.WHITE);
+        username.setText("Welcome " + user);
         final Button change_password = (Button)findViewById(R.id.change_password);
 
         change_password.setOnClickListener(new Button.OnClickListener() {
