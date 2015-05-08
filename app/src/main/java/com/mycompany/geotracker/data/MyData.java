@@ -69,15 +69,15 @@ public class MyData
     /** Inserts the uid, latitude, longitude, speed, heading, and timestamp into Location
      If successful, returns the rowid otherwise -1.
      */
-    public long insertLocation(String uid, double lat, double lon, double speed, double heading,
-                               String timestamp) throws Exception
+    public long insertLocation(String uid, double lat, double lon, float speed, float heading,
+                               long timestamp) throws Exception
     {
         this.insertStmt2.bindString(1, uid);
         this.insertStmt2.bindDouble(2, lat);
         this.insertStmt2.bindDouble(3, lon);
         this.insertStmt2.bindDouble(4, speed);
         this.insertStmt2.bindDouble(5, heading);
-        this.insertStmt2.bindString(6, timestamp);
+        this.insertStmt2.bindLong(6, timestamp);
 
         long rowID = this.insertStmt2.executeInsert();
         if (rowID == -1) {
@@ -139,7 +139,7 @@ public class MyData
             do
             {
                 Location e = new Location(cursor.getString(0), cursor.getDouble(1), cursor.getDouble(2),
-                        cursor.getDouble(3), cursor.getDouble(4), cursor.getString(5));
+                        cursor.getFloat(3), cursor.getFloat(4), cursor.getLong(5));
                 list.add(e);
             } while (cursor.moveToNext());
         }

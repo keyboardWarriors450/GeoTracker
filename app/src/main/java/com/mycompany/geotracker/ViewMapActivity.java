@@ -52,13 +52,24 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
         if (mGoogleMap != null) {
             Log.i("Map Activity", "Inside mGoogleMap");
             LatLng latlng = new LatLng(47.2528768,-122.4442906 ); // Tacoma coordinates
-            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+            mGoogleMap.addMarker(new MarkerOptions()
                     .position(latlng)
                     .title("Tacoma")
                     .snippet("This is Tacoma location"));
 
+            LatLng latlng1 = new LatLng(47.2530768,-122.4440906 ); // Tacoma coordinates
+            mGoogleMap.addMarker(new MarkerOptions()
+                    .position(latlng1)
+                    .title("Tacoma2")
+                    .snippet("This is Tacoma2 location"));
+
+            LatLng latlng2 = new LatLng(47.25387768,-122.4447906 ); // Tacoma coordinates
+            mGoogleMap.addMarker(new MarkerOptions()
+                    .position(latlng2)
+                    .title("Tacoma2")
+                    .snippet("This is Tacoma2 location"));
             // Move the camera instantly to tacoma with a zoom of 15.
-          //  mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng1, 15));
         }
 
         // initial location manager
@@ -78,7 +89,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
                     .snippet("This is my current location"));
 
             // Move the camera instantly to my current location with a zoom of 15.
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
+//            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
         }
         // Seattle coordinates - 47.6097, -122.3331
 
