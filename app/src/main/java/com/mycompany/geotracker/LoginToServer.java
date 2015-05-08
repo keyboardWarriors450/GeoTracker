@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.mycompany.geotracker.data.MyData;
@@ -101,6 +102,7 @@ public class LoginToServer extends AsyncTask<String,Void,String> {
                 if (obj.getString("result").equals("success")) {
                     try {
                         uid = obj.getString("userid");
+                        Log.v("id", uid);
                         MyData myData = new MyData(LoginToServer.this.context);
                         myData.deleteAll();
                         myData.insertUser(uid, email, password, "", "");
