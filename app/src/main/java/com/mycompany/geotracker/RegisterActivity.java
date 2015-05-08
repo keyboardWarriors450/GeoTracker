@@ -85,7 +85,7 @@ public class RegisterActivity extends ActionBarActivity {
                             Toast.LENGTH_SHORT).show();
                 else {
                     try {
-                        myData.insert(email, password, question, answer);
+                        myData.insertUser("temp", email, password, question, answer);
                         myData.close();
                     } catch (Exception e) {
                         Toast.makeText(v.getContext(), e.toString(), Toast.LENGTH_SHORT).show();

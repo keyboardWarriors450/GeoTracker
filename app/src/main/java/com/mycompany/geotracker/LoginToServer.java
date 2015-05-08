@@ -10,13 +10,11 @@ package com.mycompany.geotracker;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.LinearGradient;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.mycompany.geotracker.data.MyData;
-import com.mycompany.geotracker.model.User;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -28,7 +26,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.ArrayList;
 
 /**
  * Created by David May 2015
@@ -36,7 +33,7 @@ import java.util.ArrayList;
 public class LoginToServer extends AsyncTask<String,Void,String> {
     private ProgressDialog pDialog;
     private Context context;
-    private String email, password;
+    private String uid, email, password;
 
     public LoginToServer(Context context) {
         this.context = context;
@@ -103,9 +100,10 @@ public class LoginToServer extends AsyncTask<String,Void,String> {
                 JSONObject obj = new JSONObject(result);
                 if (obj.getString("result").equals("success")) {
                     try {
+                        uid = obj.getString("userid");
                         MyData myData = new MyData(LoginToServer.this.context);
                         myData.deleteAll();
-                        myData.insert(email, password, "", "");
+                        myData.insertUser(uid, email, password, "", "");
                         myData.close();
                     } catch (Exception e) {
                         Toast.makeText(LoginToServer.this.context, e.toString(), Toast.LENGTH_SHORT).show();

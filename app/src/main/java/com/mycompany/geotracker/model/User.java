@@ -42,20 +42,20 @@ public class User {
      */
     private String answer;
 
-    public static final String EMAIL = "email", PASSWORD = "password", QUESTION = "question",
-        ANSWER = "answer";
+//    public static final String UID = "uid", EMAIL = "email", PASSWORD = "password",
+//            QUESTION = "question", ANSWER = "answer";
 
     /**
      * This constructing user account base on inputs
      *
-     * //@param userID is user input ID as email address - Unique ID for creating userId
+     * @param userID is user input ID as email address - Unique ID for creating userId
      * @param email is user email address
      * @param password is password user enter create
      * @param question is secret question
      * @param answer is secret answer from user input
      */
-    public User(String email, String password, String question, String answer) {
-//        this.userID = userID;
+    public User(String userID, String email, String password, String question, String answer) {
+        this.userID = userID;
         this.email = email;
         this.password = password;
         this.question = question;
@@ -116,13 +116,13 @@ public class User {
 
     }
 
-    @Override
-    public String toString() {
-        return "com.mycompany.geotracker.model.User{" +
-                "email='" + email + '\'' +
-                "password='" + password + '\'' +
-                "question='" + question + '\'' +
-                "answer='" + answer + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "com.mycompany.geotracker.model.User{" +
+//                "email='" + email + '\'' +
+//                "password='" + password + '\'' +
+//                "question='" + question + '\'' +
+//                "answer='" + answer + '\'' +
+//                '}';
+//    }
 }

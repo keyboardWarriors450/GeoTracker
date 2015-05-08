@@ -63,7 +63,7 @@ public class HomeScreen extends ActionBarActivity {
         login.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ArrayList<User> allData = myData.selectAll();
+                final ArrayList<User> allData = myData.selectAllUsers();
                 userIDStr = user_name.getText().toString();
                 passwordStr = password.getText().toString();
 
@@ -93,12 +93,11 @@ public class HomeScreen extends ActionBarActivity {
         super.onStart();
 
         myData = new MyData(this);
-        final ArrayList<User> allData = myData.selectAll();
+        final ArrayList<User> allData = myData.selectAllUsers();
         if (allData.size() != 0) {
             userIDStr = allData.get(allData.size()-1).getEmail();
             passwordStr = allData.get(allData.size()-1).getPassword();
         }
-//        myData.deleteAll();
     }
 
     @Override

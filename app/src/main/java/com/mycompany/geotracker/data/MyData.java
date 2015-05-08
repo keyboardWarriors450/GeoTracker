@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
+import com.mycompany.geotracker.model.Location;
 import com.mycompany.geotracker.model.User;
 
 import java.util.ArrayList;
@@ -27,31 +28,58 @@ public class MyData
     private static final String DATABASE_NAME = "my.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_NAME_USER = "user";
+    private static final String TABLE_NAME_LOC = "location";
 
     private SQLiteDatabase db;
 
-    private SQLiteStatement insertStmt;
-    private static final String INSERT = "INSERT INTO " + TABLE_NAME_USER
-            + "(email, password, secretQuestion, secretAnswer) VALUES (?, ?, ?, ?)";
+    private SQLiteStatement insertStmt1;
+    private SQLiteStatement insertStmt2;
+    private static final String INSERT_USER = "INSERT INTO " + TABLE_NAME_USER
+            + "(uid, email, password, secretQuestion, secretAnswer) VALUES (?, ?, ?, ?, ?)";
+    private static final String INSERT_LOC = "INSERT INTO " + TABLE_NAME_LOC
+            + "(uid, lat, lon, speed, heading, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
 
     public MyData(Context context)
     {
         OpenHelper openHelper = new OpenHelper(context);
         this.db = openHelper.getWritableDatabase();
-        this.insertStmt = this.db.compileStatement(INSERT);
+        this.insertStmt1 = this.db.compileStatement(INSERT_USER);
+        this.insertStmt2 = this.db.compileStatement(INSERT_LOC);
     }
 
-    /** Inserts the email, password, secretQuestion, secretAnswer into User
+    /** Inserts the uid, email, password, secretQuestion, secretAnswer into User
      If successful, returns the rowid otherwise -1.
      */
-    public long insert(String email, String password, String question, String answer) throws Exception
+    public long insertUser(String uid, String email, String password, String question, String answer)
+            throws Exception
     {
-        this.insertStmt.bindString(1, email);
-        this.insertStmt.bindString(2, password);
-        this.insertStmt.bindString(3, question);
-        this.insertStmt.bindString(4, answer);
+        this.insertStmt1.bindString(1, uid);
+        this.insertStmt1.bindString(2, email);
+        this.insertStmt1.bindString(3, password);
+        this.insertStmt1.bindString(4, question);
+        this.insertStmt1.bindString(5, answer);
 
-        long rowID = this.insertStmt.executeInsert();
+        long rowID = this.insertStmt1.executeInsert();
+        if (rowID == -1) {
+            throw new Exception("Unable to insert");
+        }
+        return rowID;
+    }
+
+    /** Inserts the uid, latitude, longitude, speed, heading, and timestamp into Location
+     If successful, returns the rowid otherwise -1.
+     */
+    public long insertLocation(String uid, double lat, double lon, double speed, double heading,
+                               String timestamp) throws Exception
+    {
+        this.insertStmt2.bindString(1, uid);
+        this.insertStmt2.bindDouble(2, lat);
+        this.insertStmt2.bindDouble(3, lon);
+        this.insertStmt2.bindDouble(4, speed);
+        this.insertStmt2.bindDouble(5, heading);
+        this.insertStmt2.bindString(6, timestamp);
+
+        long rowID = this.insertStmt2.executeInsert();
         if (rowID == -1) {
             throw new Exception("Unable to insert");
         }
@@ -64,6 +92,7 @@ public class MyData
     public void deleteAll()
     {
         this.db.delete(TABLE_NAME_USER, null, null);
+        this.db.delete(TABLE_NAME_LOC, null, null);
     }
 
 
@@ -72,17 +101,18 @@ public class MyData
      * data returned from select query on example table.
      * @return list
      */
-    public ArrayList<User> selectAll()
+    public ArrayList<User> selectAllUsers()
     {
         ArrayList<User> list = new ArrayList<>();
         Cursor cursor = this.db.query(TABLE_NAME_USER, new String[]
-                { "email", "password", "secretQuestion", "secretAnswer" }, null, null, null, null, null);
+                { "uid", "email", "password", "secretQuestion", "secretAnswer" },
+                null, null, null, null, null);
         if (cursor.moveToFirst())
         {
             do
             {
                 User e = new User(cursor.getString(0), cursor.getString(1), cursor.getString(2),
-                        cursor.getString(3));
+                        cursor.getString(3), cursor.getString(4));
                 list.add(e);
             } while (cursor.moveToNext());
         }
@@ -94,30 +124,55 @@ public class MyData
     }
 
     /**
-     * Return the password when email is passed.
-     * null if no record found.
-     * @param email user's email
-     * @return null
+     * Return an array list of Location objects from the
+     * data returned from select query on example table.
+     * @return list
      */
-    public String selectByID(String email)
+    public ArrayList<Location> selectAllLocations()
     {
-        Cursor cursor = this.db.query(TABLE_NAME_USER, new String[]
-                        { "password" }, "email=?",
-                new String[]
-                        { email }, null, null, null);
+        ArrayList<Location> list = new ArrayList<>();
+        Cursor cursor = this.db.query(TABLE_NAME_LOC, new String[]
+                        { "uid", "lat", "lon", "speed", "heading", "timestamp" },
+                null, null, null, null, null);
         if (cursor.moveToFirst())
         {
             do
             {
-                return cursor.getString(0);
+                Location e = new Location(cursor.getString(0), cursor.getDouble(1), cursor.getDouble(2),
+                        cursor.getDouble(3), cursor.getDouble(4), cursor.getString(5));
+                list.add(e);
             } while (cursor.moveToNext());
         }
         if (!cursor.isClosed())
         {
             cursor.close();
         }
-        return null;
+        return list;
     }
+
+//    /**
+//     * Return the password when email is passed.
+//     * null if no record found.
+//     * @param uid userID
+//     * @return null
+//     */
+//    public String selectByID(String uid)
+//    {
+//        Cursor cursor = this.db.query(TABLE_NAME_USER, new String[]
+//                { "password" }, "uid=?", new String[] { uid }, null, null, null);
+//        if (cursor.moveToFirst())
+//        {
+//            do
+//            {
+//                return cursor.getString(0);
+//            } while (cursor.moveToNext());
+//        }
+//        if (!cursor.isClosed())
+//        {
+//            cursor.close();
+//        }
+//        return null;
+//    }
 
     /**
      * Close the connection
@@ -139,7 +194,12 @@ public class MyData
         public void onCreate(SQLiteDatabase db)
         {
             db.execSQL("CREATE TABLE " + TABLE_NAME_USER
-               + " (email TEXT PRIMARY KEY, password TEXT, secretQuestion TEXT, secretAnswer TEXT)");
+               + " (uid TEXT PRIMARY KEY, email TEXT, password TEXT, secretQuestion TEXT, " +
+                    "secretAnswer TEXT)");
+
+            db.execSQL("CREATE TABLE " + TABLE_NAME_LOC
+                    + " (uid TEXT PRIMARY KEY, lat DOUBLE, lon DOUBLE, speed DOUBLE, " +
+                    "heading DOUBLE, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
         }
 
         @Override
@@ -148,6 +208,7 @@ public class MyData
             Log.w("User",
                     "Upgrading database, this will drop tables and recreate.");
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_LOC);
             onCreate(db);
         }
     }
