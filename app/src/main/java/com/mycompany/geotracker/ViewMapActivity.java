@@ -48,7 +48,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap map) {
-
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
         if (mGoogleMap != null) {
             Log.i("Map Activity", "Inside mGoogleMap");
             LatLng latlng = new LatLng(47.2528768,-122.4442906 ); // Tacoma coordinates
@@ -89,7 +89,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
                     .snippet("This is my current location"));
 
             // Move the camera instantly to my current location with a zoom of 15.
-//            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
         }
         // Seattle coordinates - 47.6097, -122.3331
 
