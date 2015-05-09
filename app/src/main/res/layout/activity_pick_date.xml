@@ -54,9 +54,26 @@
         android:clickable="true"
         android:nestedScrollingEnabled="false"
         android:onClick="showMap"
-        android:layout_below="@+id/endDate"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start service"
+        android:id="@+id/start_service"
+        android:layout_below="@+id/viewMap"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="94dp" />
+        android:layout_marginTop="44dp"
+        android:clickable="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End Service"
+        android:id="@+id/end_service"
+        android:layout_below="@+id/start_service"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
