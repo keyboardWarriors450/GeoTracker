@@ -10,6 +10,7 @@ package com.mycompany.geotracker;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.location.LocationManager;
 import android.widget.Toast;
 
@@ -24,11 +25,14 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
 
         LocationManager locationManager = (LocationManager) context.getSystemService(
                 Context.LOCATION_SERVICE);
-        android.location.Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        String myCoordinates = "" +  myLocation.getLatitude() + ", " + myLocation.getLongitude();
-        Toast.makeText(context, "Updated my Location: " + myCoordinates, Toast.LENGTH_LONG).show();
-
+       Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (myLocation != null) {
+            String myCoordinates = "" + myLocation.getLatitude() + ", " + myLocation.getLongitude();
+            Toast.makeText(context, "Updated my Location: " + myCoordinates, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "No last location is found ", Toast.LENGTH_LONG).show();
+        }
         // David put tasks here for uploading the current location to server
     }
 }
