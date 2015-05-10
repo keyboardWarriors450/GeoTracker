@@ -55,7 +55,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
      //   Double lat = 0.0000;
     //    lat = intent.getDoubleExtra (PickDateActivity.LATITUDE, 0.00);
        String lat =  intent.getStringExtra(PickDateActivity.LATITUDE);
-        Toast.makeText(context, "lATITUDE: " + myLocation.getLatitude() + "Longitude: " + myLocation.getLatitude()
+        Toast.makeText(context, "lATITUDE: " + myLocation.getLatitude() + "Longitude: " + myLocation.getLongitude()
                 , Toast.LENGTH_LONG).show();
        /* if (myLocation != null) {
             String myCoordinates = "" + myLocation.getLatitude() + ", " + myLocation.getLongitude();
