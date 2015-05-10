@@ -62,18 +62,20 @@
         android:layout_height="wrap_content"
         android:text="start service"
         android:id="@+id/start_service"
+        android:layout_marginTop="48dp"
+        android:clickable="true"
         android:layout_below="@+id/viewMap"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp"
-        android:clickable="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="End Service"
         android:id="@+id/end_service"
-        android:layout_below="@+id/start_service"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignBottom="@+id/start_service"
+        android:layout_toRightOf="@+id/viewMap"
+        android:layout_toEndOf="@+id/viewMap" />
 
 
 </RelativeLayout>

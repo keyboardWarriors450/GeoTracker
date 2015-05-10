@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2015. Keyboard Warriors (Alex Hong, Daniel Khieuson, David Kim, Viet Nguyen).
- * This file is part of GeoTracker.
- * GeoTracker cannot be copied and/or distributed without the express permission
- * of Keyboard Warriors.
- */
 
 package com.mycompany.geotracker;
 
@@ -23,12 +17,14 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+       // PickDateActivity.scheduleUpdate();
        /* if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             // Set the alarm here.
             LocationService.setServiceAlarm(context, true);
         }*/
 
-        LocationManager locationManager = (LocationManager) context.getSystemService(
+        /*LocationManager locationManager = (LocationManager) context.getSystemService(
                 Context.LOCATION_SERVICE);
 
       // Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -51,17 +47,29 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
 
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                0, 0, locationListener);
-
-        Toast.makeText(context, "No last location is found ", Toast.LENGTH_LONG).show();
-
-
-        if (myLocation != null) {
+                0, 0, locationListener);*/
+        LocationManager locationManager = (LocationManager) context.getSystemService(
+                Context.LOCATION_SERVICE);
+        Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+      //  Toast.makeText(context, "No last location is found ", Toast.LENGTH_LONG).show();
+     //   Double lat = 0.0000;
+    //    lat = intent.getDoubleExtra (PickDateActivity.LATITUDE, 0.00);
+       String lat =  intent.getStringExtra(PickDateActivity.LATITUDE);
+        Toast.makeText(context, "lATITUDE: " + myLocation.getLatitude() + "Longitude: " + myLocation.getLatitude()
+                , Toast.LENGTH_LONG).show();
+       /* if (myLocation != null) {
             String myCoordinates = "" + myLocation.getLatitude() + ", " + myLocation.getLongitude();
             Toast.makeText(context, "Updated my Location: " + myCoordinates, Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(context, "No last location is found ", Toast.LENGTH_LONG).show();
-        }
-        // David put tasks here for uploading the current location to server
+        }*/
+     /******* DAVID put your code below  ****/
+        // now we have currentlocation
+        Double latitude = myLocation.getLatitude();
+        Double longitude = myLocation.getLongitude();
+        Float speed = myLocation.getSpeed();
+        Float bearing = myLocation.getBearing();
+        Double altitude = myLocation.getAltitude();
+
     }
 }

@@ -15,6 +15,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,8 +34,11 @@ import android.widget.Toast;
 public class PickDateActivity extends ActionBarActivity {
 
     public final static String START_DATE = "start date";
+    public final static String LATITUDE = "Latitude";
     private Button mStartButton;
     private Button mStopButton;
+
+    private Location myLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,7 @@ public class PickDateActivity extends ActionBarActivity {
                 toViewMap();
             }
         });
+
 
         // service button
         final Button startService = (Button)findViewById(R.id.start_service);
@@ -99,15 +106,48 @@ public class PickDateActivity extends ActionBarActivity {
                         PackageManager.DONT_KILL_APP);
             }
         });
+
+        /*********************/
+        LocationManager locationManager = (LocationManager) this.getSystemService(
+                Context.LOCATION_SERVICE);
+
+        // Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        // Define a listener that responds to location updates
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                Log.i("LOCATION SERVICES", location.toString());
+                //  mLocationLog.addLocation(location);
+                myLocation = location;
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                0, 0, locationListener);
+        /********************/
     }
 
     public void scheduleUpdate() {
+
         // Context context = V.getContext();
         // create an Intent and set the class which will execute when Alarm triggers, here we have
         // given AlarmReciever in the Intent, the onRecieve() method of this class will execute when
         // alarm triggers
         Intent intentAlarm = new Intent(this, LocationBroadcastReceiver.class);
-
+      //  Double lat1 = myLocation.getLatitude();
+        String lat = " Latitude: ";
+        if (myLocation != null) {
+            lat += myLocation.getLatitude();
+        }
+        intentAlarm.putExtra(LATITUDE,  lat);
         // create the object
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 

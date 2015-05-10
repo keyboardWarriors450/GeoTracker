@@ -9,12 +9,14 @@ package com.mycompany.geotracker;
 
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +30,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
 
     //  private LocationLog mLocationLog;
     private GoogleMap mGoogleMap;
+    private Location myLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng1, 15));
         }
 
+
         // initial location manager
         LocationManager locationManager = (LocationManager) this.getSystemService(
                 Context.LOCATION_SERVICE);
@@ -86,9 +90,24 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
                     .snippet("This is my current location"));
 
             // Move the camera instantly to my current location with a zoom of 15.
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
+         //   mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
         }
         // Seattle coordinates - 47.6097, -122.3331
+
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationListener ll = new myLocationListener();
+
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+
+        if (myLocation != null) {
+
+            LatLng myLatLong = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+            mGoogleMap.addMarker(new MarkerOptions()
+                    .position(myLatLong)
+                    .title("Update Location")
+                    .snippet("This is update location"));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLong, 15));
+        }
 
       /*  if (mLocationLog != null) {
 
@@ -105,6 +124,38 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
         }*/
 
     }
+
+    class myLocationListener implements LocationListener {
+
+
+        @Override
+        public void onLocationChanged(Location location) {
+            if (location != null) {
+                double pLong = location.getLongitude();
+                double pLat = location.getLatitude();
+             //   Toast.makeText(this, "Location Update every 10 seconds", Toast.LENGTH_LONG).show();
+                //  textLat.setText(Double.toString(pLat));
+                //   textLong.setText(Double.toString(pLong));
+                myLocation = location;
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    }
+
 
   /*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {
