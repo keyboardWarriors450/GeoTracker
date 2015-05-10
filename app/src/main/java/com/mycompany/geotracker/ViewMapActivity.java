@@ -69,7 +69,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
                     .title("Tacoma2")
                     .snippet("This is Tacoma2 location"));
             // Move the camera instantly to tacoma with a zoom of 15.
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng1, 15));
+          //  mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng1, 15));
         }
 
 
@@ -84,16 +84,16 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
 
             Log.i("Map Activity", "Inside mGoogleMap my current location");
 
-            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+            mGoogleMap.addMarker(new MarkerOptions()
                     .position(myLatlng)
-                    .title("My Location")
+                    .title("My New Location")
                     .snippet("This is my current location"));
 
             // Move the camera instantly to my current location with a zoom of 15.
-         //   mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
         }
         // Seattle coordinates - 47.6097, -122.3331
-
+/*
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         LocationListener ll = new myLocationListener();
 
@@ -107,7 +107,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
                     .title("Update Location")
                     .snippet("This is update location"));
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLong, 15));
-        }
+        }*/
 
       /*  if (mLocationLog != null) {
 
@@ -125,7 +125,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
 
     }
 
-    class myLocationListener implements LocationListener {
+    /*class myLocationListener implements LocationListener {
 
 
         @Override
@@ -154,7 +154,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
         public void onProviderDisabled(String provider) {
 
         }
-    }
+    }*/
 
 
   /*  @Override
