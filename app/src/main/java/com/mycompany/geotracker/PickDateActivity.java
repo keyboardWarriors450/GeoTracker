@@ -49,9 +49,14 @@ public class PickDateActivity extends ActionBarActivity {
     public final static String LATITUDE = "Latitude";
     private Button mStartButton;
     private Button mStopButton;
-
+    private Button getDate;
     private Location myLocation;
     public static List<Location> mLocationList;
+
+    private EditText startTxt;
+    private EditText endTxt;
+    private DateFormat dfm;
+  // private String startDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +66,15 @@ public class PickDateActivity extends ActionBarActivity {
 
 
 
+
         /* get user input and convert to unix Time Stamp */
         // start date
-        EditText startTxt = (EditText)findViewById(R.id.startDate);
+        startTxt = (EditText)findViewById(R.id.startDate);
+        // end date
+        endTxt = (EditText)findViewById(R.id.endDate);
         String startDate = startTxt.getText().toString();
-        DateFormat dfm = new SimpleDateFormat("MM/dd/yy");
+        dfm = new SimpleDateFormat("MM/dd/yy");
+
 
 
 
@@ -75,8 +84,7 @@ public class PickDateActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        // end date
-        EditText endTxt = (EditText)findViewById(R.id.endDate);
+
         String endDate = endTxt.getText().toString();
         try {
             end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
@@ -84,6 +92,27 @@ public class PickDateActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
+
+        getDate = (Button) findViewById(R.id.user_input);
+        getDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String startDate = startTxt.getText().toString();
+                try {
+                    start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+                String endDate = endTxt.getText().toString();
+                try {
+                    end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         mLocationList = new ArrayList<>();
         // movement data button
