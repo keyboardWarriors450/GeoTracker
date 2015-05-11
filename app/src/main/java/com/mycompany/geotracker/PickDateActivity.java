@@ -104,7 +104,8 @@ public class PickDateActivity extends ActionBarActivity {
                     uid = allData.get(allData.size()-1).getUserID();
                 }
                 myData.close();
-
+                String startStr = Double.toString(start);
+                String endStr = Double.toString(end);
                 new MovementDataFromServer(this).execute(uid, start, end);  //
 
                 /*****************/
