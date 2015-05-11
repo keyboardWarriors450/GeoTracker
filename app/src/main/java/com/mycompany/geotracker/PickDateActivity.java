@@ -188,9 +188,9 @@ public class PickDateActivity extends ActionBarActivity {
 
         // repeat every 5 seconds
         alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                , 10000, PendingIntent.getBroadcast(this, 1, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
+                , 1000, PendingIntent.getBroadcast(this, 1, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
 
-        Toast.makeText(this, "Location Update every 10 seconds", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Location Update every 1 seconds", Toast.LENGTH_LONG).show();
 
     }
 

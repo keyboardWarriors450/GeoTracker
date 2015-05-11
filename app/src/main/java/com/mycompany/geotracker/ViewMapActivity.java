@@ -48,6 +48,8 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap map) {
+
+        map.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
         /*if (mGoogleMap != null) {
             Log.i("Map Activity", "Inside mGoogleMap");
@@ -86,7 +88,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
         }
         LatLng firstLatLng = new LatLng(PickDateActivity.mLocationList.get(0).getLatitude(),
                 PickDateActivity.mLocationList.get(0).getLongitude());
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 3));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 10));
         // exacting longitude and latitude from my current location
       //  LatLng myLatlng = new LatLng(myLocation1.getLatitude(), myLocation1.getLongitude());
        /* if (myLatlng != null) {
