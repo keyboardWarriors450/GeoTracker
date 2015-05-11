@@ -74,7 +74,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDCDdfOHnn6OlzilFmopEpu92hgc0trpvs" />
+            android:value="AIzaSyAmNS2qr4r2Qs3LzLD3E_TYmDwhkO_XfIo" />
 
         <receiver
             android:name="LocationBroadcastReceiver"

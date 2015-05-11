@@ -7,7 +7,9 @@
 
 package com.mycompany.geotracker;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -61,15 +63,7 @@ public class MyAccountActivity extends ActionBarActivity {
             }
         });
 
-        final Button log_out = (Button)findViewById(R.id.log_out);
         final Button view_data = (Button)findViewById(R.id.movement_data);
-
-        log_out.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                //log out of the user somehow.
-                toHomeScreen();
-            }
-        });
 
         view_data.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -111,6 +105,15 @@ public class MyAccountActivity extends ActionBarActivity {
 
         //takes the user back to the home screen
         if (id == R.id.action_logout) {
+            //Log the user out.
+//            finish();
+            ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
+            PackageManager pm = this.getApplicationContext().getPackageManager();
+
+            pm.setComponentEnabledSetting(receiver,
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
+
             toHomeScreen();
             return true;
         }
