@@ -95,12 +95,12 @@ public class HomeScreen extends ActionBarActivity {
         super.onStart();
 
         myData = new MyData(this);
-//        final ArrayList<Location> allData1 = myData.selectAllLocations();
-//        if (allData1.size() != 0) {
-//            for (Location loc : allData1) {
-//                Log.i("locations", loc.toString());
-//            }
-//        }
+        final ArrayList<Location> allData1 = myData.selectAllLocations();
+        if (allData1.size() != 0) {
+            for (Location loc : allData1) {
+                Log.i("locations", loc.toString());
+            }
+        }
 
         final ArrayList<User> allData = myData.selectAllUsers();
         if (allData.size() != 0) {
