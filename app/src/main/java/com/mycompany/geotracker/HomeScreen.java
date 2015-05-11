@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mycompany.geotracker.data.MyData;
+import com.mycompany.geotracker.model.Location;
 import com.mycompany.geotracker.model.User;
 
 import java.util.ArrayList;
@@ -93,6 +95,13 @@ public class HomeScreen extends ActionBarActivity {
         super.onStart();
 
         myData = new MyData(this);
+//        final ArrayList<Location> allData1 = myData.selectAllLocations();
+//        if (allData1.size() != 0) {
+//            for (Location loc : allData1) {
+//                Log.i("locations", loc.toString());
+//            }
+//        }
+
         final ArrayList<User> allData = myData.selectAllUsers();
         if (allData.size() != 0) {
             userIDStr = allData.get(allData.size()-1).getEmail();

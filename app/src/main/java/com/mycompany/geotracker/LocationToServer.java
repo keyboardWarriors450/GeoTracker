@@ -7,7 +7,6 @@
 
 package com.mycompany.geotracker;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -30,42 +29,46 @@ import java.io.InputStreamReader;
 import java.net.URI;
 
 /**
- * Created by David May 2015
+ * Created by David on 5/11/15.
  */
-public class LoginToServer extends AsyncTask<String,Void,String> {
-    private ProgressDialog pDialog;
-    private Context context;
-    private String uid, email, password;
+public class LocationToServer extends AsyncTask<String, Void, String> {
 
-    public LoginToServer(Context context) {
+    private Context context;
+    private String uid;
+    private String lat;
+    private String lon;
+    private String speed;
+    private String heading;
+    private String timestamp;
+
+    public LocationToServer(Context context) {
         this.context = context;
     }
 
-    /**
-     * Before starting background thread Show Progress Dialog
-     */
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
-        pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Loggin in..");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-        pDialog.show();
     }
 
     @Override
-    protected String doInBackground(String... arg0) {
+    protected String doInBackground(String... params) {
         try {
-            email = arg0[0];
-            password = arg0[1];
+            uid = params[0];
+            lat = params[1];
+            lon = params[2];
+            speed = params[3];
+            heading = params[4];
+            timestamp = params[5];
 
-            String link = Uri.parse("http://450.atwebpages.com/login.php").buildUpon()
-                    .appendQueryParameter("email", email)
-                    .appendQueryParameter("password", password)
+            String link = Uri.parse("http://450.atwebpages.com/logAdd.php").buildUpon()
+                    .appendQueryParameter("lat", lat)
+                    .appendQueryParameter("lon", lon)
+                    .appendQueryParameter("speed", speed)
+                    .appendQueryParameter("heading", heading)
+                    .appendQueryParameter("timestamp", timestamp)
+                    .appendQueryParameter("source", uid)
                     .build().toString();
 
-            link = link.replaceFirst("%40", "@");
+       //     link = link.replaceFirst("%40", "@");
 
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
@@ -89,40 +92,22 @@ public class LoginToServer extends AsyncTask<String,Void,String> {
         }
     }
 
-    /**
-     * After completing background task Dismiss the progress dialog
-     * **/
     @Override
     protected void onPostExecute(String result) {
-        // dismiss the dialog once done
-        pDialog.dismiss();
-
         if (result != null) {
             try {
                 JSONObject obj = new JSONObject(result);
                 if (obj.getString("result").equals("success")) {
-                    try {
-                        uid = obj.getString("userid");
-                        MyData myData = new MyData(LoginToServer.this.context);
-                        myData.deleteAll();
-                        myData.insertUser(uid, email, password, "", "");
-                        myData.close();
-                    } catch (Exception e) {
-                        Toast.makeText(LoginToServer.this.context, e.toString(), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    context.startActivity(new Intent(LoginToServer.this.context,
-                            MyAccountActivity.class));
+                    Log.i("sending location", "success");
+                    Log.i("sending location", timestamp);
                 }
                 else {
-                    Toast.makeText(LoginToServer.this.context, "Incorrect email or password",
-                            Toast.LENGTH_SHORT).show();
+                    Log.i("sending location", "failed");
                 }
             } catch (JSONException e) {
                 System.out.println("JSON Exception");
             }
         }
-
     }
 
 }

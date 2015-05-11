@@ -42,8 +42,8 @@ public class User {
      */
     private String answer;
 
-//    public static final String UID = "uid", EMAIL = "email", PASSWORD = "password",
-//            QUESTION = "question", ANSWER = "answer";
+    public static final String UID = "uid", EMAIL = "email", PASSWORD = "password",
+            QUESTION = "question", ANSWER = "answer";
 
     /**
      * This constructing user account base on inputs
