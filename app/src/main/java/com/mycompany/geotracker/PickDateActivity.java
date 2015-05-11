@@ -59,18 +59,7 @@ public class PickDateActivity extends ActionBarActivity {
         setContentView(R.layout.activity_pick_date);
 
 
-        /** get user id**/
-        MyData myData = new MyData(this);
-        final ArrayList<User> allData = myData.selectAllUsers();
-        String uid = "";
-        if (allData.size() != 0) {
-            uid = allData.get(allData.size()-1).getUserID();
-        }
-        myData.close();
 
-        new MovementDataFromServer(this).execute(uid, start, end);  //
-
-        /*****************/
 
         /* get user input and convert to unix Time Stamp */
         // start date
@@ -106,13 +95,25 @@ public class PickDateActivity extends ActionBarActivity {
 
                 showData.setTextColor(Color.parseColor("#67818a"));
                 // this indicate which page you want to link to
-                Intent intent = new Intent(this, MovementDataFromServer.class);
+              //  Intent intent = new Intent(this, MovementDataFromServer.class);
+                /** get user id**/
+                MyData myData = new MyData(PickDateActivity.this);
+                final ArrayList<User> allData = myData.selectAllUsers();
+                String uid = "";
+                if (allData.size() != 0) {
+                    uid = allData.get(allData.size()-1).getUserID();
+                }
+                myData.close();
+
+                new MovementDataFromServer(this).execute(uid, start, end);  //
+
+                /*****************/
                // intent.putExtra(START_DATE, start);
               //  intent.putExtra(END_DATE,)
                 // reserve space for extra information here if need
-                startActivity(intent);
+                //startActivity(intent);
 
-                toViewMap();
+             //   toViewMap();
             }
         });
 
