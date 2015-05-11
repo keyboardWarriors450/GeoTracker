@@ -31,8 +31,6 @@ import android.widget.Toast;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
 
-import java.security.Timestamp;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,9 +49,14 @@ public class PickDateActivity extends ActionBarActivity {
     public final static String LATITUDE = "Latitude";
     private Button mStartButton;
     private Button mStopButton;
-    private Context context = getBaseContext();
+    private Button getDate;
     private Location myLocation;
     public static List<Location> mLocationList;
+
+    private EditText startTxt;
+    private EditText endTxt;
+    private DateFormat dfm;
+  // private String startDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,39 +66,53 @@ public class PickDateActivity extends ActionBarActivity {
 
 
 
+
         /* get user input and convert to unix Time Stamp */
         // start date
-        EditText startTxt = (EditText)findViewById(R.id.startDate);
+        startTxt = (EditText)findViewById(R.id.startDate);
+        // end date
+        endTxt = (EditText)findViewById(R.id.endDate);
         String startDate = startTxt.getText().toString();
+        dfm = new SimpleDateFormat("MM/dd/yy");
 
-        SimpleDateFormat dfm = new SimpleDateFormat("MM/dd/yy");
-    //    Date parsedDate = dfm.parse(startDate);
 
-        Log.i("BEFORE START", startDate);
+
 
         try {
             start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
-     //       Timestamp timestamp = new Timestamp(start);//instead of date put your converted date
-    //        Timestamp myTimeStamp= timestamp;
-            Log.i("BEFORE START", " " + start);
-
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        // end date
-        EditText endTxt = (EditText)findViewById(R.id.endDate);
+
         String endDate = endTxt.getText().toString();
-
-        Log.i("BEFORE END", endDate);
-
         try {
             end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
-            Log.i("BEFORE END", " " + end);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
+
+        getDate = (Button) findViewById(R.id.user_input);
+        getDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String startDate = startTxt.getText().toString();
+                try {
+                    start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+                String endDate = endTxt.getText().toString();
+                try {
+                    end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         mLocationList = new ArrayList<>();
         // movement data button
@@ -118,9 +135,7 @@ public class PickDateActivity extends ActionBarActivity {
                 myData.close();
                 String startStr = Double.toString(start);
                 String endStr = Double.toString(end);
-                Log.i("START", startStr);
-                Log.i("END", endStr);
-                new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
+                //new MovementDataFromServer(this).execute(uid, start, end);  //
 
                 /*****************/
                // intent.putExtra(START_DATE, start);
@@ -290,6 +305,11 @@ public class PickDateActivity extends ActionBarActivity {
 
         //takes the user back to the home screen
         if (id == R.id.action_logout) {
+            ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
+            PackageManager pm = this.getApplicationContext().getPackageManager();
+            pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
+            finish();
             toHomeScreen();
             return true;
         }
