@@ -52,6 +52,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
                 Context.LOCATION_SERVICE);
         Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+
         PickDateActivity.mLocationList.add(myLocation);
       //  Toast.makeText(context, "No last location is found ", Toast.LENGTH_LONG).show();
      //   Double lat = 0.0000;
