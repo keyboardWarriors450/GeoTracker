@@ -49,7 +49,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap map) {
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
-        if (mGoogleMap != null) {
+        /*if (mGoogleMap != null) {
             Log.i("Map Activity", "Inside mGoogleMap");
             LatLng latlng = new LatLng(47.2528768,-122.4442906 ); // Tacoma coordinates
             mGoogleMap.addMarker(new MarkerOptions()
@@ -70,7 +70,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
                     .snippet("This is Tacoma2 location"));
             // Move the camera instantly to tacoma with a zoom of 15.
           //  mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng1, 15));
-        }
+        }*/
 
 
         // initial location manager
