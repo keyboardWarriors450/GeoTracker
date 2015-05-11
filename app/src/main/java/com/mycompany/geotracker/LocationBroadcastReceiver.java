@@ -40,7 +40,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
      //   Double lat = 0.0000;
     //    lat = intent.getDoubleExtra (PickDateActivity.LATITUDE, 0.00);
      //  String lat =  intent.getStringExtra(PickDateActivity.LATITUDE);
-        Toast.makeText(context, "lATITUDE: " + myLocation.getLatitude() + "Longitude: " + myLocation.getLongitude()
+        Toast.makeText(context, "LATITUDE: " + myLocation.getLatitude() + "Longitude: " + myLocation.getLongitude()
                 , Toast.LENGTH_LONG).show();
        /* if (myLocation != null) {
             String myCoordinates = "" + myLocation.getLatitude() + ", " + myLocation.getLongitude();
@@ -67,7 +67,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
        /** optional values **/
       //  double altitude = myLocation.getAltitude();
 
-       /* MyData myData = new MyData(context);
+        MyData myData = new MyData(context);
         final ArrayList<User> allData = myData.selectAllUsers();
 
         if (allData.size() != 0) {
@@ -83,6 +83,6 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         myData.close();
 
         new LocationToServer(context).execute(uid, latStr, lonStr, speedStr, headingStr, timestampStr);
-*/
+
     }
 }

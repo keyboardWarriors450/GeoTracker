@@ -16,7 +16,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.mycompany.geotracker.data.MyData;
-import com.mycompany.geotracker.model.User;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -30,42 +29,44 @@ import java.io.InputStreamReader;
 import java.net.URI;
 
 /**
- * Created by David May 2015
+ * Created by David on 5/11/2015.
  */
-public class LoginToServer extends AsyncTask<String,Void,String> {
+public class MovementDataFromServer extends AsyncTask<String, Void, String> {
+
     private ProgressDialog pDialog;
     private Context context;
-    private String uid, email, password;
+    private String uid;
+    private String start;
+    private String end;
 
-    public LoginToServer(Context context) {
+    public MovementDataFromServer(Context context) {
         this.context = context;
     }
 
-    /**
-     * Before starting background thread Show Progress Dialog
-     */
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Loggin in..");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-        pDialog.show();
-    }
+//    @Override
+//    protected void onPreExecute() {
+//        super.onPreExecute();
+//        pDialog = new ProgressDialog(context);
+//        pDialog.setMessage("Downloading..");
+//        pDialog.setIndeterminate(false);
+//        pDialog.setCancelable(true);
+//        pDialog.show();
+//    }
 
     @Override
-    protected String doInBackground(String... arg0) {
+    protected String doInBackground(String... params) {
         try {
-            email = arg0[0];
-            password = arg0[1];
+            uid = params[0];
+            start = params[1];
+            end = params[2];
 
-            String link = Uri.parse("http://450.atwebpages.com/login.php").buildUpon()
-                    .appendQueryParameter("email", email)
-                    .appendQueryParameter("password", password)
+            String link = Uri.parse("http://450.atwebpages.com/view.php").buildUpon()
+                    .appendQueryParameter("uid", uid)
+                    .appendQueryParameter("start", start)
+                    .appendQueryParameter("end", end)
                     .build().toString();
 
-            link = link.replaceFirst("%40", "@");
+            //     link = link.replaceFirst("%40", "@");
 
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
@@ -89,34 +90,31 @@ public class LoginToServer extends AsyncTask<String,Void,String> {
         }
     }
 
-    /**
-     * After completing background task Dismiss the progress dialog
-     * **/
     @Override
     protected void onPostExecute(String result) {
         // dismiss the dialog once done
-        pDialog.dismiss();
+//        pDialog.dismiss();
 
         if (result != null) {
             try {
                 JSONObject obj = new JSONObject(result);
                 if (obj.getString("result").equals("success")) {
                     try {
-                        uid = obj.getString("userid");
-                        Log.i("USER", uid);
-                        MyData myData = new MyData(LoginToServer.this.context);
-                        myData.deleteAll();
-                        myData.insertUser(uid, email, password, "", "");
-                        myData.close();
+                        Log.i("Movement", "success");
+//                        uid = obj.getString("userid");
+//                        MyData myData = new MyData(MovementDataFromServer.this.context);
+//                        myData.deleteAll();
+//                        myData.insertUser(uid, email, password, "", "");
+//                        myData.close();
                     } catch (Exception e) {
-                        Toast.makeText(LoginToServer.this.context, e.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MovementDataFromServer.this.context, e.toString(), Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    context.startActivity(new Intent(LoginToServer.this.context,
-                            MyAccountActivity.class));
+         //           context.startActivity(new Intent(LoginToServer.this.context,
+           //                 MyAccountActivity.class));
                 }
                 else {
-                    Toast.makeText(LoginToServer.this.context, "Incorrect email or password",
+                    Toast.makeText(MovementDataFromServer.this.context, "Download failed",
                             Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
