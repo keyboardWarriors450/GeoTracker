@@ -106,7 +106,7 @@ public class PickDateActivity extends ActionBarActivity {
                 myData.close();
                 String startStr = Double.toString(start);
                 String endStr = Double.toString(end);
-//                new MovementDataFromServer(this).execute(uid, start, end);  //
+                //new MovementDataFromServer(this).execute(uid, start, end);  //
 
                 /*****************/
                // intent.putExtra(START_DATE, start);
@@ -276,6 +276,10 @@ public class PickDateActivity extends ActionBarActivity {
 
         //takes the user back to the home screen
         if (id == R.id.action_logout) {
+            ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
+            PackageManager pm = this.getApplicationContext().getPackageManager();
+            pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
             toHomeScreen();
             return true;
         }
