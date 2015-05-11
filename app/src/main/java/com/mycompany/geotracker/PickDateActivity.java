@@ -28,6 +28,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mycompany.geotracker.data.MyData;
+import com.mycompany.geotracker.model.User;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,25 +43,42 @@ import java.util.List;
 public class PickDateActivity extends ActionBarActivity {
 
     public final static String START_DATE = "start date";
+    public final static String END_DATE = "end date";
+    private long start;
+    private long end;
     public final static String LATITUDE = "Latitude";
     private Button mStartButton;
     private Button mStopButton;
 
     private Location myLocation;
     public static List<Location> mLocationList;
-    private long start;
-    private long end;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_date);
 
+
+        /** get user id**/
+        MyData myData = new MyData(this);
+        final ArrayList<User> allData = myData.selectAllUsers();
+        String uid = "";
+        if (allData.size() != 0) {
+            uid = allData.get(allData.size()-1).getUserID();
+        }
+        myData.close();
+
+        new MovementDataFromServer(this).execute(uid, start, end);  //
+
+        /*****************/
+
         /* get user input and convert to unix Time Stamp */
         // start date
         EditText startTxt = (EditText)findViewById(R.id.startDate);
         String startDate = startTxt.getText().toString();
         DateFormat dfm = new SimpleDateFormat("MM/dd/yy");
+
+
 
         try {
             start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
@@ -77,6 +97,25 @@ public class PickDateActivity extends ActionBarActivity {
 
 
         mLocationList = new ArrayList<>();
+        // movement data button
+        final Button showData = (Button)findViewById(R.id.show_location);
+
+        showData.setOnClickListener(new Button.OnClickListener() {
+
+            public void onClick(View v) {
+
+                showData.setTextColor(Color.parseColor("#67818a"));
+                // this indicate which page you want to link to
+                Intent intent = new Intent(this, MovementDataFromServer.class);
+               // intent.putExtra(START_DATE, start);
+              //  intent.putExtra(END_DATE,)
+                // reserve space for extra information here if need
+                startActivity(intent);
+
+                toViewMap();
+            }
+        });
+
         final Button viewMap = (Button)findViewById(R.id.viewMap);
 
         viewMap.setOnClickListener(new Button.OnClickListener() {
@@ -188,9 +227,9 @@ public class PickDateActivity extends ActionBarActivity {
 
         // repeat every 5 seconds
         alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                , 1000, PendingIntent.getBroadcast(this, 1, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
+                , 5000, PendingIntent.getBroadcast(this, 1, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
 
-        Toast.makeText(this, "Location Update every 1 seconds", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Location Update every 5 seconds", Toast.LENGTH_LONG).show();
 
     }
 

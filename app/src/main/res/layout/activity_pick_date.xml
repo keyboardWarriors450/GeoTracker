@@ -77,5 +77,16 @@
         android:layout_toRightOf="@+id/viewMap"
         android:layout_toEndOf="@+id/viewMap" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Movement Data"
+        android:id="@+id/show_location"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="37dp"
+        android:layout_alignParentStart="false" />
+
 
 </RelativeLayout>

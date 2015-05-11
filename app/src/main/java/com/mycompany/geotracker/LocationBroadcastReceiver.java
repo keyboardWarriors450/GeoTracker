@@ -67,7 +67,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
        /** optional values **/
       //  double altitude = myLocation.getAltitude();
 
-        MyData myData = new MyData(context);
+       /* MyData myData = new MyData(context);
         final ArrayList<User> allData = myData.selectAllUsers();
 
         if (allData.size() != 0) {
@@ -83,6 +83,6 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         myData.close();
 
         new LocationToServer(context).execute(uid, latStr, lonStr, speedStr, headingStr, timestampStr);
-
+*/
     }
 }
