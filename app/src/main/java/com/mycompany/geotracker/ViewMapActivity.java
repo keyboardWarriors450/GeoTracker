@@ -74,13 +74,22 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
 
 
         // initial location manager
-        LocationManager locationManager = (LocationManager) this.getSystemService(
+       /* LocationManager locationManager = (LocationManager) this.getSystemService(
                 Context.LOCATION_SERVICE);
-        Location myLocation1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location myLocation1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);*/
 
+        for (int i=0; i<PickDateActivity.mLocationList.size(); i++) {
+            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(PickDateActivity.mLocationList.get(i).getLatitude()
+                            , PickDateActivity.mLocationList.get(i).getLongitude()))
+                    .title("My Locations"));
+        }
+        LatLng firstLatLng = new LatLng(PickDateActivity.mLocationList.get(0).getLatitude(),
+                PickDateActivity.mLocationList.get(0).getLongitude());
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
         // exacting longitude and latitude from my current location
-        LatLng myLatlng = new LatLng(myLocation1.getLatitude(), myLocation1.getLongitude());
-        if (myLatlng != null) {
+      //  LatLng myLatlng = new LatLng(myLocation1.getLatitude(), myLocation1.getLongitude());
+       /* if (myLatlng != null) {
 
             Log.i("Map Activity", "Inside mGoogleMap my current location");
 
@@ -91,7 +100,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
 
             // Move the camera instantly to my current location with a zoom of 15.
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
-        }
+        }*/
         // Seattle coordinates - 47.6097, -122.3331
 /*
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

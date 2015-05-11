@@ -28,6 +28,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * this class will take user input; start date and end date to show location
  */
@@ -39,12 +42,14 @@ public class PickDateActivity extends ActionBarActivity {
     private Button mStopButton;
 
     private Location myLocation;
+    public static List<Location> mLocationList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_date);
 
+        mLocationList = new ArrayList<>();
         final Button viewMap = (Button)findViewById(R.id.viewMap);
 
         viewMap.setOnClickListener(new Button.OnClickListener() {
