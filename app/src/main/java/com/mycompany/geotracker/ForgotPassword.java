@@ -40,36 +40,9 @@ public class ForgotPassword extends ActionBarActivity {
 
         submit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-//                allData = myData.selectAllUsers();
-//                myData.close();
-
-//                userExists = false;
-//                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
                 TextView text = (TextView)findViewById(R.id.email_address);
-//                String compared_string = sharedPreferences.getString("email", "");
                 String typed_email = text.getText().toString();
-
-//                for (int i = 0; i < allData.size(); i++) {
-//                    System.out.println(allData.get(i).getEmail() + " email in the DB");
-//                    if (typed_email.equals(allData.get(i).getEmail())) {
-//                        userExists = true;
-//                    }
-//                }
-
-
-//                System.out.println(typed_email + " This is the typed email");
-
-//                if (userExists) {
-//                    toPasswordRetrieval();
-                    new RecoverPassword(ForgotPassword.this).execute(typed_email);
-//                } else {
-//                    /*
-//                    This system print should not be here, I am working on making an error in red font
-//                    pop up if it is wrong saying that the email isnt in the data base.
-//                     */
-//                    Toast.makeText(ForgotPassword.this, R.string.no_such_email, Toast.LENGTH_SHORT).show();
-//                }
+                new RecoverPassword(ForgotPassword.this).execute(typed_email);
             }
         });
 

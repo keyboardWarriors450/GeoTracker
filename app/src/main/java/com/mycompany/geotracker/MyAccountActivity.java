@@ -46,16 +46,16 @@ public class MyAccountActivity extends ActionBarActivity {
             }
         }
 
-        user = user.substring(0, end);
+        String new_user = user.substring(0, end);
 
         username.setTextColor(Color.WHITE);
-        username.setText("Welcome " + user);
+        username.setText("Welcome " + new_user);
         final Button change_password = (Button)findViewById(R.id.change_password);
 
         change_password.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 //set the preferences to the user that is currently logged in.
-                toChangePassword();
+                new RecoverPassword(MyAccountActivity.this).execute(user);
             }
         });
 
