@@ -69,7 +69,7 @@ public class MyData
     /** Inserts the uid, latitude, longitude, speed, heading, and timestamp into Location
      If successful, returns the rowid otherwise -1.
      */
-    public long insertLocation(String uid, double lat, double lon, float speed, float heading,
+    public long insertLocation(String uid, double lat, double lon, double speed, double heading,
                                long timestamp) throws Exception
     {
         this.insertStmt2.bindString(1, uid);
@@ -139,7 +139,7 @@ public class MyData
             do
             {
                 Location e = new Location(cursor.getString(0), cursor.getDouble(1), cursor.getDouble(2),
-                        cursor.getFloat(3), cursor.getFloat(4), cursor.getLong(5));
+                        cursor.getDouble(3), cursor.getDouble(4), cursor.getLong(5));
                 list.add(e);
             } while (cursor.moveToNext());
         }
@@ -199,7 +199,7 @@ public class MyData
 
             db.execSQL("CREATE TABLE " + TABLE_NAME_LOC
                     + " (uid TEXT PRIMARY KEY, lat DOUBLE, lon DOUBLE, speed DOUBLE, " +
-                    "heading DOUBLE, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
+                    "heading DOUBLE, timestamp INTEGER)");
         }
 
         @Override

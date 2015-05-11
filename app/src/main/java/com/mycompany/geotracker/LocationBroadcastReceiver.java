@@ -11,6 +11,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.mycompany.geotracker.data.MyData;
+import com.mycompany.geotracker.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class LocationBroadcastReceiver extends BroadcastReceiver {
 
     private Location myLocation;
@@ -44,17 +50,39 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         }*/
 
         /******* DAVID put your code below  *****/
-
-        // now we have current location
         double lat = myLocation.getLatitude();
         double lon = myLocation.getLongitude();
         double speed = (double) myLocation.getSpeed();
+        double heading = (double) myLocation.getBearing();
         long timestamp = System.currentTimeMillis() / 1000;
 
+        // now we have current location
+        String uid = "";
+        String latStr = Double.toString(myLocation.getLatitude());
+        String lonStr = Double.toString(myLocation.getLongitude());
+        String speedStr = Double.toString((double) myLocation.getSpeed());
+        String headingStr = Double.toString((double) myLocation.getBearing());
+        String timestampStr = Long.toString(System.currentTimeMillis() / 1000);
 
        /** optional values **/
-       // double bearing = (double) myLocation.getBearing();
-       // double altitude = myLocation.getAltitude();
+      //  double altitude = myLocation.getAltitude();
+
+        MyData myData = new MyData(context);
+        final ArrayList<User> allData = myData.selectAllUsers();
+
+        if (allData.size() != 0) {
+            uid = allData.get(allData.size()-1).getUserID();
+        }
+
+        try {
+            myData.insertLocation(uid, lat, lon, speed, heading, timestamp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        myData.close();
+
+        new LocationToServer(context).execute(uid, latStr, lonStr, speedStr, headingStr, timestampStr);
 
     }
 }

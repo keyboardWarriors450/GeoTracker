@@ -15,11 +15,11 @@ public class Location {
     private String uid;
     private double lat;
     private double lon;
-    private float speed;
-    private float heading;
+    private double speed;
+    private double heading;
     private long timestamp;
 
-    public Location(String uid, double lat, double lon, float speed, float heading,
+    public Location(String uid, double lat, double lon, double speed, double heading,
                     long timestamp) {
         this.uid = uid;
         this.lat = lat;
@@ -49,7 +49,7 @@ public class Location {
         return speed;
     }
 
-    public void setSpeed(float speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 
@@ -57,7 +57,7 @@ public class Location {
         return heading;
     }
 
-    public void setHeading(float heading) {
+    public void setHeading(double heading) {
         this.heading = heading;
     }
 
@@ -76,5 +76,9 @@ public class Location {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String toString() {
+        return "UID = " + uid + " timestampe = " + timestamp;
     }
 }
