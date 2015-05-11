@@ -244,7 +244,11 @@ public class PickDateActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-
+    /**
+     * Creates the options menu on the top of the screen.
+     * @param menu the menu
+     * @return true if there is a menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -252,6 +256,11 @@ public class PickDateActivity extends ActionBarActivity {
         return true;
     }
 
+    /**
+     * What the item does when it is clicked on.
+     * @param item the menu item
+     * @return the item's action
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -264,7 +273,17 @@ public class PickDateActivity extends ActionBarActivity {
             return true;
         }
 
+        //takes the user back to the home screen
+        if (id == R.id.action_logout) {
+            toHomeScreen();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void toHomeScreen() {
+        startActivity(new Intent(this, HomeScreen.class));
     }
 
 /*    public void viewMap(View view) {
