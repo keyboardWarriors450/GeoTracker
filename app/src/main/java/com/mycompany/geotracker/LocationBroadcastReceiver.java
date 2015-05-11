@@ -18,36 +18,12 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-       // PickDateActivity.scheduleUpdate();
        /* if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             // Set the alarm here.
             LocationService.setServiceAlarm(context, true);
         }*/
 
-        /*LocationManager locationManager = (LocationManager) context.getSystemService(
-                Context.LOCATION_SERVICE);
 
-      // Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        // Define a listener that responds to location updates
-        LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
-                Log.i("LOCATION SERVICES", location.toString());
-              //  mLocationLog.addLocation(location);
-                myLocation = location;
-            }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-            public void onProviderEnabled(String provider) {}
-
-            public void onProviderDisabled(String provider) {}
-        };
-
-        // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                0, 0, locationListener);*/
         LocationManager locationManager = (LocationManager) context.getSystemService(
                 Context.LOCATION_SERVICE);
         Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -57,7 +33,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
       //  Toast.makeText(context, "No last location is found ", Toast.LENGTH_LONG).show();
      //   Double lat = 0.0000;
     //    lat = intent.getDoubleExtra (PickDateActivity.LATITUDE, 0.00);
-       String lat =  intent.getStringExtra(PickDateActivity.LATITUDE);
+     //  String lat =  intent.getStringExtra(PickDateActivity.LATITUDE);
         Toast.makeText(context, "lATITUDE: " + myLocation.getLatitude() + "Longitude: " + myLocation.getLongitude()
                 , Toast.LENGTH_LONG).show();
        /* if (myLocation != null) {
@@ -66,13 +42,19 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         } else {
             Toast.makeText(context, "No last location is found ", Toast.LENGTH_LONG).show();
         }*/
-     /******* DAVID put your code below  ****/
-        // now we have currentlocation
-        Double latitude = myLocation.getLatitude();
-        Double longitude = myLocation.getLongitude();
-        Float speed = myLocation.getSpeed();
-        Float bearing = myLocation.getBearing();
-        Double altitude = myLocation.getAltitude();
+
+        /******* DAVID put your code below  *****/
+
+        // now we have current location
+        double lat = myLocation.getLatitude();
+        double lon = myLocation.getLongitude();
+        double speed = (double) myLocation.getSpeed();
+        long timestamp = System.currentTimeMillis() / 1000;
+
+
+       /** optional values **/
+       // double bearing = (double) myLocation.getBearing();
+       // double altitude = myLocation.getAltitude();
 
     }
 }

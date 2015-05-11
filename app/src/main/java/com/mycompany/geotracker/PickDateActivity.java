@@ -28,6 +28,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +46,35 @@ public class PickDateActivity extends ActionBarActivity {
 
     private Location myLocation;
     public static List<Location> mLocationList;
+    private long start;
+    private long end;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_date);
+
+        /* get user input and convert to unix Time Stamp */
+        // start date
+        EditText startTxt = (EditText)findViewById(R.id.startDate);
+        String startDate = startTxt.getText().toString();
+        DateFormat dfm = new SimpleDateFormat("MM/dd/yy");
+
+        try {
+            start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // end date
+        EditText endTxt = (EditText)findViewById(R.id.endDate);
+        String endDate = endTxt.getText().toString();
+        try {
+            end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
         mLocationList = new ArrayList<>();
         final Button viewMap = (Button)findViewById(R.id.viewMap);
