@@ -43,15 +43,15 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
         this.context = context;
     }
 
-//    @Override
-//    protected void onPreExecute() {
+    @Override
+    protected void onPreExecute() {
 //        super.onPreExecute();
 //        pDialog = new ProgressDialog(context);
 //        pDialog.setMessage("Downloading..");
 //        pDialog.setIndeterminate(false);
 //        pDialog.setCancelable(true);
 //        pDialog.show();
-//    }
+    }
 
     @Override
     protected String doInBackground(String... params) {
