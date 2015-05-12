@@ -53,66 +53,18 @@ public class PickDateActivity extends ActionBarActivity {
     private Location myLocation;
     public static List<Location> mLocationList;
 
+    private Context context = getBaseContext();
     private EditText startTxt;
     private EditText endTxt;
     private DateFormat dfm;
-  // private String startDate;
+
+    private String startStr;
+    private String endStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_date);
-
-
-
-
-
-        /* get user input and convert to unix Time Stamp */
-        // start date
-        startTxt = (EditText)findViewById(R.id.startDate);
-        // end date
-        endTxt = (EditText)findViewById(R.id.endDate);
-        String startDate = startTxt.getText().toString();
-        dfm = new SimpleDateFormat("MM/dd/yy");
-
-
-
-
-        try {
-            start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
-        String endDate = endTxt.getText().toString();
-        try {
-            end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
-        getDate = (Button) findViewById(R.id.user_input);
-        getDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String startDate = startTxt.getText().toString();
-                try {
-                    start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-
-                String endDate = endTxt.getText().toString();
-                try {
-                    end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
         mLocationList = new ArrayList<>();
         // movement data button
@@ -123,8 +75,6 @@ public class PickDateActivity extends ActionBarActivity {
             public void onClick(View v) {
 
                 showData.setTextColor(Color.parseColor("#67818a"));
-                // this indicate which page you want to link to
-              //  Intent intent = new Intent(this, MovementDataFromServer.class);
                 /** get user id**/
                 MyData myData = new MyData(PickDateActivity.this);
                 final ArrayList<User> allData = myData.selectAllUsers();
@@ -133,9 +83,31 @@ public class PickDateActivity extends ActionBarActivity {
                     uid = allData.get(allData.size()-1).getUserID();
                 }
                 myData.close();
-                String startStr = Double.toString(start);
-                String endStr = Double.toString(end);
-                //new MovementDataFromServer(this).execute(uid, start, end);  //
+        /* get user input and convert to unix Time Stamp */
+                // start date
+                startTxt = (EditText)findViewById(R.id.startDate);
+                // end date
+                endTxt = (EditText)findViewById(R.id.endDate);
+                String startDate = startTxt.getText().toString();
+                dfm = new SimpleDateFormat("MM/dd/yy");
+
+                try {
+                    start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
+                    startStr = Long.toString(start);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+                String endDate = endTxt.getText().toString();
+                try {
+                    end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
+                    endStr = Long.toString(end);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
 
                 /*****************/
                // intent.putExtra(START_DATE, start);
