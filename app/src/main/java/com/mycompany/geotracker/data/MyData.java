@@ -69,14 +69,14 @@ public class MyData
     /** Inserts the uid, latitude, longitude, speed, heading, and timestamp into Location
      If successful, returns the rowid otherwise -1.
      */
-    public long insertLocation(String uid, double lat, double lon, double speed, double heading,
+    public long insertLocation(String uid, String lat, String lon, String speed, String heading,
                                long timestamp) throws Exception
     {
         this.insertStmt2.bindString(1, uid);
-        this.insertStmt2.bindDouble(2, lat);
-        this.insertStmt2.bindDouble(3, lon);
-        this.insertStmt2.bindDouble(4, speed);
-        this.insertStmt2.bindDouble(5, heading);
+        this.insertStmt2.bindString(2, lat);
+        this.insertStmt2.bindString(3, lon);
+        this.insertStmt2.bindString(4, speed);
+        this.insertStmt2.bindString(5, heading);
         this.insertStmt2.bindLong(6, timestamp);
 
         long rowID = this.insertStmt2.executeInsert();
@@ -138,8 +138,8 @@ public class MyData
         {
             do
             {
-                Location e = new Location(cursor.getString(0), cursor.getDouble(1), cursor.getDouble(2),
-                        cursor.getDouble(3), cursor.getDouble(4), cursor.getLong(5));
+                Location e = new Location(cursor.getString(0), cursor.getString(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getString(4), cursor.getLong(5));
                 list.add(e);
             } while (cursor.moveToNext());
         }
@@ -198,14 +198,14 @@ public class MyData
                     "secretAnswer TEXT)");
 
             db.execSQL("CREATE TABLE " + TABLE_NAME_LOC
-                    + " (uid TEXT PRIMARY KEY, lat DOUBLE, lon DOUBLE, speed DOUBLE, " +
-                    "heading DOUBLE, timestamp INTEGER)");
+                    + " (uid TEXT PRIMARY KEY, lat TEXT, lon TEXT, speed TEXT, " +
+                    "heading TEXT, timestamp INTEGER)");
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
         {
-            Log.w("User",
+            Log.i("User",
                     "Upgrading database, this will drop tables and recreate.");
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_LOC);

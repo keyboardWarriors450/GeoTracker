@@ -75,7 +75,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         }
 
         try {
-            myData.insertLocation(uid, lat, lon, speed, heading, timestamp);
+            myData.insertLocation(uid, latStr, lonStr, speedStr, headingStr, timestamp);
         } catch (Exception e) {
             e.printStackTrace();
         }

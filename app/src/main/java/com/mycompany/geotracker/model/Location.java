@@ -13,13 +13,13 @@ package com.mycompany.geotracker.model;
 public class Location {
 
     private String uid;
-    private double lat;
-    private double lon;
-    private double speed;
-    private double heading;
+    private String lat;
+    private String lon;
+    private String speed;
+    private String heading;
     private long timestamp;
 
-    public Location(String uid, double lat, double lon, double speed, double heading,
+    public Location(String uid, String lat, String lon, String speed, String heading,
                     long timestamp) {
         this.uid = uid;
         this.lat = lat;
@@ -29,35 +29,35 @@ public class Location {
         this.timestamp = timestamp;
     }
 
-    public double getLat() {
+    public String getLat() {
         return lat;
     }
 
-    public void setLat(double lat) {
+    public void setLat(String lat) {
         this.lat = lat;
     }
 
-    public double getLon() {
+    public String getLon() {
         return lon;
     }
 
-    public void setLon(double lon) {
+    public void setLon(String lon) {
         this.lon = lon;
     }
 
-    public double getSpeed() {
+    public String getSpeed() {
         return speed;
     }
 
-    public void setSpeed(double speed) {
+    public void setSpeed(String speed) {
         this.speed = speed;
     }
 
-    public double getHeading() {
+    public String getHeading() {
         return heading;
     }
 
-    public void setHeading(double heading) {
+    public void setHeading(String heading) {
         this.heading = heading;
     }
 

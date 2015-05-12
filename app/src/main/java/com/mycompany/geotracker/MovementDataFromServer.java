@@ -21,12 +21,15 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by David on 5/11/2015.
@@ -36,6 +39,12 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
     private ProgressDialog pDialog;
     private Context context;
     private String uid;
+    private String lat;
+    private String lon;
+    private String speed;
+    private String heading;
+    private long timestamp;
+    private ArrayList<HashMap<String, String>> myList;
     private String start;
     private String end;
 
@@ -94,18 +103,34 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         // dismiss the dialog once done
 //        pDialog.dismiss();
-
+        System.out.println(result + " THIS IS THE RESULT");
         if (result != null) {
             try {
                 JSONObject obj = new JSONObject(result);
                 if (obj.getString("result").equals("success")) {
                     try {
                         Log.i("Movement", "success");
-//                        uid = obj.getString("userid");
-//                        MyData myData = new MyData(MovementDataFromServer.this.context);
-//                        myData.deleteAll();
-//                        myData.insertUser(uid, email, password, "", "");
-//                        myData.close();
+//                        JSONObject pts = new JSONObject("points");
+//                        JSONArray JSONarray = new JSONArray("points");
+                        JSONObject jobj = new JSONObject("points");
+
+
+//                        for (int i = 0; i < JSONarray.length(); i++) {
+//
+//                            JSONObject jObject = JSONarray.getJSONObject(i);
+//                            HashMap<String, String> hash = new HashMap<>();
+//
+//                            hash.put("lat", jObject.getString("lat"));
+//                            hash.put("lon", jObject.getString("lon"));
+//                            hash.put("speed", jObject.getString("speed"));
+//                            hash.put("heading", jObject.getString("heading"));
+//                            hash.put("time", Long.toString(jObject.getLong("time")));
+//                            myList.add(hash);
+//                        }
+                        MyData myData = new MyData(MovementDataFromServer.this.context);
+                        myData.deleteAll();
+                        myData.insertLocation(uid, lat, lon, speed, heading, timestamp);
+                        myData.close();
                     } catch (Exception e) {
                         Toast.makeText(MovementDataFromServer.this.context, e.toString(), Toast.LENGTH_SHORT).show();
                         return;
