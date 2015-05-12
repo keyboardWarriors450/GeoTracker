@@ -26,6 +26,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Map;
+
+/**
+ * This show locations by user's input range
+ */
 public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCallback {
 
     //  private LocationLog mLocationLog;
@@ -51,36 +56,20 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
 
         map.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
-        /*if (mGoogleMap != null) {
-            Log.i("Map Activity", "Inside mGoogleMap");
-            LatLng latlng = new LatLng(47.2528768,-122.4442906 ); // Tacoma coordinates
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(latlng)
-                    .title("Tacoma")
-                    .snippet("This is Tacoma location"));
+        double latitude = 0;
+        double longitude = 0;
+        for (int i = 0; i <  MovementDataFromServer.myList.size(); i++) {
+           latitude = Double.parseDouble(MovementDataFromServer.myList.get(i).get("lat"));
+           longitude = Double.parseDouble(MovementDataFromServer.myList.get(i).get("lon"));
+           mGoogleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(latitude, longitude))
+                    .title("My Locations"));
+        }
+        LatLng lastLatLng = new LatLng(latitude,longitude);
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 12));
 
-            LatLng latlng1 = new LatLng(47.2530768,-122.4440906 ); // Tacoma coordinates
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(latlng1)
-                    .title("Tacoma2")
-                    .snippet("This is Tacoma2 location"));
-
-            LatLng latlng2 = new LatLng(47.25387768,-122.4447906 ); // Tacoma coordinates
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(latlng2)
-                    .title("Tacoma2")
-                    .snippet("This is Tacoma2 location"));
-            // Move the camera instantly to tacoma with a zoom of 15.
-          //  mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng1, 15));
-        }*/
-
-
-        // initial location manager
-       /* LocationManager locationManager = (LocationManager) this.getSystemService(
-                Context.LOCATION_SERVICE);
-        Location myLocation1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);*/
-
-        for (int i=0; i<PickDateActivity.mLocationList.size(); i++) {
+        // get user current location list
+       /* for (int i=0; i<PickDateActivity.mLocationList.size(); i++) {
             Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(PickDateActivity.mLocationList.get(i).getLatitude()
                             , PickDateActivity.mLocationList.get(i).getLongitude()))
@@ -88,7 +77,15 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
         }
         LatLng firstLatLng = new LatLng(PickDateActivity.mLocationList.get(0).getLatitude(),
                 PickDateActivity.mLocationList.get(0).getLongitude());
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));*/
+        // end user location list
+
+
+
+        // initial location manager
+       /* LocationManager locationManager = (LocationManager) this.getSystemService(
+                Context.LOCATION_SERVICE);
+        Location myLocation1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);*/
         // exacting longitude and latitude from my current location
       //  LatLng myLatlng = new LatLng(myLocation1.getLatitude(), myLocation1.getLongitude());
        /* if (myLatlng != null) {
@@ -168,25 +165,5 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
     }*/
 
 
-  /*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_location, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 }

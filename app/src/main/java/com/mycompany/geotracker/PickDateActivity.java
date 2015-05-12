@@ -18,6 +18,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.SystemClock;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,12 +38,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 /**
  * this class will take user input; start date and end date to show location
  */
 public class PickDateActivity extends ActionBarActivity {
-        private Array[] arr ;
+
     public final static String START_DATE = "start date";
     public final static String END_DATE = "end date";
     private long start;
@@ -50,15 +52,12 @@ public class PickDateActivity extends ActionBarActivity {
     public final static String LATITUDE = "Latitude";
     private Button mStartButton;
     private Button mStopButton;
-    private Button getDate;
     private Location myLocation;
     public static List<Location> mLocationList;
-
     private Context context = getBaseContext();
     private EditText startTxt;
     private EditText endTxt;
     private DateFormat dfm;
-
     private String startStr;
     private String endStr;
 
@@ -85,7 +84,7 @@ public class PickDateActivity extends ActionBarActivity {
                     uid = allData.get(allData.size()-1).getUserID();
                 }
                 myData.close();
-        /* get user input and convert to unix Time Stamp */
+                /* get user input and convert to unix Time Stamp */
                 // start date
                 startTxt = (EditText)findViewById(R.id.startDate);
                 // end date
@@ -110,29 +109,54 @@ public class PickDateActivity extends ActionBarActivity {
                 }
 
                 new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
-               // toListPoints();  // this bring to list of point
+                // pause and wait for 5 seconds for download list of location is done
+               SystemClock.sleep(5000);
+               toListPoints();  // this bring to list of point toListPoints()
             }
         });
 
-        final Button showAll = (Button)findViewById(R.id.show_all_datas);
-
-        showAll.setOnClickListener(new Button.OnClickListener() {
-
-            public void onClick(View v) {
-                Log.i("test", "HomeScreen");
-                showAll.setTextColor(Color.parseColor("#67818a"));
-                toListPoints();  // this bring to list of point
-            }
-        });
-
-
+        // view map from user input location
         final Button viewMap = (Button)findViewById(R.id.viewMap);
-
         viewMap.setOnClickListener(new Button.OnClickListener() {
 
             public void onClick(View v) {
-                Log.i("test", "HomeScreen");
-                viewMap.setTextColor(Color.parseColor("#67818a"));
+
+                /** get user id**/
+                MyData myData = new MyData(PickDateActivity.this);
+                final ArrayList<User> allData = myData.selectAllUsers();
+
+                String uid = "";
+                if (allData.size() != 0) {
+                    uid = allData.get(allData.size()-1).getUserID();
+                }
+                myData.close();
+                /* get user input and convert to unix Time Stamp */
+                // start date
+                startTxt = (EditText)findViewById(R.id.startDate);
+                // end date
+                endTxt = (EditText)findViewById(R.id.endDate);
+                String startDate = startTxt.getText().toString();
+                dfm = new SimpleDateFormat("MM/dd/yy");
+
+                try {
+                    start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
+                    startStr = Long.toString(start);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+                String endDate = endTxt.getText().toString();
+                try {
+                    end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
+                    endStr = Long.toString(end);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
+                // pause and wait for 5 seconds for download list of location is done
+                SystemClock.sleep(5000);
                 toViewMap();
             }
         });

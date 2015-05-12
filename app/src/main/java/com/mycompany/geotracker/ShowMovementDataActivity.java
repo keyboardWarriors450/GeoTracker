@@ -13,7 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.Map;
 
+/**
+ * This activity showing the a list of location base on user inputs date
+ */
 public class ShowMovementDataActivity extends ActionBarActivity {
 
 
@@ -25,11 +29,12 @@ public class ShowMovementDataActivity extends ActionBarActivity {
         TextView tv = (TextView) findViewById(R.id.movement_datas);
 
         String listOfLocation = "";
-        for (int i = 0; i <  MovementDataFromServer.myList.size(); i++) {
+
+        for (int i = MovementDataFromServer.myList.size() - 1; i > 0  ; i--) {
            listOfLocation += "" + MovementDataFromServer.myList.get(i) + "\n";
         }
 
-        tv.setText("List of points: \n" + listOfLocation); //.get("lan") );
+        tv.setText("List of locations by latest time: \n" + listOfLocation);
     }
 
 
