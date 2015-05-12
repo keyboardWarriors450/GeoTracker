@@ -112,6 +112,10 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
                     try {
 
                         JSONArray jArray = obj.getJSONArray("points");
+                        /*
+                        Delete this out after reviewing that the JSONarray is indeed working.
+                         */
+                        System.out.println(jArray.toString());
 
                         for (int i = 0; i < jArray.length(); i++) {
                             JSONObject jObject = jArray.getJSONObject(i);
@@ -122,6 +126,17 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
                             hash.put("heading", jObject.getString("heading"));
                             hash.put("time", Long.toString(jObject.getLong("time")));
                             myList.add(hash);
+                        }
+
+                        /*
+                        Delete this out after reviewing that the JSONarray is indeed working.
+                         */
+                        for (int i = 0; i < myList.size(); i++) {
+                            System.out.println(myList.get(i).get("lat"));
+                            System.out.println(myList.get(i).get("lon"));
+                            System.out.println(myList.get(i).get("speed"));
+                            System.out.println(myList.get(i).get("heading"));
+                            System.out.println(myList.get(i).get("time"));
                         }
 
                         Log.i("Movement", "success");
