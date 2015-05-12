@@ -69,4 +69,5 @@
     <string name="end_date_hint">Enter end Date (MM/dd/yy)</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="dialog_validate_email">Validate your email to register</string>
+    <string name="title_activity_show_movement_data">ShowMovementDataActivity</string>
 </resources>

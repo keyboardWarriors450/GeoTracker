@@ -55,14 +55,14 @@
         android:nestedScrollingEnabled="false"
         android:onClick="showMap"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_toRightOf="@+id/start_service"
+        android:layout_toEndOf="@+id/start_service" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="start service"
         android:id="@+id/start_service"
-        android:layout_marginTop="48dp"
         android:clickable="true"
         android:layout_below="@+id/viewMap"
         android:layout_alignParentLeft="true"
@@ -81,10 +81,18 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show Movement Data"
+        android:text="Download Movement Data"
         android:id="@+id/show_location"
+        android:layout_below="@+id/start_service"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="List of locations"
+        android:id="@+id/show_all_datas"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="37dp" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

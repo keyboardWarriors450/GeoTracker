@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,7 +46,7 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
     private String speed;
     private String heading;
     private long timestamp;
-    private ArrayList<Map<String, String>> myList;
+    public static List<Map<String, String>> myList;
     private String start;
     private String end;
 
@@ -110,7 +111,7 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
                 JSONObject obj = new JSONObject(result);
                 if (obj.getString("result").equals("success")) {
                     try {
-
+                       // MyData myData = new MyData(MovementDataFromServer.this.context);
                         JSONArray jArray = obj.getJSONArray("points");
 
                         for (int i = 0; i < jArray.length(); i++) {

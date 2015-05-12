@@ -77,13 +77,17 @@
             android:value="AIzaSyAapneXsg_iQMrGtrIsJTS9-31Ya4nSKU0" />
 
         <receiver
-            android:name="LocationBroadcastReceiver"
+            android:name=".LocationBroadcastReceiver"
             android:enabled="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".ShowMovementDataActivity"
+            android:label="@string/title_activity_show_movement_data" >
+        </activity>
     </application>
 
 </manifest>

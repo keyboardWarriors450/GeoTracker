@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
 
+import java.sql.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,7 +42,7 @@ import java.util.List;
  * this class will take user input; start date and end date to show location
  */
 public class PickDateActivity extends ActionBarActivity {
-
+        private Array[] arr ;
     public final static String START_DATE = "start date";
     public final static String END_DATE = "end date";
     private long start;
@@ -67,6 +68,7 @@ public class PickDateActivity extends ActionBarActivity {
         setContentView(R.layout.activity_pick_date);
 
         mLocationList = new ArrayList<>();
+
         // movement data button
         final Button showData = (Button)findViewById(R.id.show_location);
 
@@ -108,16 +110,21 @@ public class PickDateActivity extends ActionBarActivity {
                 }
 
                 new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
-
-                /*****************/
-               // intent.putExtra(START_DATE, start);
-              //  intent.putExtra(END_DATE,)
-                // reserve space for extra information here if need
-                //startActivity(intent);
-
-             //   toViewMap();
+               // toListPoints();  // this bring to list of point
             }
         });
+
+        final Button showAll = (Button)findViewById(R.id.show_all_datas);
+
+        showAll.setOnClickListener(new Button.OnClickListener() {
+
+            public void onClick(View v) {
+                Log.i("test", "HomeScreen");
+                showAll.setTextColor(Color.parseColor("#67818a"));
+                toListPoints();  // this bring to list of point
+            }
+        });
+
 
         final Button viewMap = (Button)findViewById(R.id.viewMap);
 
@@ -242,6 +249,14 @@ public class PickDateActivity extends ActionBarActivity {
     public void toViewMap() {
         // this indicate which page you want to link to
         Intent intent = new Intent(this, ViewMapActivity.class);
+        // reserve space for extra information here if need
+        startActivity(intent);
+    }
+
+
+    public void toListPoints() {
+        // this indicate which page you want to link to
+        Intent intent = new Intent(this, ShowMovementDataActivity.class);
         // reserve space for extra information here if need
         startActivity(intent);
     }

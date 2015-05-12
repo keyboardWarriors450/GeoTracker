@@ -107,6 +107,8 @@ public class LoginToServer extends AsyncTask<String,Void,String> {
                         MyData myData = new MyData(LoginToServer.this.context);
                         myData.deleteAll();
                         myData.insertUser(uid, email, password, "", "");
+
+                        // insertlocation
                         myData.close();
                     } catch (Exception e) {
                         Toast.makeText(LoginToServer.this.context, e.toString(), Toast.LENGTH_SHORT).show();
