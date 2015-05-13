@@ -7,11 +7,15 @@
 
 package com.mycompany.geotracker;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,20 +66,20 @@ public class HomeScreen extends ActionBarActivity {
             }
         });
 
-        login.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final ArrayList<User> allData = myData.selectAllUsers();
-                userIDStr = user_name.getText().toString();
-                passwordStr = password.getText().toString();
-
-                if (isEmpty(user_name) || isEmpty(password)) {
-                    Toast.makeText(HomeScreen.this, R.string.no_blank, Toast.LENGTH_SHORT).show();
-                } else {
-                    new LoginToServer(HomeScreen.this).execute(userIDStr, passwordStr);
-                }
-            }
-        });
+//        login.setOnClickListener(new Button.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final ArrayList<User> allData = myData.selectAllUsers();
+//                userIDStr = user_name.getText().toString();
+//                passwordStr = password.getText().toString();
+//
+//                if (isEmpty(user_name) || isEmpty(password)) {
+//                    Toast.makeText(HomeScreen.this, R.string.no_blank, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    new LoginToServer(HomeScreen.this).execute(userIDStr, passwordStr);
+//                }
+//            }
+//        });
 
     }
 
@@ -120,4 +124,49 @@ public class HomeScreen extends ActionBarActivity {
         password.setText(passwordStr);
     }
 
+    /**
+     * Creates the options menu on the top of the screen.
+     * @param menu the menu
+     * @return true if there is a menu
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home_screen, menu);
+        return true;
+    }
+
+    /**
+     * What the item does when it is clicked on.
+     * @param item the menu item
+     * @return the item's action
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        //takes the user back to the home screen
+        if (id == R.id.action_login) {
+            final ArrayList<User> allData = myData.selectAllUsers();
+            userIDStr = user_name.getText().toString();
+            passwordStr = password.getText().toString();
+
+            if (isEmpty(user_name) || isEmpty(password)) {
+                Toast.makeText(HomeScreen.this, R.string.no_blank, Toast.LENGTH_SHORT).show();
+            } else {
+                new LoginToServer(HomeScreen.this).execute(userIDStr, passwordStr);
+            }
+   //         return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

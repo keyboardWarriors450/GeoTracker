@@ -16,16 +16,16 @@
     tools:context=".HomeScreen"
     android:background="@drawable/image1">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/login"
-        android:id="@+id/login"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:background="#FAFAFA"
-        android:maxHeight="40dp"
-        android:minHeight="40dp" />
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/login"-->
+        <!--android:id="@+id/login"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:background="#FAFAFA"-->
+        <!--android:maxHeight="40dp"-->
+        <!--android:minHeight="40dp" />-->
 
     <TextView
         android:layout_width="wrap_content"
