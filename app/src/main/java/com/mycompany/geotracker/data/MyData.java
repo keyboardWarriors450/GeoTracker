@@ -29,15 +29,20 @@ public class MyData
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_NAME_USER = "user";
     private static final String TABLE_NAME_LOC = "location";
+    private static final String TABLE_NAME_LOC_TEMP = "locationtemp";
 
     private SQLiteDatabase db;
 
     private SQLiteStatement insertStmt1;
     private SQLiteStatement insertStmt2;
+    private SQLiteStatement insertStmt3;
+
     private static final String INSERT_USER = "INSERT INTO " + TABLE_NAME_USER
             + "(uid, email, password, secretQuestion, secretAnswer) VALUES (?, ?, ?, ?, ?)";
     private static final String INSERT_LOC = "INSERT INTO " + TABLE_NAME_LOC
             + "(uid, lat, lon, speed, heading, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_LOC_TEMP = "INSERT INTO " + TABLE_NAME_LOC_TEMP
+        + "(uid, lat, lon, speed, heading, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
 
     public MyData(Context context)
     {
@@ -45,6 +50,7 @@ public class MyData
         this.db = openHelper.getWritableDatabase();
         this.insertStmt1 = this.db.compileStatement(INSERT_USER);
         this.insertStmt2 = this.db.compileStatement(INSERT_LOC);
+        this.insertStmt3 = this.db.compileStatement(INSERT_LOC_TEMP);
     }
 
     /**
@@ -56,7 +62,7 @@ public class MyData
     }
 
     /**
-     * Delete everything from example
+     * Delete everything from locations
      */
     public void deleteAllLocations()
     {
@@ -64,7 +70,15 @@ public class MyData
     }
 
     /**
-     * Delete everything from example
+     * Delete everything from temporary locations
+     */
+    public void deleteAllLocationsTemp()
+    {
+        this.db.delete(TABLE_NAME_LOC_TEMP, null, null);
+    }
+
+    /**
+     * Delete everything from users
      */
     public void deleteAllUsers()
     {
@@ -85,6 +99,26 @@ public class MyData
         this.insertStmt2.bindLong(6, timestamp);
 
         long rowID = this.insertStmt2.executeInsert();
+        if (rowID == -1) {
+            throw new Exception("Unable to insert");
+        }
+        return rowID;
+    }
+
+    /** Inserts the uid, latitude, longitude, speed, heading, and timestamp into Location
+     If successful, returns the rowid otherwise -1.
+     */
+    public long insertLocationTemp(String uid, String lat, String lon, String speed, String heading,
+                               long timestamp) throws Exception
+    {
+        this.insertStmt2.bindString(1, uid);
+        this.insertStmt2.bindString(2, lat);
+        this.insertStmt2.bindString(3, lon);
+        this.insertStmt2.bindString(4, speed);
+        this.insertStmt2.bindString(5, heading);
+        this.insertStmt2.bindLong(6, timestamp);
+
+        long rowID = this.insertStmt3.executeInsert();
         if (rowID == -1) {
             throw new Exception("Unable to insert");
         }
@@ -119,6 +153,33 @@ public class MyData
     {
         ArrayList<Location> list = new ArrayList<>();
         Cursor cursor = this.db.query(TABLE_NAME_LOC, new String[]
+                        {"uid", "lat", "lon", "speed", "heading", "timestamp"},
+                null, null, null, null, null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                Location e = new Location(cursor.getString(0), cursor.getString(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getString(4), cursor.getLong(5));
+                list.add(e);
+            } while (cursor.moveToNext());
+        }
+        if (!cursor.isClosed())
+        {
+            cursor.close();
+        }
+        return list;
+    }
+
+    /**
+     * Return an array list of temporary Location objects from the
+     * data returned from select query on example table.
+     * @return list
+     */
+    public ArrayList<Location> selectAllLocationsTemp()
+    {
+        ArrayList<Location> list = new ArrayList<>();
+        Cursor cursor = this.db.query(TABLE_NAME_LOC_TEMP, new String[]
                         {"uid", "lat", "lon", "speed", "heading", "timestamp"},
                 null, null, null, null, null);
         if (cursor.moveToFirst())
@@ -206,6 +267,10 @@ public class MyData
             db.execSQL("CREATE TABLE " + TABLE_NAME_LOC
                     + " (uid TEXT, lat TEXT, lon TEXT, speed TEXT, " +
                     "heading TEXT, timestamp INTEGER PRIMARY KEY)");
+
+            db.execSQL("CREATE TABLE " + TABLE_NAME_LOC_TEMP
+                    + " (uid TEXT, lat TEXT, lon TEXT, speed TEXT, " +
+                    "heading TEXT, timestamp INTEGER PRIMARY KEY)");
         }
 
         @Override
@@ -215,6 +280,7 @@ public class MyData
                     "Upgrading database, this will drop tables and recreate.");
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_LOC);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_LOC_TEMP);
             onCreate(db);
         }
     }
