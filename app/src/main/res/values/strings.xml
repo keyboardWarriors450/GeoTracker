@@ -25,7 +25,7 @@
     <string name="conf_password">Confirm password</string>
     <string name="enter_sec_question">Enter security question</string>
     <string name="enter_answer">Enter answer</string>
-    <string name="agreement">By clicking I Accept, you confirm that you understand that we automatically or passively collect information using your geographic location and camera to keep track of your movement. Programming code that is temporarily downloaded onto a device, and is active only while you are connected to wifi or the carrier. We may share your data, including your personal information solely for academic purposes by University of Washington Tacoma.</string>
+    <string name="agreement">By clicking I Accept, you confirm that you read and understood the agreement</string>
     <string name="accept">I Accept</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_cancel">Cancel</string>

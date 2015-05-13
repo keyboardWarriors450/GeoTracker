@@ -8,14 +8,9 @@
 package com.mycompany.geotracker;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.mycompany.geotracker.data.MyData;
-import com.mycompany.geotracker.model.User;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -42,7 +37,6 @@ public class LocationToServer extends AsyncTask<String, Void, String> {
     private String timestamp;
 
     public LocationToServer(Context context) {
-        this.context = context;
     }
 
     @Override
@@ -50,7 +44,7 @@ public class LocationToServer extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected String doInBackground(String... params) {
+    protected String doInBackground(String ...params) {
         try {
             uid = params[0];
             lat = params[1];

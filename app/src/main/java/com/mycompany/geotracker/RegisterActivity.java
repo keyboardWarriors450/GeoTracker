@@ -32,6 +32,8 @@ public class RegisterActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        new AddRegisterSheet(RegisterActivity.this).execute();
+
         myData = new MyData(this);
 
         Button btn_cancel = (Button)findViewById(R.id.reg_cancel);
