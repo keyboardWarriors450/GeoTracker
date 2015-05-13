@@ -33,7 +33,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 
-        PickDateActivity.mLocationList.add(myLocation);
+        //PickDateActivity.mLocationList.add(myLocation);
       //  Toast.makeText(context, "No last location is found ", Toast.LENGTH_LONG).show();
      //   Double lat = 0.0000;
     //    lat = intent.getDoubleExtra (PickDateActivity.LATITUDE, 0.00);
@@ -45,43 +45,44 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         } else {
             Toast.makeText(context, "No last location is found ", Toast.LENGTH_LONG).show();
         }*/
+        if (myLocation != null) {
+            /*******....  *****/
+            long timestamp = System.currentTimeMillis() / 1000;
 
-        /******* DAVID put your code below  *****/
-        long timestamp = System.currentTimeMillis() / 1000;
+            // now we have current location
+            String uid = "";
+            String latStr = Double.toString(myLocation.getLatitude());
+            String lonStr = Double.toString(myLocation.getLongitude());
+            String speedStr = Double.toString((double) myLocation.getSpeed());
+            String headingStr = Double.toString((double) myLocation.getBearing());
+            String timestampStr = Long.toString(System.currentTimeMillis() / 1000);
 
-        // now we have current location
-        String uid = "";
-        String latStr = Double.toString(myLocation.getLatitude());
-        String lonStr = Double.toString(myLocation.getLongitude());
-        String speedStr = Double.toString((double) myLocation.getSpeed());
-        String headingStr = Double.toString((double) myLocation.getBearing());
-        String timestampStr = Long.toString(System.currentTimeMillis() / 1000);
+            /** optional values **/
+            //  double altitude = myLocation.getAltitude();
 
-       /** optional values **/
-      //  double altitude = myLocation.getAltitude();
+            MyData myData = new MyData(context);
+            final ArrayList<User> allData = myData.selectAllUsers();
+            final ArrayList<com.mycompany.geotracker.model.Location> allDataTemp =
+                    myData.selectAllLocationsTemp();
 
-        MyData myData = new MyData(context);
-        final ArrayList<User> allData = myData.selectAllUsers();
-        final ArrayList<com.mycompany.geotracker.model.Location> allDataTemp =
-                myData.selectAllLocationsTemp();
-
-        if (allData.size() != 0) {
-            uid = allData.get(allData.size()-1).getUserID();
-        }
-
-        try {
-            if (allDataTemp.size() != 0) {
-                myData.deleteAllLocationsTemp();
+            if (allData.size() != 0) {
+                uid = allData.get(allData.size() - 1).getUserID();
             }
-            myData.insertLocationTemp(uid, latStr, lonStr, speedStr, headingStr, timestamp);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            try {
+                if (allDataTemp.size() != 0) {
+                    myData.deleteAllLocationsTemp();
+                }
+                myData.insertLocationTemp(uid, latStr, lonStr, speedStr, headingStr, timestamp);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            myData.close();
+
+            new LocationToServer(context).execute(uid, latStr, lonStr, speedStr, headingStr, timestampStr);
+            Toast.makeText(context, "Uploaded current location: " + myLocation.getLatitude() + ", " +
+                    myLocation.getLongitude(), Toast.LENGTH_SHORT).show();
         }
-
-        myData.close();
-
-        new LocationToServer(context).execute(uid, latStr, lonStr, speedStr, headingStr, timestampStr);
-        Toast.makeText(context, "Uploaded current location: " + myLocation.getLatitude() + ", " +
-                myLocation.getLongitude(), Toast.LENGTH_SHORT).show();
     }
 }
