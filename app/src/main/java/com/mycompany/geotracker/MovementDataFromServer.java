@@ -44,6 +44,7 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
     private long timestamp;
     private String start;
     private String end;
+    private String name;
 
     public MovementDataFromServer(Context context) {
         this.context = context;
@@ -65,6 +66,7 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
             uid = params[0];
             start = params[1];
             end = params[2];
+            name = params[3];
 
             String link = Uri.parse("http://450.atwebpages.com/view.php").buildUpon()
                     .appendQueryParameter("uid", uid)
@@ -131,8 +133,13 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
                         Toast.makeText(MovementDataFromServer.this.context, e.toString(), Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    context.startActivity(new Intent(MovementDataFromServer.this.context,
-                            ShowMovementDataActivity.class));
+                    if (!name.equals("map")) {
+                        context.startActivity(new Intent(MovementDataFromServer.this.context,
+                                ShowMovementDataActivity.class));
+                    } else {
+                        context.startActivity(new Intent(MovementDataFromServer.this.context,
+                                ViewMapActivity.class));
+                    }
                 }
                 else {
                     Toast.makeText(MovementDataFromServer.this.context, "Download failed",

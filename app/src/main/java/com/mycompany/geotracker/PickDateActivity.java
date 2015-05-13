@@ -110,7 +110,8 @@ public class PickDateActivity extends ActionBarActivity {
                         e.printStackTrace();
                     }
 
-                    new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
+
+                    new MovementDataFromServer(context).execute(uid, startStr, endStr, " ");  //
                     // pause and wait for 5 seconds for download list of location is done
                     // SystemClock.sleep(5000);
                     //  toListPoints();  // this bring to list of point toListPoints()
@@ -161,7 +162,8 @@ public class PickDateActivity extends ActionBarActivity {
                         e.printStackTrace();
                     }
 
-                    new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
+
+                    new MovementDataFromServer(context).execute(uid, startStr, endStr, "map");  //
                     // pause and wait for 5 seconds for download list of location is done
                     SystemClock.sleep(5000);
                     toViewMap();

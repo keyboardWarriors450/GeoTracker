@@ -13,6 +13,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@drawable/image2"
     tools:context="com.mycompany.geotracker.PickDateActivity">
 
     <EditText
@@ -80,7 +81,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Download Movement Data"
+        android:text="Show Movement Data"
         android:id="@+id/show_location"
         android:layout_below="@+id/viewMap"
         android:layout_centerHorizontal="true" />
