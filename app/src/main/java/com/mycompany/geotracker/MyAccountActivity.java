@@ -107,12 +107,12 @@ public class MyAccountActivity extends ActionBarActivity {
         //takes the user back to the home screen
         if (id == R.id.action_logout) {
             //Log the user out.
-//            ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
-//            PackageManager pm = this.getApplicationContext().getPackageManager();
+            ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
+            PackageManager pm = this.getApplicationContext().getPackageManager();
 //
-//            pm.setComponentEnabledSetting(receiver,
-//                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-//                    PackageManager.DONT_KILL_APP);
+            pm.setComponentEnabledSetting(receiver,
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
             finish();
             toHomeScreen();
             return true;
