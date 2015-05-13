@@ -50,6 +50,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
         MyData myData = new MyData(this);
         ArrayList<com.mycompany.geotracker.model.Location> locList = myData.selectAllLocations();
         myData.close();
+
         map.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
         double latitude = 0;
