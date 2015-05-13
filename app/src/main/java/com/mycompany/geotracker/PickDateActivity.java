@@ -165,8 +165,8 @@ public class PickDateActivity extends ActionBarActivity {
 
                     new MovementDataFromServer(context).execute(uid, startStr, endStr, "map");  //
                     // pause and wait for 5 seconds for download list of location is done
-                    SystemClock.sleep(5000);
-                    toViewMap();
+                  //  SystemClock.sleep(5000);
+                  //  toViewMap();
                 }  else {
                     Toast.makeText(context, "Invalid inputs or Missing end/start date", Toast.LENGTH_LONG).show();
                 }
