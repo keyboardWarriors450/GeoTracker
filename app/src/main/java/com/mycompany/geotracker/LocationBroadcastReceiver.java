@@ -87,6 +87,6 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
 
         new LocationToServer(context).execute(uid, latStr, lonStr, speedStr, headingStr, timestampStr);
         Toast.makeText(context, "Uploaded current location: " + myLocation.getLatitude() + ", " + myLocation.getLongitude()
-                , Toast.LENGTH_LONG).show();
+                , Toast.LENGTH_SHORT).show();
     }
 }

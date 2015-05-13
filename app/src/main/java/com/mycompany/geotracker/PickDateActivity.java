@@ -193,7 +193,7 @@ public class PickDateActivity extends ActionBarActivity {
                     pm.setComponentEnabledSetting(receiver,
                             PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                             PackageManager.DONT_KILL_APP);
-                    Toast.makeText(context, "Location Service has been Enable", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Location Service has been Enable", Toast.LENGTH_SHORT).show();
 
                 }else {
                     promptUserTurnGPSon(); // ask user to turn gps on
@@ -216,7 +216,7 @@ public class PickDateActivity extends ActionBarActivity {
                 pm.setComponentEnabledSetting(receiver,
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                         PackageManager.DONT_KILL_APP);
-                Toast.makeText(context, "Location Service has been Disable", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Location Service has been Disable", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -272,7 +272,7 @@ public class PickDateActivity extends ActionBarActivity {
         alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
                 , 5000, PendingIntent.getBroadcast(this, 1, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
 
-        Toast.makeText(this, "Location Update every 5 seconds", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Location Update every 5 seconds", Toast.LENGTH_SHORT).show();
 
     }
 
