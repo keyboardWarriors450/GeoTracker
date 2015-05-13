@@ -28,10 +28,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by David on 5/11/2015.
@@ -46,7 +42,6 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
     private String speed;
     private String heading;
     private long timestamp;
-    public static List<Map<String, String>> myList;
     private String start;
     private String end;
 
@@ -56,12 +51,12 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute() {
-//        super.onPreExecute();
-//        pDialog = new ProgressDialog(context);
-//        pDialog.setMessage("Downloading..");
-//        pDialog.setIndeterminate(false);
-//        pDialog.setCancelable(true);
-//        pDialog.show();
+        super.onPreExecute();
+        pDialog = new ProgressDialog(context);
+        pDialog.setMessage("Downloading..");
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(true);
+        pDialog.show();
     }
 
     @Override
@@ -103,15 +98,15 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        myList = new ArrayList<Map<String, String>>();
-        // dismiss the dialog once done
-//        pDialog.dismiss();
+        pDialog.dismiss();
         if (result != null) {
             try {
                 JSONObject obj = new JSONObject(result);
                 if (obj.getString("result").equals("success")) {
                     try {
-                       // MyData myData = new MyData(MovementDataFromServer.this.context);
+                        MyData myData = new MyData(MovementDataFromServer.this.context);
+                        myData.deleteAllLocations();
+
                         JSONArray jArray = obj.getJSONArray("points");
                         /*
                         Delete this out after reviewing that the JSONarray is indeed working.
@@ -120,37 +115,24 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
 
                         for (int i = 0; i < jArray.length(); i++) {
                             JSONObject jObject = jArray.getJSONObject(i);
-                            Map<String, String> hash = new HashMap<>();
-                            hash.put("lat", jObject.getString("lat"));
-                            hash.put("lon", jObject.getString("lon"));
-                            hash.put("speed", jObject.getString("speed"));
-                            hash.put("heading", jObject.getString("heading"));
-                            hash.put("time", Long.toString(jObject.getLong("time")));
-                            myList.add(hash);
-                        }
+                            lat = jObject.getString("lat");
+                            lon = jObject.getString("lon");
+                            speed = jObject.getString("speed");
+                            heading = jObject.getString("heading");
+                            timestamp = jObject.getLong("time");
 
-                        /*
-                        Delete this out after reviewing that the JSONarray is indeed working.
-                         */
-                        for (int i = 0; i < myList.size(); i++) {
-                            System.out.println(myList.get(i).get("lat"));
-                            System.out.println(myList.get(i).get("lon"));
-                            System.out.println(myList.get(i).get("speed"));
-                            System.out.println(myList.get(i).get("heading"));
-                            System.out.println(myList.get(i).get("time"));
+                            myData.insertLocation(uid, lat, lon, speed, heading, timestamp);
                         }
 
                         Log.i("Movement", "success");
-//                        MyData myData = new MyData(MovementDataFromServer.this.context);
-//                        myData.deleteAll();
-//                        myData.insertLocation(uid, lat, lon, speed, heading, timestamp);
-//                        myData.close();
+                        myData.close();
+
                     } catch (Exception e) {
                         Toast.makeText(MovementDataFromServer.this.context, e.toString(), Toast.LENGTH_SHORT).show();
                         return;
                     }
-         //           context.startActivity(new Intent(LoginToServer.this.context,
-           //                 MyAccountActivity.class));
+                    context.startActivity(new Intent(MovementDataFromServer.this.context,
+                            ShowMovementDataActivity.class));
                 }
                 else {
                     Toast.makeText(MovementDataFromServer.this.context, "Download failed",

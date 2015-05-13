@@ -40,6 +40,7 @@ public class MyAccountActivity extends ActionBarActivity {
         myData = new MyData(this);
         final ArrayList<User> allData = myData.selectAllUsers();
         user = allData.get(allData.size()-1).getEmail();
+        myData.close();
 
         final TextView username = (TextView) findViewById(R.id.username_display);
         int end = 0;

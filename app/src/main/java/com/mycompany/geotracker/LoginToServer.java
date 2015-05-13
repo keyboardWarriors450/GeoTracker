@@ -16,7 +16,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.mycompany.geotracker.data.MyData;
-import com.mycompany.geotracker.model.User;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -105,10 +104,8 @@ public class LoginToServer extends AsyncTask<String,Void,String> {
                         uid = obj.getString("userid");
                         Log.i("USER", uid);
                         MyData myData = new MyData(LoginToServer.this.context);
-                        myData.deleteAll();
+                        myData.deleteAllUsers();
                         myData.insertUser(uid, email, password, "", "");
-
-                        // insertlocation
                         myData.close();
                     } catch (Exception e) {
                         Toast.makeText(LoginToServer.this.context, e.toString(), Toast.LENGTH_SHORT).show();

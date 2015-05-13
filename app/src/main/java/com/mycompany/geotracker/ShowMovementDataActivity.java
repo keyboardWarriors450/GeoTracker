@@ -13,13 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import java.util.Map;
+import com.mycompany.geotracker.data.MyData;
+import com.mycompany.geotracker.model.Location;
 
+import java.util.ArrayList;
 /**
  * This activity showing the a list of location base on user inputs date
  */
 public class ShowMovementDataActivity extends ActionBarActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +28,16 @@ public class ShowMovementDataActivity extends ActionBarActivity {
         setContentView(R.layout.activity_show_movement_data);
 
         TextView tv = (TextView) findViewById(R.id.movement_datas);
-
         String listOfLocation = "";
 
-        for (int i = MovementDataFromServer.myList.size() - 1; i > 0  ; i--) {
-           listOfLocation += "" + MovementDataFromServer.myList.get(i) + "\n";
-        }
+        MyData myData = new MyData(this);
+        ArrayList<Location> locList = myData.selectAllLocations();
+        myData.close();
 
-        tv.setText("List of locations by latest time: \n" + listOfLocation);
+        for (Location loc : locList) {
+            listOfLocation += loc.toString() + "\n\n";
+        }
+        tv.setText(" Timestamp       Latitude        Longitude    Heading\n\n" + listOfLocation);
     }
 
 

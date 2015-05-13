@@ -7,26 +7,20 @@
 
 package com.mycompany.geotracker;
 
-import android.content.Context;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Map;
+import com.mycompany.geotracker.data.MyData;
+
+import java.util.ArrayList;
 
 /**
  * This show locations by user's input range
@@ -35,7 +29,7 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
 
     //  private LocationLog mLocationLog;
     private GoogleMap mGoogleMap;
-    private Location myLocation;
+    private com.mycompany.geotracker.model.Location myLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +47,22 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap map) {
-
+        MyData myData = new MyData(this);
+        ArrayList<com.mycompany.geotracker.model.Location> locList = myData.selectAllLocations();
+        myData.close();
         map.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
         double latitude = 0;
         double longitude = 0;
-        for (int i = 0; i <  MovementDataFromServer.myList.size(); i++) {
-           latitude = Double.parseDouble(MovementDataFromServer.myList.get(i).get("lat"));
-           longitude = Double.parseDouble(MovementDataFromServer.myList.get(i).get("lon"));
+
+        for (int i = 0; i <  locList.size(); i++) {
+           latitude = Double.parseDouble(locList.get(i).getLat());
+           longitude = Double.parseDouble(locList.get(i).getLon());
            mGoogleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(latitude, longitude))
                     .title("My Locations"));
         }
+
         LatLng lastLatLng = new LatLng(latitude,longitude);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 12));
 

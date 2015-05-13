@@ -76,6 +76,7 @@ public class HomeScreen extends ActionBarActivity {
                 }
             }
         });
+
     }
 
     private void toForgotPassword() {
@@ -94,7 +95,6 @@ public class HomeScreen extends ActionBarActivity {
     protected void onStart() {
         super.onStart();
 
-        myData = new MyData(this);
         final ArrayList<Location> allData1 = myData.selectAllLocations();
         if (allData1.size() != 0) {
             for (Location loc : allData1) {
@@ -107,6 +107,7 @@ public class HomeScreen extends ActionBarActivity {
             userIDStr = allData.get(allData.size()-1).getEmail();
             passwordStr = allData.get(allData.size()-1).getPassword();
         }
+
     }
 
     @Override
@@ -118,4 +119,5 @@ public class HomeScreen extends ActionBarActivity {
         user_name.setText(userIDStr);
         password.setText(passwordStr);
     }
+
 }

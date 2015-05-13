@@ -32,13 +32,11 @@ import android.widget.Toast;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
 
-import java.sql.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 /**
  * this class will take user input; start date and end date to show location
@@ -54,7 +52,7 @@ public class PickDateActivity extends ActionBarActivity {
     private Button mStopButton;
     private Location myLocation;
     public static List<Location> mLocationList;
-    private Context context = getBaseContext();
+    private Context context = PickDateActivity.this;
     private EditText startTxt;
     private EditText endTxt;
     private DateFormat dfm;
@@ -110,8 +108,8 @@ public class PickDateActivity extends ActionBarActivity {
 
                 new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
                 // pause and wait for 5 seconds for download list of location is done
-               SystemClock.sleep(5000);
-               toListPoints();  // this bring to list of point toListPoints()
+           //    SystemClock.sleep(5000);
+           //    toListPoints();  // this bring to list of point toListPoints()
             }
         });
 
@@ -278,12 +276,12 @@ public class PickDateActivity extends ActionBarActivity {
     }
 
 
-    public void toListPoints() {
-        // this indicate which page you want to link to
-        Intent intent = new Intent(this, ShowMovementDataActivity.class);
-        // reserve space for extra information here if need
-        startActivity(intent);
-    }
+//    public void toListPoints() {
+//        // this indicate which page you want to link to
+//        Intent intent = new Intent(this, ShowMovementDataActivity.class);
+//        // reserve space for extra information here if need
+//        startActivity(intent);
+//    }
 
     /**
      * Creates the options menu on the top of the screen.

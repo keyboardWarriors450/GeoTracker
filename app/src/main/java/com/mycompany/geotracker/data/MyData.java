@@ -47,23 +47,28 @@ public class MyData
         this.insertStmt2 = this.db.compileStatement(INSERT_LOC);
     }
 
-    /** Inserts the uid, email, password, secretQuestion, secretAnswer into User
-     If successful, returns the rowid otherwise -1.
+    /**
+     * Close the connection
      */
-    public long insertUser(String uid, String email, String password, String question, String answer)
-            throws Exception
+    public void close()
     {
-        this.insertStmt1.bindString(1, uid);
-        this.insertStmt1.bindString(2, email);
-        this.insertStmt1.bindString(3, password);
-        this.insertStmt1.bindString(4, question);
-        this.insertStmt1.bindString(5, answer);
+        db.close();
+    }
 
-        long rowID = this.insertStmt1.executeInsert();
-        if (rowID == -1) {
-            throw new Exception("Unable to insert");
-        }
-        return rowID;
+    /**
+     * Delete everything from example
+     */
+    public void deleteAllLocations()
+    {
+        this.db.delete(TABLE_NAME_LOC, null, null);
+    }
+
+    /**
+     * Delete everything from example
+     */
+    public void deleteAllUsers()
+    {
+        this.db.delete(TABLE_NAME_USER, null, null);
     }
 
     /** Inserts the uid, latitude, longitude, speed, heading, and timestamp into Location
@@ -86,41 +91,23 @@ public class MyData
         return rowID;
     }
 
-    /**
-     * Delete everything from example
+    /** Inserts the uid, email, password, secretQuestion, secretAnswer into User
+     If successful, returns the rowid otherwise -1.
      */
-    public void deleteAll()
+    public long insertUser(String uid, String email, String password, String question, String answer)
+            throws Exception
     {
-        this.db.delete(TABLE_NAME_USER, null, null);
-        this.db.delete(TABLE_NAME_LOC, null, null);
-    }
+        this.insertStmt1.bindString(1, uid);
+        this.insertStmt1.bindString(2, email);
+        this.insertStmt1.bindString(3, password);
+        this.insertStmt1.bindString(4, question);
+        this.insertStmt1.bindString(5, answer);
 
-
-    /**
-     * Return an array list of User objects from the
-     * data returned from select query on example table.
-     * @return list
-     */
-    public ArrayList<User> selectAllUsers()
-    {
-        ArrayList<User> list = new ArrayList<>();
-        Cursor cursor = this.db.query(TABLE_NAME_USER, new String[]
-                { "uid", "email", "password", "secretQuestion", "secretAnswer" },
-                null, null, null, null, null);
-        if (cursor.moveToFirst())
-        {
-            do
-            {
-                User e = new User(cursor.getString(0), cursor.getString(1), cursor.getString(2),
-                        cursor.getString(3), cursor.getString(4));
-                list.add(e);
-            } while (cursor.moveToNext());
+        long rowID = this.insertStmt1.executeInsert();
+        if (rowID == -1) {
+            throw new Exception("Unable to insert");
         }
-        if (!cursor.isClosed())
-        {
-            cursor.close();
-        }
-        return list;
+        return rowID;
     }
 
     /**
@@ -132,7 +119,7 @@ public class MyData
     {
         ArrayList<Location> list = new ArrayList<>();
         Cursor cursor = this.db.query(TABLE_NAME_LOC, new String[]
-                        { "uid", "lat", "lon", "speed", "heading", "timestamp" },
+                        {"uid", "lat", "lon", "speed", "heading", "timestamp"},
                 null, null, null, null, null);
         if (cursor.moveToFirst())
         {
@@ -140,6 +127,33 @@ public class MyData
             {
                 Location e = new Location(cursor.getString(0), cursor.getString(1), cursor.getString(2),
                         cursor.getString(3), cursor.getString(4), cursor.getLong(5));
+                list.add(e);
+            } while (cursor.moveToNext());
+        }
+        if (!cursor.isClosed())
+        {
+            cursor.close();
+        }
+        return list;
+    }
+
+    /**
+     * Return an array list of User objects from the
+     * data returned from select query on example table.
+     * @return list
+     */
+    public ArrayList<User> selectAllUsers()
+    {
+        ArrayList<User> list = new ArrayList<>();
+        Cursor cursor = this.db.query(TABLE_NAME_USER, new String[]
+                        { "uid", "email", "password", "secretQuestion", "secretAnswer" },
+                null, null, null, null, null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                User e = new User(cursor.getString(0), cursor.getString(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getString(4));
                 list.add(e);
             } while (cursor.moveToNext());
         }
@@ -174,14 +188,6 @@ public class MyData
 //        return null;
 //    }
 
-    /**
-     * Close the connection
-     */
-    public void close()
-    {
-        db.close();
-    }
-
     private static class OpenHelper extends SQLiteOpenHelper
     {
 
@@ -198,8 +204,8 @@ public class MyData
                     "secretAnswer TEXT)");
 
             db.execSQL("CREATE TABLE " + TABLE_NAME_LOC
-                    + " (uid TEXT PRIMARY KEY, lat TEXT, lon TEXT, speed TEXT, " +
-                    "heading TEXT, timestamp INTEGER)");
+                    + " (uid TEXT, lat TEXT, lon TEXT, speed TEXT, " +
+                    "heading TEXT, timestamp INTEGER PRIMARY KEY)");
         }
 
         @Override

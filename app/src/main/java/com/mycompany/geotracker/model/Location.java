@@ -79,6 +79,6 @@ public class Location {
     }
 
     public String toString() {
-        return "UID = " + uid + " timestampe = " + timestamp;
+        return timestamp + "  " + lat + "  " + lon + "  " + heading;
     }
 }
