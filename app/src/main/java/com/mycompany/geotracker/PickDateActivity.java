@@ -369,6 +369,8 @@ public class PickDateActivity extends ActionBarActivity {
             pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
             finish();
+
+            locationManager.removeUpdates(locationListener);
             toHomeScreen();
             return true;
         }
