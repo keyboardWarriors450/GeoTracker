@@ -17,6 +17,10 @@ import com.mycompany.geotracker.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * It receive the intent from alarm manager service and do the location upload service
+ */
 public class LocationBroadcastReceiver extends BroadcastReceiver {
 
     private Location myLocation;
@@ -40,8 +44,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
      //   Double lat = 0.0000;
     //    lat = intent.getDoubleExtra (PickDateActivity.LATITUDE, 0.00);
      //  String lat =  intent.getStringExtra(PickDateActivity.LATITUDE);
-        Toast.makeText(context, "LATITUDE: " + myLocation.getLatitude() + "Longitude: " + myLocation.getLongitude()
-                , Toast.LENGTH_LONG).show();
+
        /* if (myLocation != null) {
             String myCoordinates = "" + myLocation.getLatitude() + ", " + myLocation.getLongitude();
             Toast.makeText(context, "Updated my Location: " + myCoordinates, Toast.LENGTH_LONG).show();
@@ -83,6 +86,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         myData.close();
 
         new LocationToServer(context).execute(uid, latStr, lonStr, speedStr, headingStr, timestampStr);
-
+        Toast.makeText(context, "Uploaded current location: " + myLocation.getLatitude() + ", " + myLocation.getLongitude()
+                , Toast.LENGTH_LONG).show();
     }
 }

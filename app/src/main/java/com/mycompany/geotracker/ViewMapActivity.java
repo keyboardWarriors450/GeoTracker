@@ -23,7 +23,7 @@ import com.mycompany.geotracker.data.MyData;
 import java.util.ArrayList;
 
 /**
- * This show locations by user's input range
+ * This show locations by user's input date range
  */
 public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCallback {
 

@@ -65,8 +65,8 @@
         <item>Who is your childhood sports hero?</item>
         <item>What is your favorite color?</item>
     </string-array>
-    <string name="start_date_hint">Start Date (MM/dd/yy)</string>
-    <string name="end_date_hint">End Date (MM/dd/yy)</string>
+    <string name="start_date_hint">Start Date (MM-dd-yy)</string>
+    <string name="end_date_hint">End Date (MM-dd-yy)</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="dialog_validate_email">Validate your email to register</string>
     <string name="title_activity_show_movement_data">ShowMovementDataActivity</string>

@@ -87,29 +87,34 @@ public class PickDateActivity extends ActionBarActivity {
                 startTxt = (EditText)findViewById(R.id.startDate);
                 // end date
                 endTxt = (EditText)findViewById(R.id.endDate);
+
                 String startDate = startTxt.getText().toString();
-                dfm = new SimpleDateFormat("MM/dd/yy");
-
-                try {
-                    start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
-                    startStr = Long.toString(start);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-
                 String endDate = endTxt.getText().toString();
-                try {
-                    end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
-                    endStr = Long.toString(end);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                if (isValidDates(startDate,endDate) ) {
 
-                new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
-                // pause and wait for 5 seconds for download list of location is done
-           //    SystemClock.sleep(5000);
-           //    toListPoints();  // this bring to list of point toListPoints()
+                    dfm = new SimpleDateFormat("MM-dd-yy");
+
+                    try {
+                        start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
+                        startStr = Long.toString(start);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
+                        endStr = Long.toString(end);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
+                    // pause and wait for 5 seconds for download list of location is done
+                    // SystemClock.sleep(5000);
+                    //  toListPoints();  // this bring to list of point toListPoints()
+                } else {
+                    Toast.makeText(context, "Invalid inputs or Missing end/start date", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -133,44 +138,39 @@ public class PickDateActivity extends ActionBarActivity {
                 startTxt = (EditText)findViewById(R.id.startDate);
                 // end date
                 endTxt = (EditText)findViewById(R.id.endDate);
+
                 String startDate = startTxt.getText().toString();
-                dfm = new SimpleDateFormat("MM/dd/yy");
-
-                try {
-                    start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
-                    startStr = Long.toString(start);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-
                 String endDate = endTxt.getText().toString();
-                try {
-                    end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
-                    endStr = Long.toString(end);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                if (isValidDates(startDate,endDate) ) {
 
-                new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
-                // pause and wait for 5 seconds for download list of location is done
-                SystemClock.sleep(5000);
-                toViewMap();
+                    dfm = new SimpleDateFormat("MM-dd-yy");
+
+                    try {
+                        start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
+                        startStr = Long.toString(start);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
+                        endStr = Long.toString(end);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    new MovementDataFromServer(context).execute(uid, startStr, endStr);  //
+                    // pause and wait for 5 seconds for download list of location is done
+                    SystemClock.sleep(5000);
+                    toViewMap();
+                }  else {
+                    Toast.makeText(context, "Invalid inputs or Missing end/start date", Toast.LENGTH_LONG).show();
+                }
             }
         });
-
 
         // service button
         final Button startService = (Button)findViewById(R.id.start_service);
-
-        viewMap.setOnClickListener(new Button.OnClickListener() {
-
-            public void onClick(View v) {
-                Log.i("test", "start service");
-                viewMap.setTextColor(Color.parseColor("#67818a"));
-                toViewMap();
-            }
-        });
 
         mStartButton = (Button) findViewById(R.id.start_service);
         mStartButton.setOnClickListener(new View.OnClickListener() {
@@ -275,13 +275,49 @@ public class PickDateActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    /**
+     * validate user inputs
+     * @param startD startDAte
+     * @param endD endDAte
+     * @return
+     */
+    public boolean isValidDates(String startD, String endD) {
+        if(startD == null || endD == null || startD.length() != 8 || endD.length() != 8 )
+            return false;
 
-//    public void toListPoints() {
-//        // this indicate which page you want to link to
-//        Intent intent = new Intent(this, ShowMovementDataActivity.class);
-//        // reserve space for extra information here if need
-//        startActivity(intent);
-//    }
+        if (startD.charAt(2) == '-' && startD.charAt(5) == '-'
+                && endD.charAt(2) == '-' && endD.charAt(5) == '-') {
+
+            DateFormat dFormat = new SimpleDateFormat("MM-dd-yy");
+            long starDatetLong = 0;
+            long endDateLong = 0;
+
+            try {
+                starDatetLong = dFormat.parse(startD).getTime() / 1000; // start date Unix time
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                endDateLong = dFormat.parse(endD).getTime() / 1000; // start date Unix time
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (starDatetLong < endDateLong) return true; else return false;
+
+
+        } else return false;
+
+    }
+
+
+/*    public void toListPoints() {
+        // this indicate which page you want to link to
+        Intent intent = new Intent(this, ShowMovementDataActivity.class);
+        // reserve space for extra information here if need
+       startActivity(intent);
+    }*/
 
     /**
      * Creates the options menu on the top of the screen.
