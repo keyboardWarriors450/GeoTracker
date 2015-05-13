@@ -7,9 +7,7 @@
 
 package com.mycompany.geotracker;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -17,7 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +45,6 @@ public class HomeScreen extends ActionBarActivity {
         password = (EditText) findViewById(R.id.password);
         create_user = (TextView) findViewById(R.id.create_user);
         forgotPass = (TextView) findViewById(R.id.forgot_password);
-        Button login = (Button) findViewById(R.id.login);
 
         create_user.setOnClickListener(new TextView.OnClickListener() {
             @Override
@@ -155,7 +151,6 @@ public class HomeScreen extends ActionBarActivity {
 
         //takes the user back to the home screen
         if (id == R.id.action_login) {
-            final ArrayList<User> allData = myData.selectAllUsers();
             userIDStr = user_name.getText().toString();
             passwordStr = password.getText().toString();
 
