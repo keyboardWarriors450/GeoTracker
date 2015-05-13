@@ -60,12 +60,16 @@ public class PickDateActivity extends ActionBarActivity {
     private DateFormat dfm;
     private String startStr;
     private String endStr;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_date);
 
+        locationManager = (LocationManager) this.getSystemService(
+                Context.LOCATION_SERVICE);
         mLocationList = new ArrayList<>();
 
         // movement data button
@@ -194,7 +198,10 @@ public class PickDateActivity extends ActionBarActivity {
                             PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                             PackageManager.DONT_KILL_APP);
                     Toast.makeText(context, "Location Service has been Enable", Toast.LENGTH_SHORT).show();
-
+                    // Register the listener with the Location Manager to receive location updates
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                            0, 0, locationListener);
+                    /********************/
                 }else {
                     promptUserTurnGPSon(); // ask user to turn gps on
                 }
@@ -216,19 +223,20 @@ public class PickDateActivity extends ActionBarActivity {
                 pm.setComponentEnabledSetting(receiver,
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                         PackageManager.DONT_KILL_APP);
+                locationManager.removeUpdates(locationListener);
                 Toast.makeText(context, "Location Service has been Disable", Toast.LENGTH_SHORT).show();
             }
         });
 
 
         /*********************/
-        LocationManager locationManager = (LocationManager) this.getSystemService(
-                Context.LOCATION_SERVICE);
+      //  LocationManager locationManager = (LocationManager) this.getSystemService(
+     //           Context.LOCATION_SERVICE);
 
         // Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         // Define a listener that responds to location updates
-        LocationListener locationListener = new LocationListener() {
+        locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
                 Log.i("LOCATION SERVICES", location.toString());
@@ -242,11 +250,6 @@ public class PickDateActivity extends ActionBarActivity {
 
             public void onProviderDisabled(String provider) {}
         };
-
-        // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                0, 0, locationListener);
-        /********************/
     }
 
     public void scheduleUpdate() {
