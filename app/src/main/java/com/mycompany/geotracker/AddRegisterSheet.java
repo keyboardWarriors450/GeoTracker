@@ -103,7 +103,7 @@ public class AddRegisterSheet extends AsyncTask<String, Void, String> {
 
                 final AlertDialog alert = new AlertDialog.Builder(AddRegisterSheet.this.context).create();
                 alert.setMessage(printedRegistration);
-                alert.setButton("I agree", new DialogInterface.OnClickListener() {
+                alert.setButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
 //                        context.startActivity(new Intent(AddRegisterSheet.this.context, RegisterActivity.class));
