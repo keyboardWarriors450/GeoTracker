@@ -370,6 +370,8 @@ public class PickDateActivity extends ActionBarActivity {
                     PackageManager.DONT_KILL_APP);
             locationManager.removeUpdates(locationListener);
             finish();
+
+            locationManager.removeUpdates(locationListener);
             toHomeScreen();
             return true;
         }
