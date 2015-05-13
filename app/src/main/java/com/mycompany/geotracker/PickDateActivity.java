@@ -9,9 +9,11 @@
 package com.mycompany.geotracker;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -176,20 +178,25 @@ public class PickDateActivity extends ActionBarActivity {
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start the service
-                //Intent i = new Intent(v.getContext(), RSSService.class);
-                //startService(i);
+                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    Toast.makeText(context, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+                    //  LocationService.setServiceAlarm(v.getContext(), true);
+                    scheduleUpdate();
 
-                //  LocationService.setServiceAlarm(v.getContext(), true);
-                scheduleUpdate();
+                    // this will enable Alarm ON
+                    ComponentName receiver = new ComponentName(v.getContext(), LocationBroadcastReceiver.class);
+                    PackageManager pm = v.getContext().getPackageManager();
 
-                // this will enable Alarm ON
-                ComponentName receiver = new ComponentName(v.getContext(), LocationBroadcastReceiver.class);
-                PackageManager pm = v.getContext().getPackageManager();
+                    pm.setComponentEnabledSetting(receiver,
+                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                            PackageManager.DONT_KILL_APP);
+                    Toast.makeText(context, "Location Service has been Enable", Toast.LENGTH_LONG).show();
 
-                pm.setComponentEnabledSetting(receiver,
-                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                        PackageManager.DONT_KILL_APP);
+                }else {
+                    promptUserTurnGPSon(); // ask user to turn gps on
+                }
+
             }
         });
 
@@ -198,7 +205,7 @@ public class PickDateActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-              //  LocationService.setServiceAlarm(v.getContext(), false);
+                //  LocationService.setServiceAlarm(v.getContext(), false);
 
                 // this will enable Alarm OFF
                 ComponentName receiver = new ComponentName(v.getContext(), LocationBroadcastReceiver.class);
@@ -207,8 +214,10 @@ public class PickDateActivity extends ActionBarActivity {
                 pm.setComponentEnabledSetting(receiver,
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                         PackageManager.DONT_KILL_APP);
+                Toast.makeText(context, "Location Service has been Disable", Toast.LENGTH_LONG).show();
             }
         });
+
 
         /*********************/
         LocationManager locationManager = (LocationManager) this.getSystemService(
@@ -374,4 +383,32 @@ public class PickDateActivity extends ActionBarActivity {
         intent.putExtra(START_DATE, message);
         startActivity(intent);
     }*/
+
+
+    /**
+     * Prompt user to turn GPS on
+     */
+    private void promptUserTurnGPSon(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Your GPS is NOT enable")
+                .setCancelable(false)
+                .setPositiveButton("turn on GPS here",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(callGPSSettingIntent);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
 }
+
