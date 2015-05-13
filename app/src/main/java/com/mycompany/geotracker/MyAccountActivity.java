@@ -109,10 +109,11 @@ public class MyAccountActivity extends ActionBarActivity {
             //Log the user out.
             ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
             PackageManager pm = this.getApplicationContext().getPackageManager();
-//
+
             pm.setComponentEnabledSetting(receiver,
                     PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
+
             finish();
             toHomeScreen();
             return true;
