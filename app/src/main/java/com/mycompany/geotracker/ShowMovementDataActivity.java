@@ -22,6 +22,10 @@ import java.util.ArrayList;
  */
 public class ShowMovementDataActivity extends ActionBarActivity {
 
+    /**
+     * Creates the screen where it displays the data of where the user has been.
+     * @param savedInstanceState all the saved data on the user's locations
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +44,11 @@ public class ShowMovementDataActivity extends ActionBarActivity {
         tv.setText(" Timestamp       Latitude        Longitude    Heading\n\n" + listOfLocation);
     }
 
-
+    /**
+     * Creates the options menu.
+     * @param menu the menu
+     * @return true if there is a menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -48,6 +56,11 @@ public class ShowMovementDataActivity extends ActionBarActivity {
         return true;
     }
 
+    /**
+     * Returns the action that is performed when an item is selected on the menu.
+     * @param item the menu item
+     * @return the action that is performed when an item is selected on the menu
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

@@ -30,8 +30,8 @@ public class AddNewUserToServer extends AsyncTask<String,Void,String>{
     }
 
     /**
-     * Before starting background thread Show Progress Dialog
-     * */
+     * Before starting background thread, show the progress dialog.
+     */
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -42,6 +42,11 @@ public class AddNewUserToServer extends AsyncTask<String,Void,String>{
         pDialog.show();
     }
 
+    /**
+     * Connects to the web service and adds a new user.
+     * @param arg0 the arguments
+     * @return null if nothing happens
+     */
     @Override
     protected String doInBackground(String... arg0) {
         try {
@@ -71,8 +76,8 @@ public class AddNewUserToServer extends AsyncTask<String,Void,String>{
     }
 
     /**
-     * After completing background task Dismiss the progress dialog
-     * **/
+     * After completing background task, dismiss the progress dialog.
+     */
     @Override
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done

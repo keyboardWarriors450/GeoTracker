@@ -38,6 +38,11 @@ public class RecoverPassword extends AsyncTask<String, Void, String> {
         this.context = context;
     }
 
+    /**
+     * Connects to the web service to send the user an email to reset their password.
+     * @param args the arguments
+     * @return the message that shows if the email is sent or not
+     */
     @Override
     protected String doInBackground(String... args) {
         try {
@@ -71,6 +76,10 @@ public class RecoverPassword extends AsyncTask<String, Void, String> {
         }
     }
 
+    /**
+     * Pop up that shows when the user enters in an email address.
+     * @param result the string that is displayed in the pop up
+     */
     @Override
     protected void onPostExecute(String result) {
         if (result != null) {

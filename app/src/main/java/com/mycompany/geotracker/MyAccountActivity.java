@@ -32,6 +32,10 @@ public class MyAccountActivity extends ActionBarActivity {
     private MyData myData;
     private String user;
 
+    /**
+     * Creates the page with all the buttons and shows the user name.
+     * @param savedInstanceState all the saved information about the user
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

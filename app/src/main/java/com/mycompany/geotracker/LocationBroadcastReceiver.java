@@ -15,10 +15,15 @@ import java.util.ArrayList;
 
 /**
  *
- * It receive the intent from alarm manager service and do the location upload service
+ * It receives the intent from the alarm manager service and does the location upload service
  */
 public class LocationBroadcastReceiver extends BroadcastReceiver {
 
+    /**
+     * Receives the locations.
+     * @param context the context
+     * @param intent the intent
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
 

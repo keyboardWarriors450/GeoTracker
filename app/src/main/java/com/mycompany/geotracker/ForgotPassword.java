@@ -29,6 +29,10 @@ public class ForgotPassword extends ActionBarActivity {
 //    private boolean userExists;
 //    private ArrayList<User> allData;
 
+    /**
+     * Creates the screen where the user goes if they forgot their password.
+     * @param savedInstanceState the saved password
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

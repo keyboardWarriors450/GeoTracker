@@ -27,6 +27,10 @@ public class RegisterActivity extends ActionBarActivity {
     private MyData myData;
     private String email, password, confirmed_password, question, answer;
 
+    /**
+     * Creates the register activity screen.
+     * @param savedInstanceState all the saved users who have registered accounts
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

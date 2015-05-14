@@ -50,6 +50,9 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
         this.context = context;
     }
 
+    /**
+     * Pop up that shows when the movement data is being retrieved from the server.
+     */
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -60,6 +63,11 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
         pDialog.show();
     }
 
+    /**
+     * Retrieves the movement data from the server.
+     * @param params the parameters
+     * @return the message that is displayed when the user tries to get the movement data
+     */
     @Override
     protected String doInBackground(String... params) {
         try {
@@ -98,6 +106,10 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
         }
     }
 
+    /**
+     * After completing background task, dismiss the progress dialog
+     * @param result the results of the retrieval
+     */
     @Override
     protected void onPostExecute(String result) {
         pDialog.dismiss();

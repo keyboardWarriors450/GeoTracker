@@ -22,6 +22,10 @@ import android.widget.Toast;
  */
 public class ChangePassword extends ActionBarActivity {
 
+    /**
+     * Creates the screen where the user tries to change their password.
+     * @param savedInstanceState the saved password of the user
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

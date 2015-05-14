@@ -39,6 +39,11 @@ public class AddRegisterSheet extends AsyncTask<String, Void, String> {
         this.context = context;
     }
 
+    /**
+     * Retrieves the terms of service for using the app.
+     * @param args the arguments
+     * @return the message when the agreement is displayed
+     */
     @Override
     protected String doInBackground(String... args) {
         try {
@@ -65,6 +70,10 @@ public class AddRegisterSheet extends AsyncTask<String, Void, String> {
 
     }
 
+    /**
+     * Displays the agreement in a pop up menu.
+     * @param result the agreement
+     */
     @Override
     protected void onPostExecute(String result) {
         if (result != null) {

@@ -43,6 +43,11 @@ public class LocationToServer extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
     }
 
+    /**
+     * Sends locations to the server.
+     * @param params the parameters of the locations
+     * @return message that displays when the locations are being sent to the server
+     */
     @Override
     protected String doInBackground(String ...params) {
         try {
@@ -86,6 +91,10 @@ public class LocationToServer extends AsyncTask<String, Void, String> {
         }
     }
 
+    /**
+     * The result of whether or not the location was sent to the server.
+     * @param result the result
+     */
     @Override
     protected void onPostExecute(String result) {
         if (result != null) {

@@ -35,6 +35,10 @@ public class HomeScreen extends ActionBarActivity {
     private MyData myData;
     private String userIDStr, passwordStr;
 
+    /**
+     * Creates the login screen.
+     * @param savedInstanceState the saved information about the user
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +95,9 @@ public class HomeScreen extends ActionBarActivity {
         return text.getText().toString().trim().length() == 0;
     }
 
+    /**
+     *
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -110,6 +117,9 @@ public class HomeScreen extends ActionBarActivity {
 
     }
 
+    /**
+     * When the app is ever restarted, the last user who logged on is saved.
+     */
     @Override
     protected void onResume() {
         super.onResume();

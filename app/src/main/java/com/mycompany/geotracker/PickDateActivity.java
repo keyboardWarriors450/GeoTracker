@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * this class will take user input; start date and end date to show location
+ * This class will take user input; start date and end date to show location
  */
 public class PickDateActivity extends ActionBarActivity {
 
@@ -255,6 +255,11 @@ public class PickDateActivity extends ActionBarActivity {
 
     }
 
+    /**
+     * Creates an Intent and sets the class which will execute when the alarm triggers.
+     * Here we have given AlarmReceiver in the Intent, the onReceive() method of this class
+     * will execute when the alarm triggers.
+     */
     public void scheduleUpdate() {
 
         // Context context = V.getContext();
@@ -293,10 +298,10 @@ public class PickDateActivity extends ActionBarActivity {
     }
 
     /**
-     * validate user inputs
-     * @param startD startDAte
-     * @param endD endDAte
-     * @return
+     * Validates user inputs.
+     * @param startD the start date
+     * @param endD the end date
+     * @return true if the date is valid, false otherwise
      */
     public boolean isValidDates(String startD, String endD) {
         if(startD == null || endD == null || startD.length() != 8 || endD.length() != 8 )
@@ -371,7 +376,6 @@ public class PickDateActivity extends ActionBarActivity {
             PackageManager pm = this.getApplicationContext().getPackageManager();
             pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
-            locationManager.removeUpdates(locationListener);
             finish();
 
             locationManager.removeUpdates(locationListener);

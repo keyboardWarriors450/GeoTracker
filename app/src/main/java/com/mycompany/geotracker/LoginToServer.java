@@ -41,7 +41,7 @@ public class LoginToServer extends AsyncTask<String,Void,String> {
     }
 
     /**
-     * Before starting background thread Show Progress Dialog
+     * Before starting background thread, show the progress dialog
      */
     @Override
     protected void onPreExecute() {
@@ -53,6 +53,11 @@ public class LoginToServer extends AsyncTask<String,Void,String> {
         pDialog.show();
     }
 
+    /**
+     * Logs onto the server.
+     * @param arg0 the arguments
+     * @return the message that is displayed when the user tries to log onto the server
+     */
     @Override
     protected String doInBackground(String... arg0) {
         try {
@@ -89,8 +94,8 @@ public class LoginToServer extends AsyncTask<String,Void,String> {
     }
 
     /**
-     * After completing background task Dismiss the progress dialog
-     * **/
+     * After completing background task, dismiss the progress dialog
+     */
     @Override
     protected void onPostExecute(String result) {
         // dismiss the dialog once done

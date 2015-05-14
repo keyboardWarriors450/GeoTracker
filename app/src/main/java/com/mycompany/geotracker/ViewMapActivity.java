@@ -31,6 +31,10 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
     private GoogleMap mGoogleMap;
     private com.mycompany.geotracker.model.Location myLocation;
 
+    /**
+     * Creates the map screen.
+     * @param savedInstanceState the saved map
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +48,10 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
         mapFragment.getMapAsync(this);
     }
 
-
+    /**
+     * Displays the google map.
+     * @param map the map
+     */
     @Override
     public void onMapReady(GoogleMap map) {
         MyData myData = new MyData(this);
