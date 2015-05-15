@@ -32,11 +32,15 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
             LocationService.setServiceAlarm(context, true);
         }*/
 
+        boolean wifi = intent.getExtras().getBoolean("wifi");
 
         LocationManager locationManager = (LocationManager) context.getSystemService(
                 Context.LOCATION_SERVICE);
-        Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        Location myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        if (!wifi) {
+            myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
 
         //PickDateActivity.mLocationList.add(myLocation);
       //  Toast.makeText(context, "No last location is found ", Toast.LENGTH_LONG).show();

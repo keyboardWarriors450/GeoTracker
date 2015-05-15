@@ -1,0 +1,114 @@
+<!--
+  ~ Copyright (c) 2015. Keyboard Warriors (Alex Hong, Daniel Khieuson, David Kim, Viet Nguyen).
+  ~ This file is part of GeoTracker.
+  ~ GeoTracker cannot be copied and/or distributed without the express permission
+  ~ of Keyboard Warriors.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.mycompany.geotracker.UserPreferenceActivity">
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tracking"
+        android:id="@+id/tracking_switch"
+        android:layout_marginTop="92dp"
+        android:checked="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/curr_tracking_time_text"
+        android:layout_marginTop="42dp"
+        android:text="Current tracking time interval:  "
+        android:layout_below="@+id/tracking_switch"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="60 sec"
+        android:id="@+id/curr_tracking_time_field"
+        android:layout_alignBottom="@+id/curr_tracking_time_text"
+        android:layout_toRightOf="@+id/curr_tracking_time_text"
+        android:layout_toEndOf="@+id/curr_tracking_time_text" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:id="@+id/btn_tracking_interval_time"
+        android:layout_below="@+id/curr_tracking_time_text"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Current upload time interval:  "
+        android:id="@+id/curr_upload_interval_text"
+        android:layout_marginTop="42dp"
+        android:layout_below="@+id/btn_tracking_interval_time"
+        android:layout_centerHorizontal="true" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/curr_upload_interval_text"
+        android:id="@+id/myRadioGroup"
+        android:layout_centerHorizontal="true">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 min"
+            android:id="@+id/btn_one_min"
+            android:checked="true"
+            android:layout_below="@+id/curr_upload_interval_text"
+            android:layout_alignLeft="@+id/btn_tracking_interval_time"
+            android:layout_alignStart="@+id/btn_tracking_interval_time" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 hr"
+            android:id="@+id/btn_one_hr"
+            android:checked="false"
+            android:layout_below="@+id/btn_one_min"
+            android:layout_alignLeft="@+id/btn_one_min"
+            android:layout_alignStart="@+id/btn_one_min" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12 hr"
+            android:id="@+id/btn_12_hr"
+            android:layout_below="@+id/btn_one_hr"
+            android:layout_alignLeft="@+id/btn_one_hr"
+            android:layout_alignStart="@+id/btn_one_hr"
+            android:checked="false" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="24 hr"
+            android:id="@+id/btn_24_hr"
+            android:checked="false"
+            android:layout_below="@+id/btn_12_hr"
+            android:layout_alignLeft="@+id/btn_12_hr"
+            android:layout_alignStart="@+id/btn_12_hr" />
+
+
+    </RadioGroup>
+
+
+
+</RelativeLayout>

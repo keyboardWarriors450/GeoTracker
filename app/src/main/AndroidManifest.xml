@@ -74,7 +74,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAIN_SDM9eh_KMIMWji-9N7JfoRL3RzcAI" />
+            android:value="AIzaSyDCDdfOHnn6OlzilFmopEpu92hgc0trpvs" />
 
         <receiver
             android:name=".LocationBroadcastReceiver"
@@ -87,6 +87,10 @@
         <activity
             android:name=".ShowMovementDataActivity"
             android:label="@string/title_activity_show_movement_data" >
+        </activity>
+        <activity
+            android:name=".UserPreferenceActivity"
+            android:label="@string/title_activity_user_preference" >
         </activity>
     </application>
 

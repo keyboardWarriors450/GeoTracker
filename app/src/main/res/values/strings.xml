@@ -70,4 +70,6 @@
     <string name="title_activity_map">MapActivity</string>
     <string name="dialog_validate_email">Validate your email to register</string>
     <string name="title_activity_show_movement_data">ShowMovementDataActivity</string>
+    <string name="preference">User Preference</string>
+    <string name="title_activity_user_preference">UserPreferenceActivity</string>
 </resources>
