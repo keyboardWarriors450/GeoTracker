@@ -189,7 +189,7 @@ public class ViewLocations extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || wifiOn) {
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     Toast.makeText(context, "Tracking is enabled in your devise", Toast.LENGTH_SHORT).show();
 
                     DataMovementService.scheduleUpdate(v.getContext(), true);
@@ -203,17 +203,15 @@ public class ViewLocations extends ActionBarActivity {
                             PackageManager.DONT_KILL_APP);
 
                     // Register the listener with the Location Manager to receive location updates
-                    if (wifiOn) {
-                        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
-                                0, 0, locationListener);
-                    } else {
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                                 0, 0, locationListener);
-                    }
 
                     /********************/
                     Toast.makeText(context, "Location Service has been Enable", Toast.LENGTH_SHORT).show();
 
+                } else if (wifiOn) {
+                    locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
+                            0, 0, locationListener);
                 } else {
                     promptUserTurnGPSon(); // ask user to turn gps on
                 }
@@ -226,9 +224,9 @@ public class ViewLocations extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                //  LocationService.setServiceAlarm(v.getContext(), false);
-
                 // this will enable Alarm OFF
+                DataMovementService.scheduleUpdate(context, false);
+
                 ComponentName receiver = new ComponentName(v.getContext(), LocationBroadcastReceiver.class);
                 PackageManager pm = v.getContext().getPackageManager();
 
@@ -339,13 +337,26 @@ public class ViewLocations extends ActionBarActivity {
             pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
             finish();
-
+            DataMovementService.scheduleUpdate(context, false);
             locationManager.removeUpdates(locationListener);
             toHomeScreen();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroy() {
+        ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
+        PackageManager pm = this.getApplicationContext().getPackageManager();
+        pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+        finish();
+        DataMovementService.scheduleUpdate(context, false);
+        locationManager.removeUpdates(locationListener);
+        toHomeScreen();
+        super.onDestroy();
     }
 
     private void toHomeScreen() {
