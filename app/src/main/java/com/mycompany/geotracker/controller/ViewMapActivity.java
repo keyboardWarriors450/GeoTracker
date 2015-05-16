@@ -5,7 +5,7 @@
  * of Keyboard Warriors.
  */
 
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.controller;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import com.mycompany.geotracker.R;
 import com.mycompany.geotracker.data.MyData;
 
 import java.util.ArrayList;

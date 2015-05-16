@@ -5,7 +5,7 @@
  * of Keyboard Warriors.
  */
 
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.controller;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,7 +15,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
+
+import com.mycompany.geotracker.R;
+import com.mycompany.geotracker.controller.PasswordEmailSent;
 
 /**
  * Created by Daniel on 4/13/2015.

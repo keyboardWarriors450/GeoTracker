@@ -5,29 +5,25 @@
  * of Keyboard Warriors.
  */
 
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.controller;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
+import com.mycompany.geotracker.R;
+import com.mycompany.geotracker.server.RecoverPassword;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
 
@@ -153,7 +149,7 @@ public class MyAccountActivity extends ActionBarActivity {
     }
 
     private void toMovementData() {
-        startActivity(new Intent(this, PickDateActivity.class));
+        startActivity(new Intent(this, ViewLocations.class));
     }
 
 }

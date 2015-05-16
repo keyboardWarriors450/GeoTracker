@@ -5,7 +5,7 @@
  * of Keyboard Warriors.
  */
 
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.controller;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -28,6 +28,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
+import com.mycompany.geotracker.R;
 
 
 public class UserPreferenceActivity extends ActionBarActivity {

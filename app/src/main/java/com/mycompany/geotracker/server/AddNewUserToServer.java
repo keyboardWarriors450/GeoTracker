@@ -1,4 +1,4 @@
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.server;
 
 import java.net.URI;
 
@@ -12,10 +12,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.view.Window;
+
+import com.mycompany.geotracker.R;
+import com.mycompany.geotracker.controller.HomeScreen;
 
 /**
  * Created by David May 2015

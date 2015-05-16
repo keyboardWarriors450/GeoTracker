@@ -14,7 +14,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="@drawable/image2"
-    tools:context="com.mycompany.geotracker.PickDateActivity">
+    tools:context="com.mycompany.geotracker.controller.ViewLocations">
 
     <EditText
         android:layout_weight="1"

@@ -5,7 +5,7 @@
  * of Keyboard Warriors.
  */
 
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.controller;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -17,7 +17,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.mycompany.geotracker.server.AddRegisterSheet;
+import com.mycompany.geotracker.R;
 import com.mycompany.geotracker.data.MyData;
+import com.mycompany.geotracker.server.AddNewUserToServer;
 
 /*
  * Created by David on April 2015

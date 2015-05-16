@@ -6,7 +6,7 @@
  * This file is take the user input for start and end date and showing a possible location list
  * or point on the next view map screen.
  */
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.controller;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -20,7 +20,6 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.SystemClock;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,8 +30,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
+import com.mycompany.geotracker.server.MovementDataFromServer;
+import com.mycompany.geotracker.R;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
+import com.mycompany.geotracker.service.DataMovementService;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -43,7 +46,7 @@ import java.util.List;
 /**
  * This class will take user input; start date and end date to show location
  */
-public class PickDateActivity extends ActionBarActivity {
+public class ViewLocations extends ActionBarActivity {
 
     public final static String START_DATE = "start date";
     public final static String END_DATE = "end date";
@@ -54,7 +57,7 @@ public class PickDateActivity extends ActionBarActivity {
     private Button mStopButton;
     private Location myLocation;
     public static List<Location> mLocationList;
-    private Context context = PickDateActivity.this;
+    private Context context = ViewLocations.this;
     private EditText startTxt;
     private EditText endTxt;
     private DateFormat dfm;
@@ -82,7 +85,7 @@ public class PickDateActivity extends ActionBarActivity {
 
                 showData.setTextColor(Color.parseColor("#67818a"));
                 /** get user id**/
-                MyData myData = new MyData(PickDateActivity.this);
+                MyData myData = new MyData(ViewLocations.this);
                 final ArrayList<User> allData = myData.selectAllUsers();
                 String uid = "";
                 if (allData.size() != 0) {
@@ -133,7 +136,7 @@ public class PickDateActivity extends ActionBarActivity {
             public void onClick(View v) {
 
                 /** get user id**/
-                MyData myData = new MyData(PickDateActivity.this);
+                MyData myData = new MyData(ViewLocations.this);
                 final ArrayList<User> allData = myData.selectAllUsers();
 
                 String uid = "";
@@ -188,8 +191,8 @@ public class PickDateActivity extends ActionBarActivity {
                 LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || wifiOn) {
                     Toast.makeText(context, "Tracking is enabled in your devise", Toast.LENGTH_SHORT).show();
-                    //  LocationService.setServiceAlarm(v.getContext(), true);
-                    scheduleUpdate();
+
+                    DataMovementService.scheduleUpdate(v.getContext(), true);
 
                     // this will enable Alarm ON
                     ComponentName receiver = new ComponentName(v.getContext(), LocationBroadcastReceiver.class);
@@ -263,48 +266,6 @@ public class PickDateActivity extends ActionBarActivity {
 
     }
 
-    /**
-     * Creates an Intent and sets the class which will execute when the alarm triggers.
-     * Here we have given AlarmReceiver in the Intent, the onReceive() method of this class
-     * will execute when the alarm triggers.
-     */
-    public void scheduleUpdate() {
-
-        // Context context = V.getContext();
-        // create an Intent and set the class which will execute when Alarm triggers, here we have
-        // given AlarmReciever in the Intent, the onRecieve() method of this class will execute when
-        // alarm triggers
-        Intent intentAlarm = new Intent(this, LocationBroadcastReceiver.class);
-      //  Double lat1 = myLocation.getLatitude();
-        String lat = " Latitude: ";
-        if (myLocation != null) {
-            lat += myLocation.getLatitude();
-        }
-        intentAlarm.putExtra(LATITUDE,  lat);
-        intentAlarm.putExtra("wifi", wifiOn);
-        // create the object
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-        //set the alarm for particular time
-        //   alarmManager.set(AlarmManager.RTC_WAKEUP,time, PendingIntent.getBroadcast(this,1,  intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
-
-        // repeat every 5 seconds
-        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                , 5000, PendingIntent.getBroadcast(this, 1, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
-
-        Toast.makeText(this, "Location Update every 5 seconds", Toast.LENGTH_SHORT).show();
-
-    }
-
-    /**
-     * This method will collect start date and end date then link to the sho map page
-     */
-    public void toViewMap() {
-        // this indicate which page you want to link to
-        Intent intent = new Intent(this, ViewMapActivity.class);
-        // reserve space for extra information here if need
-        startActivity(intent);
-    }
 
     /**
      * Validates user inputs.
@@ -341,14 +302,6 @@ public class PickDateActivity extends ActionBarActivity {
         } else return false;
 
     }
-
-
-/*    public void toListPoints() {
-        // this indicate which page you want to link to
-        Intent intent = new Intent(this, ShowMovementDataActivity.class);
-        // reserve space for extra information here if need
-       startActivity(intent);
-    }*/
 
     /**
      * Creates the options menu on the top of the screen.
@@ -398,16 +351,6 @@ public class PickDateActivity extends ActionBarActivity {
     private void toHomeScreen() {
         startActivity(new Intent(this, HomeScreen.class));
     }
-
-/*    public void viewMap(View view) {
-        Intent intent = new Intent(this, ViewMapActivity.class);
-        EditText editText = (EditText) findViewById(R.id.startDate);
-      //  EditText editText2 = (EditText) findViewById(R.id.endDate);
-        String message = editText.getText().toString();
-        intent.putExtra(START_DATE, message);
-        startActivity(intent);
-    }*/
-
 
     /**
      * Prompt user to turn GPS on

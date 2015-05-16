@@ -5,7 +5,7 @@
  * of Keyboard Warriors.
  */
 
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.controller;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.mycompany.geotracker.R;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.Location;
 
@@ -37,9 +38,9 @@ public class ShowMovementDataActivity extends ActionBarActivity {
         MyData myData = new MyData(this);
         ArrayList<Location> locList = myData.selectAllLocations();
         myData.close();
+        for (int i = locList.size() - 1; i > 0; i--) {
 
-        for (Location loc : locList) {
-            listOfLocation += loc.toString() + "\n\n";
+            listOfLocation += locList.get(i).toString() + "\n\n";
         }
         tv.setText(" Timestamp       Latitude        Longitude    Heading\n\n" + listOfLocation);
     }

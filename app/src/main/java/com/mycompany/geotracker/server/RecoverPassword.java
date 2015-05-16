@@ -5,7 +5,7 @@
  * of Keyboard Warriors.
  */
 
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.server;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.Toast;
+
+import com.mycompany.geotracker.controller.HomeScreen;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

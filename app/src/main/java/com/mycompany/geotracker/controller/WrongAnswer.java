@@ -5,13 +5,15 @@
  * of Keyboard Warriors.
  */
 
-package com.mycompany.geotracker;
+package com.mycompany.geotracker.controller;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.mycompany.geotracker.R;
 
 /**
  * Created by Daniel on 4/13/2015.
