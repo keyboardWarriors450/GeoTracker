@@ -47,23 +47,16 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * This class will take user input; start date and end date to show location
+ * This class will take user input; start date and end date to show location and data
  */
 public class ViewLocations extends ActionBarActivity {
 
     public final static String DATE_TYPE = "DATE TYPE";
-    public final static String END_DATE = "end date";
     private static long start;
     private static long end;
-    public final static String LATITUDE = "Latitude";
     private Button mStartButton;
     private Button mStopButton;
-    private Location myLocation;
-    public static List<Location> mLocationList;
     private Context context = ViewLocations.this;
-    private EditText startTxt;
-    private EditText endTxt;
-    private DateFormat dfm;
     private static String startStr;
     private static String endStr;
     private LocationManager locationManager;
@@ -81,7 +74,6 @@ public class ViewLocations extends ActionBarActivity {
         start = 0; end = 0; // initial start end unix time
         locationManager = (LocationManager) this.getSystemService(
                 Context.LOCATION_SERVICE);
-        // mLocationList = new ArrayList<>();
 
         // movement data button
         showData = (Button)findViewById(R.id.show_location);
@@ -101,49 +93,7 @@ public class ViewLocations extends ActionBarActivity {
                 myData.close();
 
                 new MovementDataFromServer(context).execute(uid, startStr, endStr, " ");
-                /*showData.setTextColor(Color.parseColor("#67818a"));
-                *//** get user id**//*
-                MyData myData = new MyData(ViewLocations.this);
-                final ArrayList<User> allData = myData.selectAllUsers();
-                String uid = "";
-                if (allData.size() != 0) {
-                    uid = allData.get(allData.size()-1).getUserID();
-                }
-                myData.close();
-                *//* get user input and convert to unix Time Stamp *//*
-                // start date
-                startTxt = (EditText)findViewById(R.id.startDate);
-                // end date
-                endTxt = (EditText)findViewById(R.id.endDate);
 
-                String startDate = startTxt.getText().toString();
-                String endDate = endTxt.getText().toString();
-                if (isValidDates(startDate,endDate) ) {
-
-                    dfm = new SimpleDateFormat("MM-dd-yy");
-
-                    try {
-                        start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
-                        startStr = Long.toString(start);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
-                        endStr = Long.toString(end);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    new MovementDataFromServer(context).execute(uid, startStr, endStr, " ");  //
-                    // pause and wait for 5 seconds for download list of location is done
-                    // SystemClock.sleep(5000);
-                    //  toListPoints();  // this bring to list of point toListPoints()
-                } else {
-                    Toast.makeText(context, "Invalid inputs or Missing end/start date", Toast.LENGTH_LONG).show();
-                }*/
             }
         });
 
@@ -165,45 +115,11 @@ public class ViewLocations extends ActionBarActivity {
                 myData.close();
 
                 new MovementDataFromServer(context).execute(uid, startStr, endStr, "map");
-                /* get user input and convert to unix Time Stamp */
-                // start date
-               // startTxt = (EditText)findViewById(R.id.startDate);
-                // end date
-              //  endTxt = (EditText)findViewById(R.id.endDate);
 
-              //  String startDate = startTxt.getText().toString();
-              //  String endDate = endTxt.getText().toString();
-                /*if (isValidDates(startDate,endDate) ) {
-
-                    dfm = new SimpleDateFormat("MM-dd-yy");
-
-                    try {
-                        start = dfm.parse(startDate).getTime() / 1000; // start date Unix time
-                        startStr = Long.toString(start);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        end = dfm.parse(endDate).getTime() / 1000; // end date Unix Time
-                        endStr = Long.toString(end);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    new MovementDataFromServer(context).execute(uid, startStr, endStr, "map");  //
-                    // pause and wait for 5 seconds for download list of location is done
-                  //  SystemClock.sleep(5000);
-                  //  toViewMap();
-                }  else {
-                    Toast.makeText(context, "Invalid inputs or Missing end/start date", Toast.LENGTH_LONG).show();
-                }*/
             }
         });
 
         // service button
-      //  final Button startService = (Button)findViewById(R.id.start_service);
 
         mStartButton = (Button) findViewById(R.id.start_service);
         mStartButton.setOnClickListener(new View.OnClickListener() {
@@ -261,19 +177,13 @@ public class ViewLocations extends ActionBarActivity {
         });
 
 
-        /*********************/
-        //LocationManager locationManager = (LocationManager) this.getSystemService(
-         //          Context.LOCATION_SERVICE);
-
-       //  Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
         // Define a listener that responds to location updates
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
                 Log.i("LOCATION SERVICES", location.toString());
                 //  mLocationLog.addLocation(location);
-                myLocation = location;
+             //   myLocation = location;
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -376,42 +286,6 @@ public class ViewLocations extends ActionBarActivity {
             Toast.makeText(view.getContext(), "You selected " + dateFormat , Toast.LENGTH_SHORT).show();
 
         }
-    }
-
-    /**
-     * Validates user inputs.
-     * @param startD the start date
-     * @param endD the end date
-     * @return true if the date is valid, false otherwise
-     */
-    public boolean isValidDates(String startD, String endD) {
-        if(startD == null || endD == null || startD.length() != 8 || endD.length() != 8 )
-            return false;
-
-        if (startD.charAt(2) == '-' && startD.charAt(5) == '-'
-                && endD.charAt(2) == '-' && endD.charAt(5) == '-') {
-
-            DateFormat dFormat = new SimpleDateFormat("MM-dd-yy");
-            long starDatetLong = 0;
-            long endDateLong = 0;
-
-            try {
-                starDatetLong = dFormat.parse(startD).getTime() / 1000; // start date Unix time
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                endDateLong = dFormat.parse(endD).getTime() / 1000; // start date Unix time
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            if (starDatetLong < endDateLong) return true; else return false;
-
-
-        } else return false;
-
     }
 
     /**
