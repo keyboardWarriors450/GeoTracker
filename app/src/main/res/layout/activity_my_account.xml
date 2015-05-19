@@ -21,7 +21,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/car"
+        android:src="@drawable/myaccntscreen"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="58dp"
         android:layout_alignParentRight="true"
@@ -41,7 +41,9 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="24dp"
         android:layout_alignRight="@+id/movement_data"
-        android:layout_alignEnd="@+id/movement_data" />
+        android:layout_alignEnd="@+id/movement_data"
+        android:background="@drawable/button"
+        android:textColor="#fffffff7" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -52,7 +54,9 @@
         android:layout_marginBottom="124dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@drawable/button"
+        android:textColor="#ffffffff" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -64,7 +68,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/movement_data"
-        android:layout_alignEnd="@+id/movement_data" />
+        android:layout_alignEnd="@+id/movement_data"
+        android:background="@drawable/button"
+        android:textColor="#ffffffff" />
 
     <TextView
         android:layout_width="wrap_content"
