@@ -330,7 +330,7 @@ public class ViewLocations extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+   /* @Override
     public void onDestroy() {
         ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
         PackageManager pm = this.getApplicationContext().getPackageManager();
@@ -341,7 +341,7 @@ public class ViewLocations extends ActionBarActivity {
         locationManager.removeUpdates(locationListener);
         toHomeScreen();
         super.onDestroy();
-    }
+    }*/
 
     private void toHomeScreen() {
         startActivity(new Intent(this, HomeScreen.class));
