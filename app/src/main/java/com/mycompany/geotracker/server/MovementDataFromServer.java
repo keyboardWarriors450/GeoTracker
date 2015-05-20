@@ -124,10 +124,6 @@ public class MovementDataFromServer extends AsyncTask<String, Void, String> {
                         myData.deleteAllLocations();
 
                         JSONArray jArray = obj.getJSONArray("points");
-                        /*
-                        Delete this out after reviewing that the JSONarray is indeed working.
-                         */
-                        System.out.println(jArray.toString());
 
                         for (int i = 0; i < jArray.length(); i++) {
                             JSONObject jObject = jArray.getJSONObject(i);

@@ -22,13 +22,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +42,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * This class will take user input; start date and end date to show location and data
@@ -181,7 +178,7 @@ public class ViewLocations extends ActionBarActivity {
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-                Log.i("LOCATION SERVICES", location.toString());
+            //    Log.i("LOCATION SERVICES", location.toString());
                 //  mLocationLog.addLocation(location);
              //   myLocation = location;
             }

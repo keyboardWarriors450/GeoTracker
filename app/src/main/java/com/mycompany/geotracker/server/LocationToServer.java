@@ -7,7 +7,6 @@
 
 package com.mycompany.geotracker.server;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -24,19 +23,11 @@ import java.io.InputStreamReader;
 import java.net.URI;
 
 /**
- * Created by David on 5/11/15.
- */
+ * Created by David on May 2015
+ * */
 public class LocationToServer extends AsyncTask<String, Void, String> {
 
-    private Context context;
-    private String uid;
-    private String lat;
-    private String lon;
-    private String speed;
-    private String heading;
-    private String timestamp;
-
-    public LocationToServer(Context context) {
+    public LocationToServer() {
     }
 
     @Override
@@ -51,12 +42,12 @@ public class LocationToServer extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String ...params) {
         try {
-            uid = params[0];
-            lat = params[1];
-            lon = params[2];
-            speed = params[3];
-            heading = params[4];
-            timestamp = params[5];
+            String uid = params[0];
+            String lat = params[1];
+            String lon = params[2];
+            String speed = params[3];
+            String heading = params[4];
+            String timestamp = params[5];
 
             String link = Uri.parse("http://450.atwebpages.com/logAdd.php").buildUpon()
                     .appendQueryParameter("lat", lat)
@@ -101,11 +92,10 @@ public class LocationToServer extends AsyncTask<String, Void, String> {
             try {
                 JSONObject obj = new JSONObject(result);
                 if (obj.getString("result").equals("success")) {
-                    Log.i("sending location", "success");
-                    Log.i("sending location", timestamp);
+                    Log.i("LocationToServer", "success");
                 }
                 else {
-                    Log.i("sending location", "failed");
+                    Log.i("LocationToServer", "failed");
                 }
             } catch (JSONException e) {
                 System.out.println("JSON Exception");

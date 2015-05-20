@@ -12,14 +12,14 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.mycompany.geotracker.controller.UserPreferenceActivity;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
-import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
 import com.mycompany.geotracker.server.LocationToServer;
 
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ import java.util.ArrayList;
  * helper methods.
  */
 public class DataMovementService extends IntentService {
+    static int counter = 0;
     public static boolean wifiOn = false;
     private Location myLocation;
     private static final String TAG = "DataMovementService";
@@ -50,6 +51,7 @@ public class DataMovementService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        System.out.println("*************************DataMovementService.onHandleIntent");
         //boolean wifi = intent.getExtras().getBoolean("wifi");
 
         LocationManager locationManager = (LocationManager) this.getSystemService(
@@ -96,9 +98,20 @@ public class DataMovementService extends IntentService {
 
             myData.close();
 
-            new LocationToServer(this).execute(uid, latStr, lonStr, speedStr, headingStr, timestampStr);
-            Toast.makeText(this, "Uploaded current location: " + myLocation.getLatitude() + ", " +
-                    myLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+            SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.PREF_NAME,
+                    Context.MODE_PRIVATE);
+            int interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
+                    TRACKING_INTERVAL, null));
+            int interval_upload = sharedPref.getInt(UserPreferenceActivity.UPLOAD_INTERVAL, 60);
+            int interval = interval_upload / interval_track;
+            System.out.println("****************interval " + interval + " track " + interval_track +
+                " upload " + interval_upload);
+            counter++;
+            if (counter == interval) {
+                new LocationToServer().execute(uid, latStr, lonStr, speedStr, headingStr,
+                        timestampStr);
+                counter = 0;
+            }
         }
     }
 
@@ -107,7 +120,14 @@ public class DataMovementService extends IntentService {
      *
      */
     public static void scheduleUpdate(Context context, boolean isOn) {
+        System.out.println("**********************DataMovementService.scheduleUpdate started");
 
+        SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.PREF_NAME,
+                Context.MODE_PRIVATE);
+
+        int interval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
+                .TRACKING_INTERVAL, null));
+        interval *= 1000;
         // Context context = V.getContext();
         Intent intentAlarm = new Intent(context, DataMovementService.class);
       //  intentAlarm.putExtra("wifi", wifiOn);
@@ -121,7 +141,7 @@ public class DataMovementService extends IntentService {
         if (isOn) {
             // repeat every 5 seconds
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                    , 5000, pIntent);
+                    , interval, pIntent);
             //Toast.makeText(context, "Location Update every 5 seconds", Toast.LENGTH_SHORT).show();
 
         } else {

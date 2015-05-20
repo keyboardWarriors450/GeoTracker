@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 import com.mycompany.geotracker.server.LoginToServer;
 import com.mycompany.geotracker.R;
 import com.mycompany.geotracker.data.MyData;
-import com.mycompany.geotracker.model.Location;
 import com.mycompany.geotracker.model.User;
 
 import java.util.ArrayList;
@@ -43,6 +41,7 @@ public class HomeScreen extends ActionBarActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("*************************Started HomeScreen");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
@@ -103,13 +102,6 @@ public class HomeScreen extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        final ArrayList<Location> allData1 = myData.selectAllLocations();
-        if (allData1.size() != 0) {
-            for (Location loc : allData1) {
-                Log.i("locations", loc.toString());
-            }
-        }
 
         final ArrayList<User> allData = myData.selectAllUsers();
         if (allData.size() != 0) {

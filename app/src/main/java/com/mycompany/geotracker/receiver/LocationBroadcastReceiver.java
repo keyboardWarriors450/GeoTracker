@@ -27,8 +27,10 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
      * @param context the context
      * @param intent the intent
      */
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        System.out.println("*****************************Started LocationBroadcastReceiver ******");
 
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
 

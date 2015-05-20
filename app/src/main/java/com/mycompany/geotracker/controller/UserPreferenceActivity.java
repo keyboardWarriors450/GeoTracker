@@ -57,7 +57,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
 
         tracking.setChecked(sharedPref.getBoolean(TRACKING_SWITCH, true));
         trackingInterval.setText(sharedPref.getString(TRACKING_INTERVAL, "60"));
-        uploadInterval = sharedPref.getInt(UPLOAD_INTERVAL, 3600);
+        uploadInterval = sharedPref.getInt(UPLOAD_INTERVAL, 60);
 
         tracking.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
 
@@ -171,14 +171,17 @@ public class UserPreferenceActivity extends ActionBarActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int temp = Integer.parseInt(input.getText().toString());
-                if (temp >= 10 && temp < +300) {
-                    trackingInterval.setText(input.getText());
-                    SharedPreferences sharedPref = that.getSharedPreferences(PREF_NAME,
-                            Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit(); editor.putString
-                            (TRACKING_INTERVAL, trackingInterval.getText().toString());
-                    editor.commit();
+                if (!input.getText().toString().equals("") &&
+                        Integer.parseInt(input.getText().toString()) >= 10 &&
+                        Integer.parseInt(input.getText().toString()) <+ 300) {
+                        trackingInterval.setText(input.getText());
+                        SharedPreferences sharedPref = that.getSharedPreferences(PREF_NAME,
+                                Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit(); editor.putString
+                                (TRACKING_INTERVAL, trackingInterval.getText().toString());
+                        editor.commit();
+                } else {
+                    selectTrackingInterval();
                 }
             }
         });

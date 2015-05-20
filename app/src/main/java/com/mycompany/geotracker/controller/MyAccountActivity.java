@@ -43,14 +43,19 @@ public class MyAccountActivity extends ActionBarActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("***********************Started MyAccountActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
 
+        //**************** Check if tracking is on or off ************************
         SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.PREF_NAME,
                 Context.MODE_PRIVATE);
 
         if (sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true)) {
             System.out.println("TRUE");
+
+            //**************** Turn tracking on***************************
+            //put code here
         }
 
         myData = new MyData(this);
