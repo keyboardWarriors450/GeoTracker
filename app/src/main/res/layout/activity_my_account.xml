@@ -34,29 +34,13 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/change_password"
-        android:id="@+id/change_password"
-        android:layout_above="@+id/movement_data"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="24dp"
-        android:layout_alignRight="@+id/movement_data"
-        android:layout_alignEnd="@+id/movement_data"
-        android:background="@drawable/button"
-        android:textColor="#fffffff7" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/view_data"
         android:id="@+id/movement_data"
-        android:layout_marginBottom="124dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:background="@drawable/button"
-        android:textColor="#ffffffff" />
+        android:textColor="#ffffffff"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -64,13 +48,14 @@
         android:layout_height="wrap_content"
         android:text="@string/preference"
         android:id="@+id/preference"
-        android:layout_alignBottom="@+id/imageView"
+        android:background="@drawable/button"
+        android:textColor="#ffffffff"
+        android:layout_below="@+id/movement_data"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="29dp"
         android:layout_alignRight="@+id/movement_data"
-        android:layout_alignEnd="@+id/movement_data"
-        android:background="@drawable/button"
-        android:textColor="#ffffffff" />
+        android:layout_alignEnd="@+id/movement_data" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -83,5 +68,16 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/decal" />
 
 </RelativeLayout>

@@ -81,9 +81,10 @@
         android:text="@string/forgot_password"
         android:id="@+id/forgot_password"
         android:textColor="#ffffffff"
-        android:layout_below="@+id/create_user"
-        android:layout_alignLeft="@+id/password"
-        android:textSize="@dimen/abc_text_size_medium_material" />
+        android:textSize="@dimen/abc_text_size_title_material"
+        android:layout_alignRight="@+id/imageView2"
+        android:layout_alignEnd="@+id/imageView2"
+        android:layout_alignTop="@+id/create_user" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -94,11 +95,11 @@
         android:linksClickable="true"
         android:clickable="false"
         android:focusable="true"
+        android:textSize="@dimen/abc_text_size_title_material"
         android:layout_below="@+id/password"
-        android:layout_alignLeft="@+id/password"
-        android:layout_alignStart="@+id/password"
-        android:layout_marginTop="25dp"
-        android:textSize="@dimen/abc_text_size_medium_material" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -106,23 +107,11 @@
         android:id="@+id/imageView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:background="@drawable/homescreen"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/forgot_password" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:id="@+id/button"
-        android:background="@drawable/button"
-        android:textColor="#ffffffff"
-        android:layout_alignBottom="@+id/forgot_password"
-        android:layout_alignRight="@+id/imageView2"
-        android:layout_alignEnd="@+id/imageView2" />
 
 
 </RelativeLayout>
