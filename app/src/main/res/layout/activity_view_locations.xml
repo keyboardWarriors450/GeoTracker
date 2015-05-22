@@ -20,34 +20,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:text="View Map"
         android:id="@+id/viewMap"
         android:clickable="true"
         android:nestedScrollingEnabled="false"
         android:onClick="showMap"
         android:layout_above="@+id/show_location"
-        android:layout_toRightOf="@+id/start_service"
-        android:layout_toEndOf="@+id/start_service"
         android:layout_marginBottom="15dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="start service"
-        android:id="@+id/start_service"
-        android:clickable="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="End Service"
-        android:id="@+id/end_service"
-        android:layout_alignTop="@+id/start_service"
-        android:layout_toRightOf="@+id/viewMap"
-        android:layout_toEndOf="@+id/viewMap" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

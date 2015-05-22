@@ -17,6 +17,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
 
+import com.mycompany.geotracker.controller.TrackingLocation;
 import com.mycompany.geotracker.controller.UserPreferenceActivity;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
@@ -51,11 +52,14 @@ public class DataMovementService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        System.out.println("*************************DataMovementService.onHandleIntent");
+        System.out.println("*************************DataMovementService.onHandleIntent started");
+
         //boolean wifi = intent.getExtras().getBoolean("wifi");
 
-        LocationManager locationManager = (LocationManager) this.getSystemService(
-                Context.LOCATION_SERVICE);
+//        LocationManager locationManager = (LocationManager) this.getSystemService(
+//                Context.LOCATION_SERVICE);
+
+        LocationManager locationManager = TrackingLocation.get(this).getLocationMan();
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
@@ -98,14 +102,14 @@ public class DataMovementService extends IntentService {
 
             myData.close();
 
-            SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.PREF_NAME,
+            SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
                     Context.MODE_PRIVATE);
             int interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
-                    TRACKING_INTERVAL, null));
+                    TRACKING_INTERVAL, "60"));
             int interval_upload = sharedPref.getInt(UserPreferenceActivity.UPLOAD_INTERVAL, 60);
             int interval = interval_upload / interval_track;
-            System.out.println("****************interval " + interval + " track " + interval_track +
-                " upload " + interval_upload);
+            System.out.println("****************interval " + interval + " tracking " + interval_track +
+                " uploading " + interval_upload);
             counter++;
             if (counter == interval) {
                 new LocationToServer().execute(uid, latStr, lonStr, speedStr, headingStr,
@@ -119,35 +123,42 @@ public class DataMovementService extends IntentService {
      * Creates an Intent and sets the class which will execute when the alarm triggers.
      *
      */
-    public static void scheduleUpdate(Context context, boolean isOn) {
-        System.out.println("**********************DataMovementService.scheduleUpdate started");
+    public static void scheduleUpdate(Context context, SharedPreferences sharedPref) {
+        System.out.println("**********************DataMovementService.scheduleUpdate started*******");
 
-        SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.PREF_NAME,
-                Context.MODE_PRIVATE);
+        boolean isOn = sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true);
+        int trackingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
+                .TRACKING_INTERVAL, "60"));
 
-        int interval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
-                .TRACKING_INTERVAL, null));
-        interval *= 1000;
-        // Context context = V.getContext();
+        trackingInterval *= 1000;
         Intent intentAlarm = new Intent(context, DataMovementService.class);
       //  intentAlarm.putExtra("wifi", wifiOn);
         PendingIntent pIntent = PendingIntent.getService(context, 0, intentAlarm, 0);
-        // create the object
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         //set the alarm for particular time
        // alarmManager.set(AlarmManager.RTC_WAKEUP,time, PendingIntent.getBroadcast(context,1,  intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
 
         if (isOn) {
-            // repeat every 5 seconds
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                    , interval, pIntent);
+                    , trackingInterval, pIntent);
             //Toast.makeText(context, "Location Update every 5 seconds", Toast.LENGTH_SHORT).show();
-
         } else {
+            System.out.println("Tracking off");
             alarmManager.cancel(pIntent);
             pIntent.cancel();
         }
+    }
+
+    public static void scheduleUpdateLogout(Context context) {
+
+        Intent intentAlarm = new Intent(context, DataMovementService.class);
+        //  intentAlarm.putExtra("wifi", wifiOn);
+        PendingIntent pIntent = PendingIntent.getService(context, 0, intentAlarm, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        alarmManager.cancel(pIntent);
+        pIntent.cancel();
     }
 
     /**

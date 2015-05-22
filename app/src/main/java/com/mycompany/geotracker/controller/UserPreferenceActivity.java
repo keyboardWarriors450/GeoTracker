@@ -28,14 +28,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
 import com.mycompany.geotracker.R;
+import com.mycompany.geotracker.service.DataMovementService;
 
 
 public class UserPreferenceActivity extends ActionBarActivity {
 
-    public static final String PREF_NAME = "UserPref";
+    public static final String USER_PREF = "UserPref";
     public static final String TRACKING_SWITCH = "tracking_switch";
     public static final String TRACKING_INTERVAL = "tracking_interval";
     public static final String UPLOAD_INTERVAL = "upload_interval";
@@ -48,7 +50,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_preference);
 
-        SharedPreferences sharedPref = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getSharedPreferences(USER_PREF, Context.MODE_PRIVATE);
 
         trackingInterval = (TextView) findViewById(R.id.curr_tracking_time_field);
         final Switch tracking = (Switch) findViewById(R.id.tracking_switch);
@@ -63,13 +65,24 @@ public class UserPreferenceActivity extends ActionBarActivity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                SharedPreferences sharedPref = that.getSharedPreferences(PREF_NAME,
+                SharedPreferences sharedPref = that.getSharedPreferences(USER_PREF,
                         Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putBoolean
                         (TRACKING_SWITCH, tracking.isChecked());
                 editor.commit();
+
+                if (isChecked) {
+                    Toast.makeText(that, "Location Service has been Enabled", Toast.LENGTH_SHORT).show();
+                    TrackingLocation.get(that).startLocationUpdates();
+                    DataMovementService.scheduleUpdate(that, sharedPref);
+
+                } else {
+                    Toast.makeText(that, "Location Service has been Disabled", Toast.LENGTH_SHORT).show();
+                    TrackingLocation.get(that).stopLocationUpdates();
+                    DataMovementService.scheduleUpdate(that, sharedPref);
+             //       stopService(new Intent(that, DataMovementService.class));
+                }
             }
         });
 
@@ -94,7 +107,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
                     setUploadIntervalTime(86400);
                 }
 
-                SharedPreferences sharedPref = that.getSharedPreferences(PREF_NAME,
+                SharedPreferences sharedPref = that.getSharedPreferences(USER_PREF,
                         Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit(); editor.putInt
                         (UPLOAD_INTERVAL, uploadInterval);
@@ -140,6 +153,12 @@ public class UserPreferenceActivity extends ActionBarActivity {
         //takes the user back to the home screen
         if (id == R.id.action_logout) {
             //Log the user out.
+            Toast.makeText(that, "Logout successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(that, "Service has been Disabled", Toast.LENGTH_SHORT).show();
+            TrackingLocation.get(that).stopLocationUpdates();
+
+            DataMovementService.scheduleUpdateLogout(that);
+
             ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
             PackageManager pm = this.getApplicationContext().getPackageManager();
 
@@ -147,7 +166,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
                     PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
             finish();
-            startActivity(new Intent(this, HomeScreen.class));
+            toHomeScreen();
             return true;
         }
 
@@ -175,10 +194,10 @@ public class UserPreferenceActivity extends ActionBarActivity {
                         Integer.parseInt(input.getText().toString()) >= 10 &&
                         Integer.parseInt(input.getText().toString()) <+ 300) {
                         trackingInterval.setText(input.getText());
-                        SharedPreferences sharedPref = that.getSharedPreferences(PREF_NAME,
+                        SharedPreferences sharedPref = that.getSharedPreferences(USER_PREF,
                                 Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit(); editor.putString
-                                (TRACKING_INTERVAL, trackingInterval.getText().toString());
+                            (TRACKING_INTERVAL, trackingInterval.getText().toString());
                         editor.commit();
                 } else {
                     selectTrackingInterval();
@@ -193,5 +212,9 @@ public class UserPreferenceActivity extends ActionBarActivity {
         });
 
         builder.show();
+    }
+
+    private void toHomeScreen() {
+        startActivity(new Intent(this, HomeScreen.class));
     }
 }

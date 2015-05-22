@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.LocationListener;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,22 +21,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
 import com.mycompany.geotracker.R;
-import com.mycompany.geotracker.server.RecoverPassword;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
+import com.mycompany.geotracker.service.DataMovementService;
 
 import java.util.ArrayList;
 
 /*
- * Created by Alex on April 2015.
+ * Created by Alex on April 2015
  */
 public class MyAccountActivity extends ActionBarActivity {
 
     private MyData myData;
     private String user;
+    private LocationListener locationListener;
+    private Context that = this;
 
     /**
      * Creates the page with all the buttons and shows the user name.
@@ -43,30 +47,32 @@ public class MyAccountActivity extends ActionBarActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("***********************Started MyAccountActivity");
+        System.out.println("***********************MyAccountActivity started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
 
         //**************** Check if tracking is on or off ************************
-        SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.PREF_NAME,
+        SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
                 Context.MODE_PRIVATE);
 
         if (sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true)) {
-            System.out.println("TRUE");
+            System.out.println("Tracking ON");
 
             //**************** Turn tracking on***************************
-            //put code here
+            TrackingLocation.get(that).startLocationUpdates();
+        } else {
+            System.out.println("Tracking OFF");
         }
 
         myData = new MyData(this);
         final ArrayList<User> allData = myData.selectAllUsers();
-        user = allData.get(allData.size()-1).getEmail();
+        user = allData.get(allData.size() - 1).getEmail();
         myData.close();
 
         final TextView username = (TextView) findViewById(R.id.username_display);
         int end = 0;
 
-        for(int i = 0; i < user.length(); i++) {
+        for (int i = 0; i < user.length(); i++) {
             if (user.charAt(i) == '@') {
                 end = i;
             }
@@ -85,7 +91,7 @@ public class MyAccountActivity extends ActionBarActivity {
 //            }
 //        });
 
-        final Button view_data = (Button)findViewById(R.id.movement_data);
+        final Button view_data = (Button) findViewById(R.id.movement_data);
 
         view_data.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -97,7 +103,8 @@ public class MyAccountActivity extends ActionBarActivity {
         Button preference = (Button) findViewById(R.id.preference);
         preference.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(MyAccountActivity.this, UserPreferenceActivity.class));
+                Intent i = new Intent(MyAccountActivity.this, UserPreferenceActivity.class);
+                startActivity(i);
             }
         });
 
@@ -135,6 +142,12 @@ public class MyAccountActivity extends ActionBarActivity {
         //takes the user back to the home screen
         if (id == R.id.action_logout) {
             //Log the user out.
+            Toast.makeText(that, "Logout successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(that, "Service has been Disabled", Toast.LENGTH_SHORT).show();
+            TrackingLocation.get(that).stopLocationUpdates();
+
+            DataMovementService.scheduleUpdateLogout(that);
+
             ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
             PackageManager pm = this.getApplicationContext().getPackageManager();
 

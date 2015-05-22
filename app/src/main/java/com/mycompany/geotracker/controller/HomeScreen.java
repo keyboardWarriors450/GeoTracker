@@ -41,7 +41,7 @@ public class HomeScreen extends ActionBarActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("*************************Started HomeScreen");
+        System.out.println("*************************HomeScreen started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 

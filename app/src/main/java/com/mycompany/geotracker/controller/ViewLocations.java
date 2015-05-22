@@ -16,6 +16,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -51,14 +52,9 @@ public class ViewLocations extends ActionBarActivity {
     public final static String DATE_TYPE = "DATE TYPE";
     private static long start;
     private static long end;
-    private Button mStartButton;
-    private Button mStopButton;
     private Context context = ViewLocations.this;
     private static String startStr;
     private static String endStr;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private boolean wifiOn = false;
     private static Button viewMap;
     private static Button showData;
     private static TextView startDatePicker;
@@ -68,9 +64,8 @@ public class ViewLocations extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_locations);
+
         start = 0; end = 0; // initial start end unix time
-        locationManager = (LocationManager) this.getSystemService(
-                Context.LOCATION_SERVICE);
 
         // movement data button
         showData = (Button)findViewById(R.id.show_location);
@@ -115,80 +110,6 @@ public class ViewLocations extends ActionBarActivity {
 
             }
         });
-
-        // service button
-
-        mStartButton = (Button) findViewById(R.id.start_service);
-        mStartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    Toast.makeText(context, "Tracking is enabled in your devise", Toast.LENGTH_SHORT).show();
-
-                    DataMovementService.scheduleUpdate(v.getContext(), true);
-
-                    // this will enable Alarm ON
-                    ComponentName receiver = new ComponentName(v.getContext(), LocationBroadcastReceiver.class);
-                    PackageManager pm = v.getContext().getPackageManager();
-
-                    pm.setComponentEnabledSetting(receiver,
-                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                            PackageManager.DONT_KILL_APP);
-
-                    // Register the listener with the Location Manager to receive location updates
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                                0, 0, locationListener);
-
-                    /********************/
-                    Toast.makeText(context, "Location Service has been Enable", Toast.LENGTH_SHORT).show();
-
-                } else if (wifiOn) {
-                    locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
-                            0, 0, locationListener);
-                } else {
-                    promptUserTurnGPSon(); // ask user to turn gps on
-                }
-
-            }
-        });
-
-        mStopButton = (Button) findViewById(R.id.end_service);
-        mStopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // this will enable Alarm OFF
-                DataMovementService.scheduleUpdate(context, false);
-
-                ComponentName receiver = new ComponentName(v.getContext(), LocationBroadcastReceiver.class);
-                PackageManager pm = v.getContext().getPackageManager();
-
-                pm.setComponentEnabledSetting(receiver,
-                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                        PackageManager.DONT_KILL_APP);
-                locationManager.removeUpdates(locationListener);
-                wifiOn = false;
-                Toast.makeText(context, "Location Service has been Disable", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        // Define a listener that responds to location updates
-        locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
-            //    Log.i("LOCATION SERVICES", location.toString());
-                //  mLocationLog.addLocation(location);
-             //   myLocation = location;
-            }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-            public void onProviderEnabled(String provider) {}
-
-            public void onProviderDisabled(String provider) {}
-        };
 
         // Select a date from a DatePickerDialog
         startDatePicker = (TextView) findViewById(R.id.start_date_text);
@@ -316,13 +237,20 @@ public class ViewLocations extends ActionBarActivity {
 
         //takes the user back to the home screen
         if (id == R.id.action_logout) {
+            //Log the user out.
+            Toast.makeText(context, "Logout successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Service has been Disabled", Toast.LENGTH_SHORT).show();
+            TrackingLocation.get(context).stopLocationUpdates();
+
+            DataMovementService.scheduleUpdateLogout(context);
+
             ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
             PackageManager pm = this.getApplicationContext().getPackageManager();
-            pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+
+            pm.setComponentEnabledSetting(receiver,
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
             finish();
-            DataMovementService.scheduleUpdate(context, false);
-            locationManager.removeUpdates(locationListener);
             toHomeScreen();
             return true;
         }
@@ -330,55 +258,11 @@ public class ViewLocations extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-   /* @Override
-    public void onDestroy() {
-        ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
-        PackageManager pm = this.getApplicationContext().getPackageManager();
-        pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-        finish();
-        DataMovementService.scheduleUpdate(context, false);
-        locationManager.removeUpdates(locationListener);
-        toHomeScreen();
-        super.onDestroy();
-    }*/
-
     private void toHomeScreen() {
         startActivity(new Intent(this, HomeScreen.class));
     }
 
-    /**
-     * Prompt user to turn GPS on
-     */
-    private void promptUserTurnGPSon(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("Your GPS is NOT enabled")
-                .setCancelable(false)
-                .setNeutralButton("Use wifi",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                wifiOn = true;
-                                mStartButton.performClick();
-                            }
-                        })
-                .setPositiveButton("Turn on GPS",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent callGPSSettingIntent = new Intent(
-                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                startActivity(callGPSSettingIntent);
-                            }
-                        });
-        alertDialogBuilder.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int id){
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
+
 
 }
 
