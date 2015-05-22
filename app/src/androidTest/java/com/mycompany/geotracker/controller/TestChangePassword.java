@@ -9,18 +9,20 @@ package com.mycompany.geotracker.controller;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import com.robotium.solo.Solo;
+
 /**
  * Created by danielkhieuson on 5/20/15.
  */
 public class TestChangePassword extends ActivityInstrumentationTestCase2<ChangePassword> {
 
-    //private Solo solo;
+    private Solo solo;
 
     public TestChangePassword() {
         super(ChangePassword.class);
     }
 
-    /*@Override
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
@@ -31,7 +33,7 @@ public class TestChangePassword extends ActivityInstrumentationTestCase2<ChangeP
         //tearDown() is run after a test case has finished.
         //finishOpenedActivities() will finish all the activities that have been opened during the test execution.
         solo.finishOpenedActivities();
-    }*/
+    }
 
 
 }

@@ -9,18 +9,20 @@ package com.mycompany.geotracker.controller;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import com.robotium.solo.Solo;
+
 /**
  * Created by danielkhieuson on 5/20/15.
  */
 public class TestViewLocations extends ActivityInstrumentationTestCase2<ViewLocations> {
 
-    //private Solo solo;
+    private Solo solo;
 
     public TestViewLocations() {
         super(ViewLocations.class);
     }
 
-    /*@Override
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
@@ -31,5 +33,5 @@ public class TestViewLocations extends ActivityInstrumentationTestCase2<ViewLoca
         //tearDown() is run after a test case has finished.
         //finishOpenedActivities() will finish all the activities that have been opened during the test execution.
         solo.finishOpenedActivities();
-    }*/
+    }
 }
