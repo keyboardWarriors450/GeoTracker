@@ -7,6 +7,7 @@
 
 package com.mycompany.geotracker.controller;
 
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.mycompany.geotracker.R;
 import com.mycompany.geotracker.data.MyData;
 
@@ -64,113 +66,26 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
         double latitude = 0;
         double longitude = 0;
 
-        for (int i = 0; i <  locList.size(); i++) {
-           latitude = Double.parseDouble(locList.get(i).getLat());
-           longitude = Double.parseDouble(locList.get(i).getLon());
-           mGoogleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(latitude, longitude))
+        for (int i = 0; i < locList.size(); i++) {
+            latitude = Double.parseDouble(locList.get(i).getLat());
+            longitude = Double.parseDouble(locList.get(i).getLon());
+            LatLng currentCoordinate = new LatLng(latitude, longitude);
+            mGoogleMap.addMarker(new MarkerOptions()
+                    .position(currentCoordinate)
                     .title("My Locations"));
+            if (i < locList.size() - 1) {
+                double nextLatitude = Double.parseDouble(locList.get(i + 1).getLat());
+                double nextLongitude = Double.parseDouble(locList.get(i + 1).getLon());
+                LatLng nextCoordinate = new LatLng(nextLatitude, nextLongitude);
+                mGoogleMap.addPolyline(new PolylineOptions()
+                        .add(currentCoordinate, nextCoordinate)
+                        .width(5)
+                        .color(Color.BLUE));
+            }
         }
 
-        LatLng lastLatLng = new LatLng(latitude,longitude);
+        LatLng lastLatLng = new LatLng(latitude, longitude);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 12));
 
-        // get user current location list
-       /* for (int i=0; i<PickDateActivity.mLocationList.size(); i++) {
-            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(PickDateActivity.mLocationList.get(i).getLatitude()
-                            , PickDateActivity.mLocationList.get(i).getLongitude()))
-                    .title("My Locations"));
-        }
-        LatLng firstLatLng = new LatLng(PickDateActivity.mLocationList.get(0).getLatitude(),
-                PickDateActivity.mLocationList.get(0).getLongitude());
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));*/
-        // end user location list
-
-
-
-        // initial location manager
-       /* LocationManager locationManager = (LocationManager) this.getSystemService(
-                Context.LOCATION_SERVICE);
-        Location myLocation1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);*/
-        // exacting longitude and latitude from my current location
-      //  LatLng myLatlng = new LatLng(myLocation1.getLatitude(), myLocation1.getLongitude());
-       /* if (myLatlng != null) {
-
-            Log.i("Map Activity", "Inside mGoogleMap my current location");
-
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(myLatlng)
-                    .title("My New Location")
-                    .snippet("This is my current location"));
-
-            // Move the camera instantly to my current location with a zoom of 15.
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
-        }*/
-        // Seattle coordinates - 47.6097, -122.3331
-/*
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationListener ll = new myLocationListener();
-
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-
-        if (myLocation != null) {
-
-            LatLng myLatLong = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(myLatLong)
-                    .title("Update Location")
-                    .snippet("This is update location"));
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLong, 15));
-        }*/
-
-      /*  if (mLocationLog != null) {
-
-            List<Location> locations = mLocationLog.getLocationList();
-            Location location = locations.get(0);
-            LatLng firstLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-            for (int i=0; i<locations.size(); i++) {
-                Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(locations.get(i).getLatitude()
-                                , locations.get(i).getLongitude()))
-                        .title("My Locations"));
-            }
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
-        }*/
-
     }
-
-    /*class myLocationListener implements LocationListener {
-
-
-        @Override
-        public void onLocationChanged(Location location) {
-            if (location != null) {
-                double pLong = location.getLongitude();
-                double pLat = location.getLatitude();
-             //   Toast.makeText(this, "Location Update every 10 seconds", Toast.LENGTH_LONG).show();
-                //  textLat.setText(Double.toString(pLat));
-                //   textLong.setText(Double.toString(pLong));
-                myLocation = location;
-            }
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-    }*/
-
-
-
 }
