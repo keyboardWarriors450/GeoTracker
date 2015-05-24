@@ -59,7 +59,9 @@ public class MyAccountActivity extends ActionBarActivity {
             System.out.println("Tracking ON");
 
             //**************** Turn tracking on***************************
-            TrackingLocation.get(that).startLocationUpdates();
+            // TrackingLocation.get(that).startLocationUpdates();
+            // DataMovementService.scheduleUpdate(that, sharedPref);
+            DataMovementService.startService(that, sharedPref);
         } else {
             System.out.println("Tracking OFF");
         }
@@ -146,7 +148,7 @@ public class MyAccountActivity extends ActionBarActivity {
             Toast.makeText(that, "Service has been Disabled", Toast.LENGTH_SHORT).show();
             TrackingLocation.get(that).stopLocationUpdates();
 
-            DataMovementService.scheduleUpdateLogout(that);
+            DataMovementService.stopService(that);
 
             ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
             PackageManager pm = this.getApplicationContext().getPackageManager();

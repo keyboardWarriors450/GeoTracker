@@ -74,14 +74,15 @@ public class UserPreferenceActivity extends ActionBarActivity {
 
                 if (isChecked) {
                     Toast.makeText(that, "Location Service has been Enabled", Toast.LENGTH_SHORT).show();
-                    TrackingLocation.get(that).startLocationUpdates();
-                    DataMovementService.scheduleUpdate(that, sharedPref);
+                    //   TrackingLocation.get(that).startLocationUpdates();
+                    //  DataMovementService.scheduleUpdate(that, sharedPref);
+                    DataMovementService.startService(that, sharedPref);
 
                 } else {
-                    Toast.makeText(that, "Location Service has been Disabled", Toast.LENGTH_SHORT).show();
-                    TrackingLocation.get(that).stopLocationUpdates();
-                    DataMovementService.scheduleUpdate(that, sharedPref);
-             //       stopService(new Intent(that, DataMovementService.class));
+                    // Toast.makeText(that, "Location Service has been Disabled", Toast.LENGTH_SHORT).show();
+                    // TrackingLocation.get(that).stopLocationUpdates();
+                    DataMovementService.stopService(that);
+                    //  stopService(new Intent(that, DataMovementService.class));
                 }
             }
         });
@@ -157,7 +158,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
             Toast.makeText(that, "Service has been Disabled", Toast.LENGTH_SHORT).show();
             TrackingLocation.get(that).stopLocationUpdates();
 
-            DataMovementService.scheduleUpdateLogout(that);
+            DataMovementService.stopService(that);
 
             ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
             PackageManager pm = this.getApplicationContext().getPackageManager();
@@ -193,12 +194,12 @@ public class UserPreferenceActivity extends ActionBarActivity {
                 if (!input.getText().toString().equals("") &&
                         Integer.parseInt(input.getText().toString()) >= 10 &&
                         Integer.parseInt(input.getText().toString()) <+ 300) {
-                        trackingInterval.setText(input.getText());
-                        SharedPreferences sharedPref = that.getSharedPreferences(USER_PREF,
-                                Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit(); editor.putString
+                    trackingInterval.setText(input.getText());
+                    SharedPreferences sharedPref = that.getSharedPreferences(USER_PREF,
+                            Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit(); editor.putString
                             (TRACKING_INTERVAL, trackingInterval.getText().toString());
-                        editor.commit();
+                    editor.commit();
                 } else {
                     selectTrackingInterval();
                 }

@@ -7,6 +7,7 @@
 
 package com.mycompany.geotracker.controller;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -17,6 +18,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
 
 /**
  * Created by David on May 2015
@@ -39,7 +42,7 @@ public class TrackingLocation {
         this.context = context;
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             System.out.println("****************GPS enabled");
-   //         promptUserTurnGPSon();
+            //         promptUserTurnGPSon();
         } else {
             System.out.println("************GPS not enabled");
         }
@@ -88,6 +91,8 @@ public class TrackingLocation {
     public LocationManager getLocationMan() {
         return locationManager;
     }
+
+
 
 //    /**
 //     * Prompt user to turn GPS on

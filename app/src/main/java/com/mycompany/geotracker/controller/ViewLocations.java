@@ -143,7 +143,7 @@ public class ViewLocations extends ActionBarActivity {
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
-      //  private String type;
+        //  private String type;
 
 
         @Override
@@ -242,7 +242,7 @@ public class ViewLocations extends ActionBarActivity {
             Toast.makeText(context, "Service has been Disabled", Toast.LENGTH_SHORT).show();
             TrackingLocation.get(context).stopLocationUpdates();
 
-            DataMovementService.scheduleUpdateLogout(context);
+            DataMovementService.stopService(context);
 
             ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
             PackageManager pm = this.getApplicationContext().getPackageManager();
