@@ -8,7 +8,10 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.mycompany.geotracker.controller.TrackingLocation;
@@ -30,6 +33,9 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
     public static LocationManager locationManager;
     public static Location myLocation;
     static int counter = 0;
+    private static final String TAG = "NetWork availability";
+    private ConnectivityManager mConnectivityManager;
+
     /**
      * Receives the locations.
      * @param context the context
@@ -39,19 +45,19 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         System.out.println("*****************************Started LocationBroadcastReceiver ******");
         //Toast.makeText(context, ": ", Toast.LENGTH_SHORT).show();
-        //  if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-          /*  SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
-                    Context.MODE_PRIVATE);*/
+        /*if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+            SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                    Context.MODE_PRIVATE);
 
-            /*if (sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true)) {
+            if (sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true)) {
                 System.out.println("Tracking ON ********** from BroadcastReceiver");
-                DataMovementService.scheduleUpdate(context, sharedPref);
+                DataMovementService.startService(context, sharedPref);
             } else {
                 System.out.println("Tracking OFF *********** from BroadcastReiver");
-                DataMovementService.scheduleUpdate(context, sharedPref);
+                DataMovementService.stopService(context);
 
-            }*/
-        // }
+            }
+         }*/
 
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
@@ -74,16 +80,22 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 0, 0, locationListener);
 
+        mConnectivityManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        Log.i(TAG, "Network connectivity: " + Boolean.toString(isConnected));
+        NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-            // myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-        } //else if (!wifi) {
-        // myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        //}
+        } else if (mWifi.isConnected()) {
+             myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        }
 
-        if (myLocation != null) {
+        if (myLocation != null && isConnected) {
             /*******....  *****/
             long timestamp = System.currentTimeMillis() / 1000;
 
@@ -134,6 +146,11 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
             // }
             Toast.makeText(context, "Updated current location: " + myLocation.getLatitude() + ", " +
                     myLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+        } else {
+            if (myLocation == null) {
+                Toast.makeText(context, "NO last location is found", Toast.LENGTH_SHORT).show();
+            } else
+            Toast.makeText(context, "NetWork is NOT available", Toast.LENGTH_SHORT).show();
         }
     }
 

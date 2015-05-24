@@ -14,8 +14,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationListener;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +43,8 @@ public class MyAccountActivity extends ActionBarActivity {
     private String user;
     private LocationListener locationListener;
     private Context that = this;
+    private static final String TAG = "Upload Datamovement";
+    private ConnectivityManager mConnectivityManager;
 
     /**
      * Creates the page with all the buttons and shows the user name.
@@ -61,7 +66,9 @@ public class MyAccountActivity extends ActionBarActivity {
             //**************** Turn tracking on***************************
             // TrackingLocation.get(that).startLocationUpdates();
             // DataMovementService.scheduleUpdate(that, sharedPref);
+
             DataMovementService.startService(that, sharedPref);
+
         } else {
             System.out.println("Tracking OFF");
         }
