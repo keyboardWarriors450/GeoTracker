@@ -85,12 +85,12 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
+
         Log.i(TAG, "Network connectivity: " + Boolean.toString(isConnected));
         NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
         } else if (mWifi.isConnected()) {
              myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         }
@@ -107,43 +107,47 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
             String headingStr = Double.toString((double) myLocation.getBearing());
             String timestampStr = Long.toString(System.currentTimeMillis() / 1000);
 
-            /** optional values **/
-            //  double altitude = myLocation.getAltitude();
-
-            MyData myData = new MyData(context);
-            final ArrayList<User> allData = myData.selectAllUsers();
-            final ArrayList<com.mycompany.geotracker.model.Location> allDataTemp =
-                    myData.selectAllLocationsTemp();
-
-            if (allData.size() != 0) {
-                uid = allData.get(allData.size() - 1).getUserID();
-            }
-
-            try {
-                if (allDataTemp.size() != 0) {
-                    myData.deleteAllLocationsTemp();
-                }
-                myData.insertLocationTemp(uid, latStr, lonStr, speedStr, headingStr, timestamp);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            myData.close();
-
             SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
                     Context.MODE_PRIVATE);
             int interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
                     TRACKING_INTERVAL, "60"));
             int interval_upload = sharedPref.getInt(UserPreferenceActivity.UPLOAD_INTERVAL, 60);
             int interval = interval_upload / interval_track;
+
             System.out.println("****************interval " + interval + " tracking " + interval_track +
-                    " uploading " + interval_upload);
+                    " uploading " + interval_upload + " timestamp " + timestampStr + " counter " + counter);
+
+            MyData myData = new MyData(context);
+            final ArrayList<User> allData = myData.selectAllUsers();
+            ArrayList<com.mycompany.geotracker.model.Location> allDataLocation =
+                    myData.selectAllLocations();
+
+            if (allData.size() != 0) {
+                uid = allData.get(allData.size() - 1).getUserID();
+            }
+
             counter++;
-            //  if (counter == interval) {
-            new LocationToServer().execute(uid, latStr, lonStr, speedStr, headingStr,
-                    timestampStr);
-            counter = 0;
-            // }
+
+            try {
+                if (allDataLocation.size() != 0 && counter == 1) {
+                    myData.deleteAllLocations();
+                }
+                myData.insertLocation(uid, latStr, lonStr, speedStr, headingStr, timestamp);
+
+                if (counter >= interval) {
+                    allDataLocation = myData.selectAllLocations();
+                    for (com.mycompany.geotracker.model.Location loc : allDataLocation) {
+                        new LocationToServer().execute(uid, loc.getLat(), loc.getLon(),
+                                loc.getSpeed(), loc.getHeading(), Long.toString(loc.getTimestamp()));
+                    }
+                    counter = 0;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            myData.close();
+
             Toast.makeText(context, "Updated current location: " + myLocation.getLatitude() + ", " +
                     myLocation.getLongitude(), Toast.LENGTH_SHORT).show();
         } else {

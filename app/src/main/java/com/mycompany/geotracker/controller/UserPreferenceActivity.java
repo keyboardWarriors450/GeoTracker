@@ -113,6 +113,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
                 SharedPreferences.Editor editor = sharedPref.edit(); editor.putInt
                         (UPLOAD_INTERVAL, uploadInterval);
                 editor.commit();
+                DataMovementService.startService(that, sharedPref);
                 System.out.println(uploadInterval);
             }
         });
@@ -200,6 +201,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
                     SharedPreferences.Editor editor = sharedPref.edit(); editor.putString
                             (TRACKING_INTERVAL, trackingInterval.getText().toString());
                     editor.commit();
+                    DataMovementService.startService(that, sharedPref);
                 } else {
                     selectTrackingInterval();
                 }

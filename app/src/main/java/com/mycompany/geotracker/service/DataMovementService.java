@@ -264,7 +264,7 @@ public class DataMovementService extends IntentService {
 
         if (isOn) {
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                    , 5000, pIntent);  // trackingInterval
+                    , trackingInterval, pIntent);  // trackingInterval
             ComponentName receiver = new ComponentName(context, LocationBroadcastReceiver.class);
             PackageManager pm = context.getPackageManager();
             pm.setComponentEnabledSetting(receiver,
