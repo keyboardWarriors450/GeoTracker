@@ -14,12 +14,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.mycompany.geotracker.controller.TrackingLocation;
 import com.mycompany.geotracker.controller.UserPreferenceActivity;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
 import com.mycompany.geotracker.server.LocationToServer;
-import com.mycompany.geotracker.service.DataMovementService;
 
 import java.util.ArrayList;
 
@@ -44,6 +42,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         System.out.println("*****************************Started LocationBroadcastReceiver ******");
+        int interval_track;
         //Toast.makeText(context, ": ", Toast.LENGTH_SHORT).show();
         /*if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
@@ -95,6 +94,25 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
              myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         }
 
+        /**
+         * This is the current battery tester. The times are not 100% correct yet, because the service will
+         * continue the upload every so often, more frequently than the sampling of the data.
+         */
+        if (BatteryBroadcastReceiver.isConnected) {
+//            SystemClock.sleep(30000);
+            System.out.println("battery cord is connected");
+//            interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
+//                    TRACKING_INTERVAL, "60"));
+            interval_track = 60;
+            System.out.println("The interval is " + interval_track);
+        } else {
+//            SystemClock.sleep(15000);
+            System.out.println("battery cord is disconnected");
+            interval_track = 300;
+            System.out.println("The interval is " + interval_track);
+//            SystemClock.sleep(300000);
+        }
+
         if (myLocation != null && isConnected) {
             /*******....  *****/
             long timestamp = System.currentTimeMillis() / 1000;
@@ -109,8 +127,24 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
 
             SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
                     Context.MODE_PRIVATE);
-            int interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
-                    TRACKING_INTERVAL, "60"));
+
+//            int interval_track;
+//            if (BatteryBroadcastReceiver.isConnected) {
+////            SystemClock.sleep(30000);
+//                System.out.println("battery cord is connected");
+//                interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
+//                        TRACKING_INTERVAL, "60"));
+//                System.out.println("The interval is " + interval_track);
+//            } else {
+////            SystemClock.sleep(15000);
+//                System.out.println("battery cord is disconnected");
+//                interval_track = 300;
+//                System.out.println("The interval is " + interval_track);
+////            SystemClock.sleep(300000);
+//            }
+
+//            int interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
+//                    TRACKING_INTERVAL, "60"));
             int interval_upload = sharedPref.getInt(UserPreferenceActivity.UPLOAD_INTERVAL, 60);
             int interval = interval_upload / interval_track;
 
