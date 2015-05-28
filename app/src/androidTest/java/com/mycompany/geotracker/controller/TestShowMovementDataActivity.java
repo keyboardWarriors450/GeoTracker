@@ -34,4 +34,11 @@ public class TestShowMovementDataActivity extends ActivityInstrumentationTestCas
         //finishOpenedActivities() will finish all the activities that have been opened during the test execution.
         solo.finishOpenedActivities();
     }
+
+    public void movementDataShowsUp() {
+        solo.unlockScreen();
+        boolean textFound = solo.searchText(" Timestamp       Latitude        Longitude    Heading ");
+        assertTrue("Movement Data retrieved", textFound);
+    }
+
 }

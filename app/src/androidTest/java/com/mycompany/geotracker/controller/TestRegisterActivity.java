@@ -34,4 +34,32 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
         //finishOpenedActivities() will finish all the activities that have been opened during the test execution.
         solo.finishOpenedActivities();
     }
+
+    public void testRequiredFields() {
+        solo.unlockScreen();
+
+        solo.enterText(0, "");
+        solo.clickOnButton("Submit");
+        boolean textFound = solo.searchText("Please enter your email");
+        assertTrue("Required field validation failed", textFound);
+    }
+
+    public void testOrientation() {
+        solo.enterText(0, "danielk6@uw.edu");
+
+        solo.setActivityOrientation(Solo.LANDSCAPE);
+        boolean textFound = solo.searchText("danielk6@uw.edu");
+        assertTrue("Password change failed", textFound);
+
+        solo.setActivityOrientation(Solo.PORTRAIT);
+        textFound = solo.searchText("danielk6@uw.edu");
+        assertTrue("Password change failed", textFound);
+    }
+
+    public void testCourseAddButton() {
+        solo.enterText(0, "danielk6@uw.edu");
+        solo.clickOnButton("Submit");
+        boolean textFound = solo.searchText("Email has been sent");
+        assertTrue("Failed to send email", textFound);
+    }
 }

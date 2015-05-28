@@ -17,11 +17,11 @@ public class TestUser extends TestCase {
     private User mUser;
 
     public void setUp() {
-        mUser = new User("userId", "email", "password", "question", "answer");
+        mUser = new User("danielk6", "danielk6@uw.edu", "password1", "What is your favorite pet's name?", "leo");
     }
 
     public void testUser() {
-        User user = new User("userId", "email", "password", "question", "answer");
+        User user = new User("danielk6", "danielk6@uw.edu", "password1", "What is your favorite pet's name?", "leo");
         assertNotNull(user);
     }
 
