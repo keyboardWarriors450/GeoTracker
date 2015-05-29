@@ -75,11 +75,11 @@ public class UserPreferenceActivity extends ActionBarActivity {
                 if (isChecked) {
                     Toast.makeText(that, "Location Service has been Enabled", Toast.LENGTH_SHORT).show();
                     //   TrackingLocation.get(that).startLocationUpdates();
-                    //  DataMovementService.scheduleUpdate(that, sharedPref);
-                    DataMovementService.startService(that, sharedPref);
+                      DataMovementService.scheduleUpdate(that, sharedPref);
+                   // DataMovementService.startService(that, sharedPref);
 
                 } else {
-                    // Toast.makeText(that, "Location Service has been Disabled", Toast.LENGTH_SHORT).show();
+                     Toast.makeText(that, "Location Service has been Disabled", Toast.LENGTH_SHORT).show();
                     // TrackingLocation.get(that).stopLocationUpdates();
                     DataMovementService.stopService(that);
                     //  stopService(new Intent(that, DataMovementService.class));
@@ -157,7 +157,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
             //Log the user out.
             Toast.makeText(that, "Logout successful", Toast.LENGTH_SHORT).show();
             Toast.makeText(that, "Service has been Disabled", Toast.LENGTH_SHORT).show();
-            TrackingLocation.get(that).stopLocationUpdates();
+          //  TrackingLocation.get(that).stopLocationUpdates();
 
             DataMovementService.stopService(that);
 

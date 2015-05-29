@@ -28,6 +28,7 @@ import com.mycompany.geotracker.controller.TrackingLocation;
 import com.mycompany.geotracker.controller.UserPreferenceActivity;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
+import com.mycompany.geotracker.receiver.BatteryBroadcastReceiver;
 import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
 import com.mycompany.geotracker.server.LocationToServer;
 
@@ -41,64 +42,76 @@ import java.util.ArrayList;
  * helper methods.
  */
 public class DataMovementService extends IntentService {
-    static int counter = 0;
+
     public static boolean wifiOn = false;
     private Location myLocation;
-    private static final String TAG = "DataMovementService";
+    private static final String TAG1 = "DataMovementService";
     private static final String LISTENER = "Location Listener";
     public static LocationListener locationListener;
     public static LocationManager locationManager;
+    private Context c = getBaseContext();
+    static int counter = 0;
+    private static final String TAG = "NetWork availability";
+    private ConnectivityManager mConnectivityManager;
+
+
+
+
+
     public DataMovementService() {
         super("DataMovement");
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        //    Log.i(TAG, "service starting");
+        initial(this);
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        // System.out.println("*************************DataMovementService.onHandleIntent started");
+        int interval_track;
+        System.out.println("**********DataMovementService.onHandleIntent started **********");
 
-        //boolean wifi = intent.getExtras().getBoolean("wifi");
+        mConnectivityManager = (ConnectivityManager)
+                this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
 
-//        LocationManager locationManager = (LocationManager) this.getSystemService(
-//                Context.LOCATION_SERVICE);
-
-        //LocationManager locationManager = TrackingLocation.get(this).getLocationMan();
-      /*  locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
-         //       Log.i(">>>>> TEST SERVICES", location.toString());
-                //  mLocationLog.addLocation(location);
-                //    myLocation = location;
-            }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-            public void onProviderEnabled(String provider) {}
-
-            public void onProviderDisabled(String provider) {}
-        };
-
-        locationManager = (LocationManager) this.getSystemService(
-                Context.LOCATION_SERVICE);
-        // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                0, 0, locationListener);
+        System.out.println("Network connectivity: " + Boolean.toString(isConnected));
+        NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        } //else if (!wifi) {
-           // myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-        //}
+        } else if (mWifi.isConnected()) {
+            myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        }
 
-        if (myLocation != null) {
-            *//*******....  *****//*
+        /**
+         * This is the current battery tester. The times are not 100% correct yet, because the service will
+         * continue the upload every so often, more frequently than the sampling of the data.
+         */
+        if (LocationBroadcastReceiver.isConnected) {
+//            SystemClock.sleep(30000);
+            System.out.println("battery cord is connected");
+//            interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
+//                    TRACKING_INTERVAL, "60"));
+            interval_track = 60;
+            System.out.println("The interval is " + interval_track);
+        } else {
+//            SystemClock.sleep(15000);
+            System.out.println("battery cord is disconnected");
+            interval_track = 300;
+            System.out.println("The interval is " + interval_track);
+//            SystemClock.sleep(300000);
+        }
+
+        if (myLocation != null && isConnected) {
+            /*******....  *****/
             long timestamp = System.currentTimeMillis() / 1000;
 
             // now we have current location
@@ -109,74 +122,97 @@ public class DataMovementService extends IntentService {
             String headingStr = Double.toString((double) myLocation.getBearing());
             String timestampStr = Long.toString(System.currentTimeMillis() / 1000);
 
-            *//** optional values **//*
-            //  double altitude = myLocation.getAltitude();
+            SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                    Context.MODE_PRIVATE);
+
+//            int interval_track;
+//            if (BatteryBroadcastReceiver.isConnected) {
+////            SystemClock.sleep(30000);
+//                System.out.println("battery cord is connected");
+//                interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
+//                        TRACKING_INTERVAL, "60"));
+//                System.out.println("The interval is " + interval_track);
+//            } else {
+////            SystemClock.sleep(15000);
+//                System.out.println("battery cord is disconnected");
+//                interval_track = 300;
+//                System.out.println("The interval is " + interval_track);
+////            SystemClock.sleep(300000);
+//            }
+
+//            int interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
+//                    TRACKING_INTERVAL, "60"));
+            int interval_upload = sharedPref.getInt(UserPreferenceActivity.UPLOAD_INTERVAL, 60);
+            int interval = interval_upload / interval_track;
+
+            System.out.println("****************interval " + interval + " tracking " + interval_track +
+                    " uploading " + interval_upload + " timestamp " + timestampStr + " counter " + counter);
 
             MyData myData = new MyData(this);
             final ArrayList<User> allData = myData.selectAllUsers();
-            final ArrayList<com.mycompany.geotracker.model.Location> allDataTemp =
-                    myData.selectAllLocationsTemp();
+            ArrayList<com.mycompany.geotracker.model.Location> allDataLocation =
+                    myData.selectAllLocations();
 
             if (allData.size() != 0) {
                 uid = allData.get(allData.size() - 1).getUserID();
             }
 
+            counter++;
+
             try {
-                if (allDataTemp.size() != 0) {
-                    myData.deleteAllLocationsTemp();
+                if (allDataLocation.size() != 0 && counter == 1) {
+                    myData.deleteAllLocations();
                 }
-                myData.insertLocationTemp(uid, latStr, lonStr, speedStr, headingStr, timestamp);
+                myData.insertLocation(uid, latStr, lonStr, speedStr, headingStr, timestamp);
+
+                if (counter >= interval) {
+                    allDataLocation = myData.selectAllLocations();
+                    for (com.mycompany.geotracker.model.Location loc : allDataLocation) {
+                        new LocationToServer().execute(uid, loc.getLat(), loc.getLon(),
+                                loc.getSpeed(), loc.getHeading(), Long.toString(loc.getTimestamp()));
+                    }
+                    counter = 0;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             myData.close();
 
-            SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
-                    Context.MODE_PRIVATE);
-            int interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
-                    TRACKING_INTERVAL, "60"));
-            int interval_upload = sharedPref.getInt(UserPreferenceActivity.UPLOAD_INTERVAL, 60);
-            int interval = interval_upload / interval_track;
-        //    System.out.println("****************interval " + interval + " tracking " + interval_track +
-       //         " uploading " + interval_upload);
-            counter++;
-            if (counter == interval) {
-                new LocationToServer().execute(uid, latStr, lonStr, speedStr, headingStr,
-                        timestampStr);
-                counter = 0;
+            System.out.println("Updated current location: " + myLocation.getLatitude() + ", " +
+                    myLocation.getLongitude());
+        } else {
+            if (myLocation == null) {
+                System.out.println ("Last location is NOT found");
+            } else {
+                System.out.println ("NetWork is NOT available");
             }
-        }*/
+        }
     }
+
+
 
     /**
      * Creates an Intent and sets the class which will execute when the alarm triggers.
      *
      */
-   /* public static void scheduleUpdate(Context context, SharedPreferences sharedPref) {
-     //   System.out.println("**********************DataMovementService.scheduleUpdate started*******");
+    public static void scheduleUpdate(Context context, SharedPreferences sharedPref ) {
+        //   System.out.println("**********************DataMovementService.scheduleUpdate started*******");
 
         boolean isOn = sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true);
         int trackingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
                 .TRACKING_INTERVAL, "60"));
 
-
-
-        trackingInterval *= 1000;
-        Intent intentAlarm = new Intent(context, LocationBroadcastReceiver.class);
+        //  trackingInterval *= 1000;
+        Intent intentAlarm = new Intent(context, DataMovementService.class);
         //  intentAlarm.putExtra("wifi", wifiOn);
-
-        // getService(..) for service only
         PendingIntent pIntent = PendingIntent.getService(context, 0, intentAlarm, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         //set the alarm for particular time
-       // alarmManager.set(AlarmManager.RTC_WAKEUP,time, PendingIntent.getBroadcast(context,1,  intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
+        // alarmManager.set(AlarmManager.RTC_WAKEUP,time, PendingIntent.getBroadcast(context,1,  intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
 
         if (isOn) {
-
-
-
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
                     , 5000, pIntent);  // trackingInterval
             ComponentName receiver = new ComponentName(context, LocationBroadcastReceiver.class);
@@ -187,7 +223,7 @@ public class DataMovementService extends IntentService {
 
             Toast.makeText(context, "Location Update every 5 seconds", Toast.LENGTH_SHORT).show();
         }
-    }*/
+    }
 
     public static void stopService(Context context) {
 
@@ -200,12 +236,15 @@ public class DataMovementService extends IntentService {
         //       System.out.println("Tracking off");
         alarmManager.cancel(pIntent);
         pIntent.cancel();
+        locationManager.removeUpdates(locationListener);
+        locationListener = null;
+        locationManager = null;
 
-        ComponentName receiver = new ComponentName(context, LocationBroadcastReceiver.class);
+        /*ComponentName receiver = new ComponentName(context, LocationBroadcastReceiver.class);
         PackageManager pm = context.getPackageManager();
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
+                PackageManager.DONT_KILL_APP);*/
 
         /*LocationBroadcastReceiver.locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
@@ -235,7 +274,7 @@ public class DataMovementService extends IntentService {
         }*/
 
 
-        Toast.makeText(context, "Location Service has been Disable", Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(context, "Location Service has been Disable", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -264,7 +303,7 @@ public class DataMovementService extends IntentService {
 
         if (isOn) {
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                    , trackingInterval, pIntent);  // trackingInterval
+                    , 5000, pIntent);  // trackingInterval
             ComponentName receiver = new ComponentName(context, LocationBroadcastReceiver.class);
             PackageManager pm = context.getPackageManager();
             pm.setComponentEnabledSetting(receiver,
@@ -277,5 +316,29 @@ public class DataMovementService extends IntentService {
             pIntent.cancel();
         }
     }
+    public static void initial(Context c) {
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                Log.i("LOCATION SERVICES", location.toString());
+                //  mLocationLog.addLocation(location);
+                //    myLocation = location;
+            }
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+            @Override
+            public void onProviderEnabled(String provider) {}
+            @Override
+            public void onProviderDisabled(String provider) {}
+        };
+        locationManager = (LocationManager) c.getSystemService(
+                Context.LOCATION_SERVICE);
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                100000, 40, locationListener);
+    }
 
 }
+
+

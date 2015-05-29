@@ -240,7 +240,7 @@ public class ViewLocations extends ActionBarActivity {
             //Log the user out.
             Toast.makeText(context, "Logout successful", Toast.LENGTH_SHORT).show();
             Toast.makeText(context, "Service has been Disabled", Toast.LENGTH_SHORT).show();
-            TrackingLocation.get(context).stopLocationUpdates();
+           // TrackingLocation.get(context).stopLocationUpdates();
 
             DataMovementService.stopService(context);
 

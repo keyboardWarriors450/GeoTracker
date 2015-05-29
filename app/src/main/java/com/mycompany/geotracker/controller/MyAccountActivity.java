@@ -65,9 +65,11 @@ public class MyAccountActivity extends ActionBarActivity {
 
             //**************** Turn tracking on***************************
             // TrackingLocation.get(that).startLocationUpdates();
-            // DataMovementService.scheduleUpdate(that, sharedPref);
+           // startService(new Intent(that, DataMovementService.class));
 
-            DataMovementService.startService(that, sharedPref);
+            DataMovementService.scheduleUpdate(that, sharedPref);
+
+          //  DataMovementService.startService(that, sharedPref);
 
         } else {
             System.out.println("Tracking OFF");
@@ -77,7 +79,7 @@ public class MyAccountActivity extends ActionBarActivity {
         final ArrayList<User> allData = myData.selectAllUsers();
         user = allData.get(allData.size() - 1).getEmail();
         myData.close();
-
+         //   System.clock.sleep(5000);
         final TextView username = (TextView) findViewById(R.id.username_display);
         int end = 0;
 
@@ -153,7 +155,7 @@ public class MyAccountActivity extends ActionBarActivity {
             //Log the user out.
             Toast.makeText(that, "Logout successful", Toast.LENGTH_SHORT).show();
             Toast.makeText(that, "Service has been Disabled", Toast.LENGTH_SHORT).show();
-            TrackingLocation.get(that).stopLocationUpdates();
+           // TrackingLocation.get(that).stopLocationUpdates();
 
             DataMovementService.stopService(that);
 

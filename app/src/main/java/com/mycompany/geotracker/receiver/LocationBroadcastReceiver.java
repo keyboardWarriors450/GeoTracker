@@ -18,6 +18,7 @@ import com.mycompany.geotracker.controller.UserPreferenceActivity;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
 import com.mycompany.geotracker.server.LocationToServer;
+import com.mycompany.geotracker.service.DataMovementService;
 
 import java.util.ArrayList;
 
@@ -33,6 +34,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
     static int counter = 0;
     private static final String TAG = "NetWork availability";
     private ConnectivityManager mConnectivityManager;
+    public static boolean isConnected;
 
     /**
      * Receives the locations.
@@ -41,24 +43,31 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        System.out.println("*****************************Started LocationBroadcastReceiver ******");
-        int interval_track;
+        System.out.println("*******************Started LocationBroadcastReceiver ******");
+       // int interval_track;
         //Toast.makeText(context, ": ", Toast.LENGTH_SHORT).show();
-        /*if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
                     Context.MODE_PRIVATE);
 
             if (sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true)) {
                 System.out.println("Tracking ON ********** from BroadcastReceiver");
-                DataMovementService.startService(context, sharedPref);
+                DataMovementService.scheduleUpdate(context, sharedPref);
             } else {
                 System.out.println("Tracking OFF *********** from BroadcastReiver");
                 DataMovementService.stopService(context);
 
             }
-         }*/
+        }
 
-        locationListener = new LocationListener() {
+        if (intent.getAction().equals("android.intent.action.ACTION_POWER_DISCONNECTED")) {
+            isConnected = false;
+        } else if (intent.getAction().equals("android.intent.action.ACTION_POWER_CONNECTED")) {
+            isConnected = true;
+        }
+
+
+        /*locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
                 // Log.i("LOCATION SERVICES", location.toString());
@@ -94,10 +103,10 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
              myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         }
 
-        /**
+        *//**
          * This is the current battery tester. The times are not 100% correct yet, because the service will
          * continue the upload every so often, more frequently than the sampling of the data.
-         */
+         *//*
         if (BatteryBroadcastReceiver.isConnected) {
 //            SystemClock.sleep(30000);
             System.out.println("battery cord is connected");
@@ -114,7 +123,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         }
 
         if (myLocation != null && isConnected) {
-            /*******....  *****/
+            *//*******....  *****//*
             long timestamp = System.currentTimeMillis() / 1000;
 
             // now we have current location
@@ -189,7 +198,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
                 Toast.makeText(context, "NO last location is found", Toast.LENGTH_SHORT).show();
             } else
             Toast.makeText(context, "NetWork is NOT available", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
 }
