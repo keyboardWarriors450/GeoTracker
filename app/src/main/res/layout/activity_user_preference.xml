@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/curr_tracking_time_text"
         android:layout_marginTop="42dp"
-        android:text="Current tracking time interval:  "
+        android:text="Current sampling time interval:  "
         android:layout_below="@+id/tracking_switch"
         android:layout_centerHorizontal="true"
         android:textColor="#ffffffff" />

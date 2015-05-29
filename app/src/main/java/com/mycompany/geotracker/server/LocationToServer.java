@@ -27,6 +27,8 @@ import java.net.URI;
  * */
 public class LocationToServer extends AsyncTask<String, Void, String> {
 
+    private static final String TAG = "LocationToServer";
+
     public LocationToServer() {
     }
 
@@ -92,13 +94,13 @@ public class LocationToServer extends AsyncTask<String, Void, String> {
             try {
                 JSONObject obj = new JSONObject(result);
                 if (obj.getString("result").equals("success")) {
-                    Log.i("LocationToServer", "success");
+                    Log.i(TAG, "success");
                 }
                 else {
-                    Log.i("LocationToServer", "failed");
+                    Log.i(TAG, "failed");
                 }
             } catch (JSONException e) {
-                System.out.println("JSON Exception");
+                Log.i(TAG, "JSON Exception");
             }
         }
     }

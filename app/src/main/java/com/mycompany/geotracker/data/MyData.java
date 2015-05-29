@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class MyData
 {
-
+    private static final String TAG = "MyData";
     private static final String DATABASE_NAME = "my.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_NAME_USER = "user";
@@ -188,8 +188,7 @@ public class MyData
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
         {
-            Log.i("User",
-                    "Upgrading database, this will drop tables and recreate.");
+            Log.i(TAG, "Upgrading database, this will drop tables and recreate.");
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_LOC);
             onCreate(db);

@@ -72,4 +72,11 @@
     <string name="title_activity_show_movement_data">ShowMovementDataActivity</string>
     <string name="preference">Settings</string>
     <string name="title_activity_user_preference">Settings</string>
+    <array name="sampling_interval_array">
+        <item name="ten_sec">10 seconds</item>
+        <item name="thirty_sec">30 seconds</item>
+        <item name="one_min">1 minute</item>
+        <item name="two_min">2 minutes</item>
+        <item name="five min">5 minutes</item>
+    </array>
 </resources>

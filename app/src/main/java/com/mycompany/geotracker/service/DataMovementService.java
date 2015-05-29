@@ -18,20 +18,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.mycompany.geotracker.controller.TrackingLocation;
 import com.mycompany.geotracker.controller.UserPreferenceActivity;
-import com.mycompany.geotracker.data.MyData;
-import com.mycompany.geotracker.model.User;
+import com.mycompany.geotracker.receiver.BatteryBroadcastReceiver;
 import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
-import com.mycompany.geotracker.server.LocationToServer;
-
-import java.util.ArrayList;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -55,7 +47,7 @@ public class DataMovementService extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        //    Log.i(TAG, "service starting");
+            Log.i(TAG, "service starting");
 
         return START_STICKY;
     }
@@ -135,7 +127,7 @@ public class DataMovementService extends IntentService {
             SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
                     Context.MODE_PRIVATE);
             int interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
-                    TRACKING_INTERVAL, "60"));
+                    SAMPLING_INTERVAL_POWER_OFF, "60"));
             int interval_upload = sharedPref.getInt(UserPreferenceActivity.UPLOAD_INTERVAL, 60);
             int interval = interval_upload / interval_track;
         //    System.out.println("****************interval " + interval + " tracking " + interval_track +
@@ -158,7 +150,7 @@ public class DataMovementService extends IntentService {
 
         boolean isOn = sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true);
         int trackingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
-                .TRACKING_INTERVAL, "60"));
+                .SAMPLING_INTERVAL_POWER_OFF, "60"));
 
 
 
@@ -201,9 +193,17 @@ public class DataMovementService extends IntentService {
         alarmManager.cancel(pIntent);
         pIntent.cancel();
 
-        ComponentName receiver = new ComponentName(context, LocationBroadcastReceiver.class);
-        PackageManager pm = context.getPackageManager();
-        pm.setComponentEnabledSetting(receiver,
+        ComponentName receiver1 = new ComponentName(context, LocationBroadcastReceiver.class);
+        ComponentName receiver2 = new ComponentName(context, BatteryBroadcastReceiver.class);
+
+        PackageManager pm1 = context.getPackageManager();
+        PackageManager pm2 = context.getPackageManager();
+
+        pm1.setComponentEnabledSetting(receiver1,
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+
+        pm2.setComponentEnabledSetting(receiver2,
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                 PackageManager.DONT_KILL_APP);
 
@@ -245,10 +245,15 @@ public class DataMovementService extends IntentService {
         //   System.out.println("**********************DataMovementService.scheduleUpdate started*******");
 
         boolean isOn = sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true);
-        int trackingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
-                .TRACKING_INTERVAL, "60"));
+        int samplingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
+                .SAMPLING_INTERVAL_POWER_OFF, "300"));
 
-        trackingInterval *= 1000;
+        if (BatteryBroadcastReceiver.isConnected) {
+            samplingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
+                    .SAMPLING_INTERVAL_POWER_ON, "60"));
+        }
+
+        samplingInterval *= 1000;
         Intent intentAlarm = new Intent(context, LocationBroadcastReceiver.class);
         //  intentAlarm.putExtra("wifi", wifiOn);
 
@@ -263,13 +268,24 @@ public class DataMovementService extends IntentService {
         // alarmManager.set(AlarmManager.RTC_WAKEUP,time, PendingIntent.getBroadcast(context,1,  intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
 
         if (isOn) {
+            System.out.println("*****Sampling Interval " + samplingInterval/1000);
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                    , trackingInterval, pIntent);  // trackingInterval
-            ComponentName receiver = new ComponentName(context, LocationBroadcastReceiver.class);
-            PackageManager pm = context.getPackageManager();
-            pm.setComponentEnabledSetting(receiver,
+                    , samplingInterval, pIntent);  // samplingInterval
+
+            ComponentName receiver1 = new ComponentName(context, LocationBroadcastReceiver.class);
+            ComponentName receiver2 = new ComponentName(context, BatteryBroadcastReceiver.class);
+
+            PackageManager pm1 = context.getPackageManager();
+            PackageManager pm2 = context.getPackageManager();
+
+            pm1.setComponentEnabledSetting(receiver1,
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP);
+
+            pm1.setComponentEnabledSetting(receiver2,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP);
+
             //Toast.makeText(context, "Location Update every 5 seconds", Toast.LENGTH_SHORT).show();
         } else {
             //       System.out.println("Tracking off");

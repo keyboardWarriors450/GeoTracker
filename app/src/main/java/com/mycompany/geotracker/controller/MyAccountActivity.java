@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mycompany.geotracker.receiver.BatteryBroadcastReceiver;
 import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
 import com.mycompany.geotracker.R;
 import com.mycompany.geotracker.data.MyData;
@@ -39,11 +40,13 @@ import java.util.ArrayList;
  */
 public class MyAccountActivity extends ActionBarActivity {
 
+    public static final String UID = "user_id";
+    private static final String TAG = "MyAccountActivity";
     private MyData myData;
     private String user;
+    private String uid;
     private LocationListener locationListener;
     private Context that = this;
-    private static final String TAG = "Upload Datamovement";
     private ConnectivityManager mConnectivityManager;
 
     /**
@@ -52,7 +55,7 @@ public class MyAccountActivity extends ActionBarActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("***********************MyAccountActivity started");
+        Log.i(TAG, "***********************MyAccountActivity started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
 
@@ -61,7 +64,7 @@ public class MyAccountActivity extends ActionBarActivity {
                 Context.MODE_PRIVATE);
 
         if (sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true)) {
-            System.out.println("Tracking ON");
+            Log.i(TAG, "Tracking ON");
 
             //**************** Turn tracking on***************************
             // TrackingLocation.get(that).startLocationUpdates();
@@ -70,13 +73,20 @@ public class MyAccountActivity extends ActionBarActivity {
             DataMovementService.startService(that, sharedPref);
 
         } else {
-            System.out.println("Tracking OFF");
+            Log.i(TAG, "Tracking OFF");
         }
 
         myData = new MyData(this);
         final ArrayList<User> allData = myData.selectAllUsers();
         user = allData.get(allData.size() - 1).getEmail();
+        uid = allData.get(allData.size() - 1).getUserID();
         myData.close();
+
+        SharedPreferences sharePref = getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(UID, uid);
+        editor.commit();
 
         final TextView username = (TextView) findViewById(R.id.username_display);
         int end = 0;
@@ -153,16 +163,24 @@ public class MyAccountActivity extends ActionBarActivity {
             //Log the user out.
             Toast.makeText(that, "Logout successful", Toast.LENGTH_SHORT).show();
             Toast.makeText(that, "Service has been Disabled", Toast.LENGTH_SHORT).show();
-            TrackingLocation.get(that).stopLocationUpdates();
+      //      TrackingLocation.get(that).stopLocationUpdates();
 
             DataMovementService.stopService(that);
 
-            ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
-            PackageManager pm = this.getApplicationContext().getPackageManager();
+            ComponentName receiver1 = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
+            ComponentName receiver2 = new ComponentName(this.getApplicationContext(), BatteryBroadcastReceiver.class);
 
-            pm.setComponentEnabledSetting(receiver,
+            PackageManager pm1 = this.getApplicationContext().getPackageManager();
+            PackageManager pm2 = this.getApplicationContext().getPackageManager();
+
+            pm1.setComponentEnabledSetting(receiver1,
                     PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
+
+            pm2.setComponentEnabledSetting(receiver2,
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
+
             finish();
             toHomeScreen();
             return true;

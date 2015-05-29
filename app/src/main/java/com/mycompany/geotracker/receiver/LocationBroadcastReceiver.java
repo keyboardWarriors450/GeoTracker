@@ -14,10 +14,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.mycompany.geotracker.controller.MyAccountActivity;
 import com.mycompany.geotracker.controller.UserPreferenceActivity;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
 import com.mycompany.geotracker.server.LocationToServer;
+import com.mycompany.geotracker.service.DataMovementService;
 
 import java.util.ArrayList;
 
@@ -42,7 +44,6 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         System.out.println("*****************************Started LocationBroadcastReceiver ******");
-        int interval_track;
         //Toast.makeText(context, ": ", Toast.LENGTH_SHORT).show();
         /*if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
@@ -94,93 +95,48 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
              myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         }
 
-        /**
-         * This is the current battery tester. The times are not 100% correct yet, because the service will
-         * continue the upload every so often, more frequently than the sampling of the data.
-         */
-        if (BatteryBroadcastReceiver.isConnected) {
-//            SystemClock.sleep(30000);
-            System.out.println("battery cord is connected");
-//            interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
-//                    TRACKING_INTERVAL, "60"));
-            interval_track = 60;
-            System.out.println("The interval is " + interval_track);
-        } else {
-//            SystemClock.sleep(15000);
-            System.out.println("battery cord is disconnected");
-            interval_track = 300;
-            System.out.println("The interval is " + interval_track);
-//            SystemClock.sleep(300000);
-        }
-
         if (myLocation != null && isConnected) {
             /*******....  *****/
-            long timestamp = System.currentTimeMillis() / 1000;
+            SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                    Context.MODE_PRIVATE);
+//            long timestamp = System.currentTimeMillis() / 1000;
 
             // now we have current location
-            String uid = "";
+            String uid = sharedPref.getString(MyAccountActivity.UID, null);
             String latStr = Double.toString(myLocation.getLatitude());
             String lonStr = Double.toString(myLocation.getLongitude());
             String speedStr = Double.toString((double) myLocation.getSpeed());
             String headingStr = Double.toString((double) myLocation.getBearing());
             String timestampStr = Long.toString(System.currentTimeMillis() / 1000);
 
-            SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
-                    Context.MODE_PRIVATE);
+            int samplingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
+                    SAMPLING_INTERVAL_POWER_ON, "60"));
+            int uploadInterval = sharedPref.getInt(UserPreferenceActivity.UPLOAD_INTERVAL, 60);
 
-//            int interval_track;
-//            if (BatteryBroadcastReceiver.isConnected) {
-////            SystemClock.sleep(30000);
-//                System.out.println("battery cord is connected");
-//                interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
-//                        TRACKING_INTERVAL, "60"));
-//                System.out.println("The interval is " + interval_track);
-//            } else {
-////            SystemClock.sleep(15000);
-//                System.out.println("battery cord is disconnected");
-//                interval_track = 300;
-//                System.out.println("The interval is " + interval_track);
-////            SystemClock.sleep(300000);
-//            }
-
-//            int interval_track = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
-//                    TRACKING_INTERVAL, "60"));
-            int interval_upload = sharedPref.getInt(UserPreferenceActivity.UPLOAD_INTERVAL, 60);
-            int interval = interval_upload / interval_track;
-
-            System.out.println("****************interval " + interval + " tracking " + interval_track +
-                    " uploading " + interval_upload + " timestamp " + timestampStr + " counter " + counter);
-
-            MyData myData = new MyData(context);
-            final ArrayList<User> allData = myData.selectAllUsers();
-            ArrayList<com.mycompany.geotracker.model.Location> allDataLocation =
-                    myData.selectAllLocations();
-
-            if (allData.size() != 0) {
-                uid = allData.get(allData.size() - 1).getUserID();
-            }
-
-            counter++;
-
-            try {
-                if (allDataLocation.size() != 0 && counter == 1) {
-                    myData.deleteAllLocations();
+            /**
+             * This is the current battery tester. The times are not 100% correct yet, because the service will
+             * continue the upload every so often, more frequently than the sampling of the data.
+             */
+            if (BatteryBroadcastReceiver.isConnected) {
+                System.out.println("battery cord is connected");
+                Toast.makeText(context, "battery cord is connected", Toast.LENGTH_SHORT).show();
+                System.out.println("The interval is " + samplingInterval);
+                processLocation(context, samplingInterval, uploadInterval, uid, latStr, lonStr, speedStr,
+                        headingStr, timestampStr);
+            } else {
+                System.out.println("battery cord is disconnected" + " sampling interval " + samplingInterval);
+                if (samplingInterval < 300) {
+                    samplingInterval = 300;
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(UserPreferenceActivity.SAMPLING_INTERVAL_POWER_OFF,
+                            Integer.toString(samplingInterval));
+                    editor.commit();
+                    System.out.println("New sampling interval " + samplingInterval);
                 }
-                myData.insertLocation(uid, latStr, lonStr, speedStr, headingStr, timestamp);
-
-                if (counter >= interval) {
-                    allDataLocation = myData.selectAllLocations();
-                    for (com.mycompany.geotracker.model.Location loc : allDataLocation) {
-                        new LocationToServer().execute(uid, loc.getLat(), loc.getLon(),
-                                loc.getSpeed(), loc.getHeading(), Long.toString(loc.getTimestamp()));
-                    }
-                    counter = 0;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("The interval is " + samplingInterval);
+                processLocation(context, samplingInterval, 0, uid, latStr, lonStr, speedStr,
+                        headingStr, timestampStr);
             }
-
-            myData.close();
 
             Toast.makeText(context, "Updated current location: " + myLocation.getLatitude() + ", " +
                     myLocation.getLongitude(), Toast.LENGTH_SHORT).show();
@@ -190,6 +146,49 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
             } else
             Toast.makeText(context, "NetWork is NOT available", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void processLocation(Context context, int samplingInterval, int uploadInterval, String uid,
+                                 String latStr, String lonStr, String speedStr, String headingStr,
+                                 String timestampStr) {
+        int interval = uploadInterval / samplingInterval;
+
+        System.out.println("****************interval " + interval + " sampling " + samplingInterval +
+                " upload " + uploadInterval + " timestamp " + timestampStr + " counter " + counter);
+
+        MyData myData = new MyData(context);
+        final ArrayList<User> allData = myData.selectAllUsers();
+        ArrayList<com.mycompany.geotracker.model.Location> allDataLocation =
+                myData.selectAllLocations();
+
+        if (allData.size() != 0) {
+            uid = allData.get(allData.size() - 1).getUserID();
+        }
+
+        counter++;
+
+        try {
+            myData.insertLocation(uid, latStr, lonStr, speedStr, headingStr, Long.parseLong(timestampStr));
+
+            if (BatteryBroadcastReceiver.isConnected) {
+
+                if (counter >= interval || allDataLocation.size() > interval) {
+                    allDataLocation = myData.selectAllLocations();
+                    for (com.mycompany.geotracker.model.Location loc : allDataLocation) {
+                        new LocationToServer().execute(uid, loc.getLat(), loc.getLon(),
+                                loc.getSpeed(), loc.getHeading(), Long.toString(loc.getTimestamp()));
+                    }
+
+                    myData.deleteAllLocations();
+
+                    counter = 0;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        myData.close();
     }
 
 }

@@ -31,6 +31,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mycompany.geotracker.receiver.BatteryBroadcastReceiver;
 import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
 import com.mycompany.geotracker.server.MovementDataFromServer;
 import com.mycompany.geotracker.R;
@@ -240,16 +241,24 @@ public class ViewLocations extends ActionBarActivity {
             //Log the user out.
             Toast.makeText(context, "Logout successful", Toast.LENGTH_SHORT).show();
             Toast.makeText(context, "Service has been Disabled", Toast.LENGTH_SHORT).show();
-            TrackingLocation.get(context).stopLocationUpdates();
+         //   TrackingLocation.get(context).stopLocationUpdates();
 
             DataMovementService.stopService(context);
 
-            ComponentName receiver = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
-            PackageManager pm = this.getApplicationContext().getPackageManager();
+            ComponentName receiver1 = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
+            ComponentName receiver2 = new ComponentName(this.getApplicationContext(), BatteryBroadcastReceiver.class);
 
-            pm.setComponentEnabledSetting(receiver,
+            PackageManager pm1 = this.getApplicationContext().getPackageManager();
+            PackageManager pm2 = this.getApplicationContext().getPackageManager();
+
+            pm1.setComponentEnabledSetting(receiver1,
                     PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
+
+            pm2.setComponentEnabledSetting(receiver2,
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
+
             finish();
             toHomeScreen();
             return true;

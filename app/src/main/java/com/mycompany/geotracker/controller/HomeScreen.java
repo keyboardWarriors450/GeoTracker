@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
  */
 public class HomeScreen extends ActionBarActivity {
 
+    private static final String TAG = "HomeScreen";
     private TextView create_user, forgotPass;
     private EditText user_name, password;
     private MyData myData;
@@ -41,7 +43,7 @@ public class HomeScreen extends ActionBarActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("*************************HomeScreen started");
+        Log.i(TAG, "*************************HomeScreen started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
