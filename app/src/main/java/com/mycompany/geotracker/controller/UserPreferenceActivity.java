@@ -208,23 +208,8 @@ public class UserPreferenceActivity extends ActionBarActivity {
             //Log the user out.
             Toast.makeText(that, "Logout successful", Toast.LENGTH_SHORT).show();
             Toast.makeText(that, "Service has been Disabled", Toast.LENGTH_SHORT).show();
-    //        TrackingLocation.get(that).stopLocationUpdates();
 
             DataMovementService.stopService(that);
-
-            ComponentName receiver1 = new ComponentName(this.getApplicationContext(), LocationBroadcastReceiver.class);
-            ComponentName receiver2 = new ComponentName(this.getApplicationContext(), BatteryBroadcastReceiver.class);
-
-            PackageManager pm1 = this.getApplicationContext().getPackageManager();
-            PackageManager pm2 = this.getApplicationContext().getPackageManager();
-
-            pm1.setComponentEnabledSetting(receiver1,
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
-
-            pm2.setComponentEnabledSetting(receiver2,
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
 
             finish();
             toHomeScreen();

@@ -282,7 +282,7 @@ public class DataMovementService extends IntentService {
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP);
 
-            pm1.setComponentEnabledSetting(receiver2,
+            pm2.setComponentEnabledSetting(receiver2,
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP);
 
