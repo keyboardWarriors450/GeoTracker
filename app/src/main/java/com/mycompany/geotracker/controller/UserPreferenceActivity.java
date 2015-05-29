@@ -110,7 +110,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
                 SharedPreferences sharedPref = that.getSharedPreferences(USER_PREF,
                         Context.MODE_PRIVATE);
                 int samplingInt = Integer.parseInt(sharedPref.getString(
-                        SAMPLING_INTERVAL_POWER_ON, null));
+                        SAMPLING_INTERVAL_POWER_ON, "0"));
                 SharedPreferences.Editor editor = sharedPref.edit();
 
                 if (uploadInterval < samplingInt) {
@@ -134,7 +134,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
         radio_12_hr = (RadioButton) findViewById(R.id.btn_12_hr);
         radio_24_hr = (RadioButton) findViewById(R.id.btn_24_hr);
 
-        int samplingInt = Integer.parseInt(sharedPref.getString(SAMPLING_INTERVAL_POWER_ON, null));
+        int samplingInt = Integer.parseInt(sharedPref.getString(SAMPLING_INTERVAL_POWER_ON, "0"));
 
         if (uploadInterval >= samplingInt) {
             if (uploadInterval == 60) {
