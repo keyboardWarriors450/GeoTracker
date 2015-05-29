@@ -8,31 +8,24 @@
 package com.mycompany.geotracker.controller;
 
 import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mycompany.geotracker.receiver.BatteryBroadcastReceiver;
-import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
 import com.mycompany.geotracker.R;
 import com.mycompany.geotracker.service.DataMovementService;
 
@@ -50,6 +43,10 @@ public class UserPreferenceActivity extends ActionBarActivity {
     private TextView samplingInterval;
     private int uploadInterval;
     private Context that = this;
+    RadioButton radio_one_min;
+    RadioButton radio_one_hr;
+    RadioButton radio_12_hr;
+    RadioButton radio_24_hr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,69 +77,20 @@ public class UserPreferenceActivity extends ActionBarActivity {
 
                 if (isChecked) {
                     Toast.makeText(that, "Location Service has been Enabled", Toast.LENGTH_SHORT).show();
-                    //   TrackingLocation.get(that).startLocationUpdates();
-                    //  DataMovementService.scheduleUpdate(that, sharedPref);
                     DataMovementService.startService(that, sharedPref);
 
                 } else {
-                    // Toast.makeText(that, "Location Service has been Disabled", Toast.LENGTH_SHORT).show();
-                    // TrackingLocation.get(that).stopLocationUpdates();
                     DataMovementService.stopService(that);
-                    //  stopService(new Intent(that, DataMovementService.class));
                 }
             }
         });
 
         // Sampling time interval dialog
-//        btnSamplingInterval.setOnClickListener(new Button.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                selectSamplingInterval();
-//            }
-//        });
         btnSamplingInterval.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setTitle("Select sampling time interval")
-                        .setItems(R.array.sampling_interval_array,
-                                new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                String temp;
-                                String interval = getResources().getStringArray
-                                        (R.array.sampling_interval_array)[which];
-
-                                Toast.makeText(that, "You selected " + interval
-                                        , Toast.LENGTH_SHORT).show();
-
-                                switch (which) {
-                                    case 0: temp = "10";
-                                        break;
-                                    case 1: temp = "30";
-                                        break;
-                                    case 2: temp = "60";
-                                        break;
-                                    case 3: temp = "120";
-                                        break;
-                                    case 4: temp = "300";
-                                        break;
-                                    default: temp = "300";
-                                        break;
-                                }
-
-                                samplingInterval.setText(temp);
-
-                                SharedPreferences sharedPref = that.getSharedPreferences(USER_PREF,
-                                        Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.putString(SAMPLING_INTERVAL_POWER_ON, temp);
-                                editor.commit();
-
-                                DataMovementService.startService(that, sharedPref);
-                            }
-                        })
-                        .create().show();
-            }
+               @Override
+               public void onClick(View view) {
+                   selectSamplingInterval();
+               }
         });
 
         // Upload time interval radio buttons
@@ -161,26 +109,45 @@ public class UserPreferenceActivity extends ActionBarActivity {
 
                 SharedPreferences sharedPref = that.getSharedPreferences(USER_PREF,
                         Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit(); editor.putInt
-                        (UPLOAD_INTERVAL, uploadInterval);
-                editor.commit();
-                DataMovementService.startService(that, sharedPref);
-                System.out.println(uploadInterval);
+                int samplingInt = Integer.parseInt(sharedPref.getString(
+                        SAMPLING_INTERVAL_POWER_ON, null));
+                SharedPreferences.Editor editor = sharedPref.edit();
+
+                if (uploadInterval < samplingInt) {
+                    Toast.makeText(that, "Has to be greater than sampling interval",
+                            Toast.LENGTH_SHORT).show();
+                    radio_one_min.setEnabled(false);
+                    radio_one_hr.setChecked(true);
+                } else {
+                    radio_one_min.setEnabled(true);
+                    editor.putInt(UPLOAD_INTERVAL, uploadInterval);
+                    editor.commit();
+                    DataMovementService.startService(that, sharedPref);
+                    Log.i(TAG, Integer.toString(uploadInterval));
+                }
+
             }
         });
-        RadioButton radio_one_min = (RadioButton) findViewById(R.id.btn_one_min);
-        RadioButton radio_one_hr = (RadioButton) findViewById(R.id.btn_one_hr);
-        RadioButton radio_12_hr = (RadioButton) findViewById(R.id.btn_12_hr);
-        RadioButton radio_24_hr = (RadioButton) findViewById(R.id.btn_24_hr);
 
-        if (uploadInterval == 60) {
-            radio_one_min.setChecked(true);
-        } else if (uploadInterval == 3600) {
-            radio_one_hr.setChecked(true);
-        } else if (uploadInterval == 43200) {
-            radio_12_hr.setChecked(true);
+        radio_one_min = (RadioButton) findViewById(R.id.btn_one_min);
+        radio_one_hr = (RadioButton) findViewById(R.id.btn_one_hr);
+        radio_12_hr = (RadioButton) findViewById(R.id.btn_12_hr);
+        radio_24_hr = (RadioButton) findViewById(R.id.btn_24_hr);
+
+        int samplingInt = Integer.parseInt(sharedPref.getString(SAMPLING_INTERVAL_POWER_ON, null));
+
+        if (uploadInterval >= samplingInt) {
+            if (uploadInterval == 60) {
+                radio_one_min.setChecked(true);
+            } else if (uploadInterval == 3600) {
+                radio_one_hr.setChecked(true);
+            } else if (uploadInterval == 43200) {
+                radio_12_hr.setChecked(true);
+            } else {
+                radio_24_hr.setChecked(true);
+            }
         } else {
-            radio_24_hr.setChecked(true);
+            radio_one_hr.setChecked(true);
         }
     }
 
@@ -224,41 +191,53 @@ public class UserPreferenceActivity extends ActionBarActivity {
     }
 
     private void selectSamplingInterval(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Update Time");
-        builder.setMessage("Enter new tracking time interval (10 - 300 sec)");
+        AlertDialog.Builder builder = new AlertDialog.Builder(that);
+        builder.setTitle("Select sampling time interval")
+                .setItems(R.array.sampling_interval_array,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                String temp;
+                                String interval = getResources().getStringArray
+                                        (R.array.sampling_interval_array)[which];
 
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        input.setFilters(new InputFilter[] { new InputFilter.LengthFilter(3) });
-        builder.setView(input);
+                                Toast.makeText(that, "You selected " + interval
+                                        , Toast.LENGTH_SHORT).show();
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (!input.getText().toString().equals("") &&
-                        Integer.parseInt(input.getText().toString()) >= 10 &&
-                        Integer.parseInt(input.getText().toString()) <+ 300) {
-                    samplingInterval.setText(input.getText());
-                    SharedPreferences sharedPref = that.getSharedPreferences(USER_PREF,
-                            Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(SAMPLING_INTERVAL_POWER_ON, samplingInterval.getText().toString());
-                    editor.commit();
-                    DataMovementService.startService(that, sharedPref);
-                } else {
-                    selectSamplingInterval();
-                }
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+                                switch (which) {
+                                    case 0: temp = "10";
+                                        break;
+                                    case 1: temp = "30";
+                                        break;
+                                    case 2: temp = "60";
+                                        break;
+                                    case 3: temp = "120";
+                                        break;
+                                    case 4: temp = "300";
+                                        break;
+                                    default: temp = "300";
+                                        break;
+                                }
 
-        builder.show();
+                                samplingInterval.setText(temp);
+
+                                SharedPreferences sharedPref = that.getSharedPreferences(USER_PREF,
+                                        Context.MODE_PRIVATE);
+                                int uploadInt = sharedPref.getInt(UPLOAD_INTERVAL, 3600);
+
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString(SAMPLING_INTERVAL_POWER_ON, temp);
+
+                                if (Integer.parseInt(temp) > uploadInt) {
+                                    editor.putInt(UPLOAD_INTERVAL, 3600);
+                                    radio_one_hr.setChecked(true);
+                                }
+
+                                editor.commit();
+
+                                DataMovementService.startService(that, sharedPref);
+                            }
+                        })
+                .create().show();
     }
 
     private void toHomeScreen() {

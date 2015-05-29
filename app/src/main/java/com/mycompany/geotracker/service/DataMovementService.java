@@ -268,7 +268,7 @@ public class DataMovementService extends IntentService {
         // alarmManager.set(AlarmManager.RTC_WAKEUP,time, PendingIntent.getBroadcast(context,1,  intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
 
         if (isOn) {
-            System.out.println("*****Sampling Interval " + samplingInterval/1000);
+            Log.i(TAG, "Sampling Interval " + samplingInterval/1000);
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
                     , samplingInterval, pIntent);  // samplingInterval
 

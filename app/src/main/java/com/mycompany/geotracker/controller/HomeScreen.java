@@ -68,22 +68,6 @@ public class HomeScreen extends ActionBarActivity {
                 toForgotPassword();
             }
         });
-
-//        login.setOnClickListener(new Button.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final ArrayList<User> allData = myData.selectAllUsers();
-//                userIDStr = user_name.getText().toString();
-//                passwordStr = password.getText().toString();
-//
-//                if (isEmpty(user_name) || isEmpty(password)) {
-//                    Toast.makeText(HomeScreen.this, R.string.no_blank, Toast.LENGTH_SHORT).show();
-//                } else {
-//                    new LoginToServer(HomeScreen.this).execute(userIDStr, passwordStr);
-//                }
-//            }
-//        });
-
     }
 
     private void toForgotPassword() {
@@ -165,7 +149,6 @@ public class HomeScreen extends ActionBarActivity {
             } else {
                 new LoginToServer(HomeScreen.this).execute(userIDStr, passwordStr);
             }
-   //         return true;
         }
 
         return super.onOptionsItemSelected(item);

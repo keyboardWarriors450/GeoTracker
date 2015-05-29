@@ -1,6 +1,7 @@
 
 package com.mycompany.geotracker.receiver;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -33,7 +34,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
     public static LocationManager locationManager;
     public static Location myLocation;
     static int counter = 0;
-    private static final String TAG = "NetWork availability";
+    private static final String TAG = "LocationBroadcastReceiver";
     private ConnectivityManager mConnectivityManager;
 
     /**
@@ -41,23 +42,10 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
      * @param context the context
      * @param intent the intent
      */
+    @SuppressLint("LongLogTag")
     @Override
     public void onReceive(Context context, Intent intent) {
-        System.out.println("*****************************Started LocationBroadcastReceiver ******");
-        //Toast.makeText(context, ": ", Toast.LENGTH_SHORT).show();
-        /*if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
-                    Context.MODE_PRIVATE);
-
-            if (sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true)) {
-                System.out.println("Tracking ON ********** from BroadcastReceiver");
-                DataMovementService.startService(context, sharedPref);
-            } else {
-                System.out.println("Tracking OFF *********** from BroadcastReiver");
-                DataMovementService.stopService(context);
-
-            }
-         }*/
+        Log.i(TAG, "************* LocationBroadcastReceiver started");
 
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
@@ -99,7 +87,6 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
             /*******....  *****/
             SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
                     Context.MODE_PRIVATE);
-//            long timestamp = System.currentTimeMillis() / 1000;
 
             // now we have current location
             String uid = sharedPref.getString(MyAccountActivity.UID, null);
@@ -118,22 +105,22 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
              * continue the upload every so often, more frequently than the sampling of the data.
              */
             if (BatteryBroadcastReceiver.isConnected) {
-                System.out.println("battery cord is connected");
+                Log.i(TAG, "battery cord is connected");
                 Toast.makeText(context, "battery cord is connected", Toast.LENGTH_SHORT).show();
-                System.out.println("The interval is " + samplingInterval);
+                Log.i(TAG, "The interval is " + samplingInterval);
                 processLocation(context, samplingInterval, uploadInterval, uid, latStr, lonStr, speedStr,
                         headingStr, timestampStr);
             } else {
-                System.out.println("battery cord is disconnected" + " sampling interval " + samplingInterval);
+                Log.i(TAG, "battery cord is disconnected" + " sampling interval " + samplingInterval);
                 if (samplingInterval < 300) {
                     samplingInterval = 300;
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString(UserPreferenceActivity.SAMPLING_INTERVAL_POWER_OFF,
                             Integer.toString(samplingInterval));
                     editor.commit();
-                    System.out.println("New sampling interval " + samplingInterval);
+                    Log.i(TAG, "New sampling interval " + samplingInterval);
                 }
-                System.out.println("The interval is " + samplingInterval);
+                Log.i(TAG, "The interval is " + samplingInterval);
                 processLocation(context, samplingInterval, 0, uid, latStr, lonStr, speedStr,
                         headingStr, timestampStr);
             }
@@ -148,12 +135,13 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         }
     }
 
+    @SuppressLint("LongLogTag")
     private void processLocation(Context context, int samplingInterval, int uploadInterval, String uid,
                                  String latStr, String lonStr, String speedStr, String headingStr,
                                  String timestampStr) {
         int interval = uploadInterval / samplingInterval;
 
-        System.out.println("****************interval " + interval + " sampling " + samplingInterval +
+        Log.i(TAG, "interval " + interval + " sampling " + samplingInterval +
                 " upload " + uploadInterval + " timestamp " + timestampStr + " counter " + counter);
 
         MyData myData = new MyData(context);

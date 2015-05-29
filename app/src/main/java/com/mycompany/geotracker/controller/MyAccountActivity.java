@@ -7,15 +7,12 @@
 
 package com.mycompany.geotracker.controller;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationListener;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,8 +23,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mycompany.geotracker.receiver.BatteryBroadcastReceiver;
-import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
 import com.mycompany.geotracker.R;
 import com.mycompany.geotracker.data.MyData;
 import com.mycompany.geotracker.model.User;
@@ -101,14 +96,6 @@ public class MyAccountActivity extends ActionBarActivity {
 
         username.setTextColor(Color.WHITE);
         username.setText("Welcome " + new_user);
-//        final Button change_password = (Button)findViewById(R.id.change_password);
-
-//        change_password.setOnClickListener(new Button.OnClickListener() {
-//            public void onClick(View v) {
-//                //set the preferences to the user that is currently logged in.
-//                new RecoverPassword(MyAccountActivity.this).execute(user);
-//            }
-//        });
 
         final Button view_data = (Button) findViewById(R.id.movement_data);
 
