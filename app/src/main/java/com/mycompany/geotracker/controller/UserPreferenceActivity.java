@@ -81,6 +81,8 @@ public class UserPreferenceActivity extends ActionBarActivity {
 
                 } else {
                     DataMovementService.stopService(that);
+                    stopService(new Intent(that,DataMovementService.class));
+
                 }
             }
         });

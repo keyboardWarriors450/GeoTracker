@@ -43,9 +43,7 @@ import java.util.ArrayList;
  */
 public class DataMovementService extends IntentService {
 
-    public static boolean wifiOn = false;
     private Location myLocation;
-    private static final String LISTENER = "Location Listener";
     public static LocationListener locationListener;
     public static LocationManager locationManager;
     static int counter = 0;
@@ -82,7 +80,6 @@ public class DataMovementService extends IntentService {
         }
 
         if (myLocation != null && isConnected) {
-
 
             /*******....  *****/
             SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
@@ -132,6 +129,9 @@ public class DataMovementService extends IntentService {
             } else
                 System.out.println("NetWork is NOT available");
         }
+        locationManager.removeUpdates(locationListener);
+        locationManager = null;
+        //stopSelf();
     }
 
    // @SuppressLint("LongLogTag")
@@ -186,7 +186,10 @@ public class DataMovementService extends IntentService {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pIntent);
         pIntent.cancel();
-
+        if (locationManager != null && locationListener != null) {
+            locationManager.removeUpdates(locationListener);
+        }
+        locationManager =null;
         ComponentName receiver = new ComponentName(context, GeoBroadcastReceiver.class);
 
         PackageManager pm1 = context.getPackageManager();
@@ -213,7 +216,7 @@ public class DataMovementService extends IntentService {
         samplingInterval *= 1000;
         Intent intentAlarm = new Intent(context, DataMovementService.class);
 
-        PendingIntent pIntent = PendingIntent.getService(context, 1, intentAlarm, 0);
+        PendingIntent pIntent = PendingIntent.getService(context, 0, intentAlarm, 0);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
