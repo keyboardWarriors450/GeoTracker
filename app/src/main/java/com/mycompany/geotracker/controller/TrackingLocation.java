@@ -7,19 +7,12 @@
 
 package com.mycompany.geotracker.controller;
 
-import android.app.AlarmManager;
-import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-
-import com.mycompany.geotracker.receiver.LocationBroadcastReceiver;
 
 /**
  * Created by David on May 2015

@@ -40,9 +40,7 @@ public class MyAccountActivity extends ActionBarActivity {
     private MyData myData;
     private String user;
     private String uid;
-    private LocationListener locationListener;
     private Context that = this;
-    private ConnectivityManager mConnectivityManager;
 
     /**
      * Creates the page with all the buttons and shows the user name.
@@ -62,9 +60,6 @@ public class MyAccountActivity extends ActionBarActivity {
             Log.i(TAG, "Tracking ON");
 
             //**************** Turn tracking on***************************
-            // TrackingLocation.get(that).startLocationUpdates();
-            // DataMovementService.scheduleUpdate(that, sharedPref);
-
             DataMovementService.startService(that, sharedPref);
 
         } else {
