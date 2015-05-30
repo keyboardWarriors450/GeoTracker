@@ -173,13 +173,19 @@ public class UserPreferenceActivity extends ActionBarActivity {
         //takes the user back to the home screen
         if (id == R.id.action_logout) {
             //Log the user out.
-            Toast.makeText(that, "Logout successful", Toast.LENGTH_SHORT).show();
-            Toast.makeText(that, "Service has been Disabled", Toast.LENGTH_SHORT).show();
 
-            DataMovementService.stopService(that);
+            SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                    Context.MODE_PRIVATE);
+            boolean isOn = sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true);
+            if (isOn) {
+                DataMovementService.stopService(that);
+            }
 
             finish();
             toHomeScreen();
+            Toast.makeText(that, "Logout successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(that, "Service has been Disabled", Toast.LENGTH_SHORT).show();
+
             return true;
         }
 
