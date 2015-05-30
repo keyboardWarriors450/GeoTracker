@@ -56,7 +56,7 @@ public class DataMovementService extends IntentService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         System.out.println( "service starting");
-        initial(this);
+        //initial(this);
 
         return START_NOT_STICKY;
     }
@@ -64,6 +64,7 @@ public class DataMovementService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
+        initial(this);
         mConnectivityManager = (ConnectivityManager)
                 this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
