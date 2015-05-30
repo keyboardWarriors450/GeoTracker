@@ -57,7 +57,7 @@ public class DataMovementService extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        System.out.print( "service starting");
+        System.out.println( "service starting");
         initial(this);
 
         return START_NOT_STICKY;
@@ -72,7 +72,7 @@ public class DataMovementService extends IntentService {
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
-        System.out.print("Network connectivity: " + Boolean.toString(isConnected));
+        System.out.println("Network connectivity: " + Boolean.toString(isConnected));
         NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -82,6 +82,8 @@ public class DataMovementService extends IntentService {
         }
 
         if (myLocation != null && isConnected) {
+
+
             /*******....  *****/
             SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
                     Context.MODE_PRIVATE);
@@ -103,43 +105,42 @@ public class DataMovementService extends IntentService {
              * continue the upload every so often, more frequently than the sampling of the data.
              */
             if (GeoBroadcastReceiver.isConnected) {
-                System.out.print("battery cord is connected");
-                Toast.makeText(this, "battery cord is connected", Toast.LENGTH_SHORT).show();
-                System.out.print("The interval is " + samplingInterval);
+                System.out.println("battery cord is connected");
+                System.out.println("The interval is " + samplingInterval);
                 processLocation(this, samplingInterval, uploadInterval, uid, latStr, lonStr, speedStr,
                         headingStr, timestampStr);
             } else {
-                System.out.print("battery cord is disconnected" + " sampling interval " + samplingInterval);
+                System.out.println("battery cord is disconnected" + " sampling interval " + samplingInterval);
                 if (samplingInterval < 300) {
                     samplingInterval = 300;
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString(UserPreferenceActivity.SAMPLING_INTERVAL_POWER_OFF,
                             Integer.toString(samplingInterval));
                     editor.commit();
-                    System.out.print("New sampling interval " + samplingInterval);
+                    System.out.println("New sampling interval " + samplingInterval);
                 }
-                System.out.print("The interval is " + samplingInterval);
+                System.out.println("The interval is " + samplingInterval);
                 processLocation(this, samplingInterval, 0, uid, latStr, lonStr, speedStr,
                         headingStr, timestampStr);
             }
 
-            System.out.print("Updated current location: " + myLocation.getLatitude() + ", " +
+            System.out.println("Updated current location: " + myLocation.getLatitude() + ", " +
                     myLocation.getLongitude());
         } else {
             if (myLocation == null) {
-                System.out.print("NO last location is found");
+                System.out.println("NO last location is found");
             } else
-                System.out.print("NetWork is NOT available");
+                System.out.println("NetWork is NOT available");
         }
     }
 
-    @SuppressLint("LongLogTag")
+   // @SuppressLint("LongLogTag")
     private void processLocation(Context context, int samplingInterval, int uploadInterval, String uid,
                                  String latStr, String lonStr, String speedStr, String headingStr,
                                  String timestampStr) {
         int interval = uploadInterval / samplingInterval;
 
-        System.out.print("interval " + interval + " sampling " + samplingInterval +
+        System.out.println("interval " + interval + " sampling " + samplingInterval +
                 " upload " + uploadInterval + " timestamp " + timestampStr + " counter " + counter);
 
         MyData myData = new MyData(context);
@@ -178,46 +179,6 @@ public class DataMovementService extends IntentService {
     }
 
 
-    /**
-     * Creates an Intent and sets the class which will execute when the alarm triggers.
-     *
-     */
-   /* public static void scheduleUpdate(Context context, SharedPreferences sharedPref) {
-     //   System.out.println("**********************DataMovementService.scheduleUpdate started*******");
-
-        boolean isOn = sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true);
-        int trackingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
-                .SAMPLING_INTERVAL_POWER_OFF, "60"));
-
-
-
-        trackingInterval *= 1000;
-        Intent intentAlarm = new Intent(context, LocationBroadcastReceiver.class);
-        //  intentAlarm.putExtra("wifi", wifiOn);
-
-        // getService(..) for service only
-        PendingIntent pIntent = PendingIntent.getService(context, 0, intentAlarm, 0);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        //set the alarm for particular time
-       // alarmManager.set(AlarmManager.RTC_WAKEUP,time, PendingIntent.getBroadcast(context,1,  intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
-
-        if (isOn) {
-
-
-
-            alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                    , 5000, pIntent);  // trackingInterval
-            ComponentName receiver = new ComponentName(context, LocationBroadcastReceiver.class);
-            PackageManager pm = context.getPackageManager();
-            pm.setComponentEnabledSetting(receiver,
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP);
-
-            Toast.makeText(context, "Location Update every 5 seconds", Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
     public static void stopService(Context context) {
 
         Intent intentAlarm = new Intent(context, DataMovementService.class);
@@ -239,7 +200,7 @@ public class DataMovementService extends IntentService {
 
     /** start update location service*/
     public static void startService(Context context, SharedPreferences sharedPref ) {
-        System.out.println("*******DataMovementService.scheduleUpdate started*******");
+        System.out.println("*******DataMovementService.startService started*******");
         boolean isOn = sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true);
         int samplingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
                 .SAMPLING_INTERVAL_POWER_OFF, "300"));
@@ -250,9 +211,9 @@ public class DataMovementService extends IntentService {
         }
 
         samplingInterval *= 1000;
-        Intent intentAlarm = new Intent(context, GeoBroadcastReceiver.class);
+        Intent intentAlarm = new Intent(context, DataMovementService.class);
 
-        PendingIntent pIntent = PendingIntent.getBroadcast(context, 1, intentAlarm, 0);
+        PendingIntent pIntent = PendingIntent.getService(context, 1, intentAlarm, 0);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -262,7 +223,7 @@ public class DataMovementService extends IntentService {
         if (isOn) {
             Log.i("start service", "Sampling Interval " + samplingInterval/1000);
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                    , samplingInterval, pIntent);  // samplingInterval
+                    , 5000, pIntent);  // samplingInterval
 
             ComponentName receiver = new ComponentName(context, GeoBroadcastReceiver.class);
 
@@ -285,9 +246,7 @@ public class DataMovementService extends IntentService {
             @Override
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-                Log.i("LOCATION SERVICES", location.toString());
-                //  mLocationLog.addLocation(location);
-                //    myLocation = location;
+               System.out.println("on location change" + location.toString());
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
