@@ -74,10 +74,22 @@ public class DataMovementService extends IntentService {
         System.out.println("Network connectivity: " + Boolean.toString(isConnected));
         NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        } else if (mWifi.isConnected()) {
+        if (mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
             myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        }
+        if (myLocation == null ) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    100000, 40, locationListener);
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
+
+        }
+
+        // test output before update location
+        if (myLocation != null) {
+            System.out.println("Updated current location: " + myLocation.getLatitude() + ", " +
+                    myLocation.getLongitude());
         }
 
         if (myLocation != null && isConnected) {
@@ -263,7 +275,7 @@ public class DataMovementService extends IntentService {
         locationManager = (LocationManager) c.getSystemService(
                 Context.LOCATION_SERVICE);
         // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
                 100000, 40, locationListener);
     }
 }
