@@ -34,7 +34,7 @@ public class TestUser extends TestCase {
     }
 
     public void testGetPassword() {
-        assertEquals("password", mUser.getPassword());
+        assertEquals("password1", mUser.getPassword());
     }
 
     public void testGetQuestion() {

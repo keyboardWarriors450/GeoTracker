@@ -37,15 +37,22 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
 
     public void testRequiredFields() {
         solo.unlockScreen();
-
+        solo.clickOnButton("OK");
         solo.enterText(0, "");
-        solo.clickOnButton("Submit");
-        boolean textFound = solo.searchText("Please enter your email");
+        solo.clickOnButton("Continue");
+        boolean textFound = solo.searchText("Cannot leave it blank");
         assertTrue("Required field validation failed", textFound);
     }
 
-    public void testOrientation() {
+    /*public void testOrientation() {
+        solo.clickOnButton("OK");
         solo.enterText(0, "danielk6@uw.edu");
+        solo.enterText(1, "password1");
+        solo.enterText(2, "password1");
+        solo.pressSpinnerItem(0, 0);
+        solo.enterText(3, "leo");
+        solo.clickOnCheckBox(0);
+        solo.clickOnButton("Continue");
 
         solo.setActivityOrientation(Solo.LANDSCAPE);
         boolean textFound = solo.searchText("danielk6@uw.edu");
@@ -56,10 +63,16 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
         assertTrue("Password change failed", textFound);
     }
 
-    public void testCourseAddButton() {
+    public void testSubmitButton() {
+        solo.clickOnButton("OK");
         solo.enterText(0, "danielk6@uw.edu");
-        solo.clickOnButton("Submit");
-        boolean textFound = solo.searchText("Email has been sent");
+        solo.enterText(1, "password1");
+        solo.enterText(2, "password1");
+        solo.pressSpinnerItem(0, 0);
+        solo.enterText(3, "leo");
+        solo.clickOnCheckBox(0);
+        solo.clickOnButton("Continue");
+        boolean textFound = solo.searchText("Registering new user");
         assertTrue("Failed to send email", textFound);
-    }
+    }*/
 }
