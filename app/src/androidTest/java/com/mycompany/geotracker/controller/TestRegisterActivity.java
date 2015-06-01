@@ -61,18 +61,18 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
         solo.setActivityOrientation(Solo.PORTRAIT);
         textFound = solo.searchText("danielk6@uw.edu");
         assertTrue("Password change failed", textFound);
-    }
+    }*/
 
     public void testSubmitButton() {
         solo.clickOnButton("OK");
-        solo.enterText(0, "danielk6@uw.edu");
+        solo.enterText(0, "blah1566665@huujhyy.com");
         solo.enterText(1, "password1");
         solo.enterText(2, "password1");
         solo.pressSpinnerItem(0, 0);
         solo.enterText(3, "leo");
         solo.clickOnCheckBox(0);
         solo.clickOnButton("Continue");
-        boolean textFound = solo.searchText("Registering new user");
+        boolean textFound = solo.searchText("Validate your email from your inbox to finish registration.");
         assertTrue("Failed to send email", textFound);
-    }*/
+    }
 }
