@@ -239,7 +239,7 @@ public class DataMovementService extends IntentService {
         if (isOn) {
             Log.i("start service", "Sampling Interval " + samplingInterval/1000);
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                    , 5000, pIntent);  // samplingInterval
+                    , samplingInterval, pIntent);  // samplingInterval
 
             ComponentName receiver = new ComponentName(context, GeoBroadcastReceiver.class);
 
@@ -258,6 +258,7 @@ public class DataMovementService extends IntentService {
     }
 
     public static void initial(Context c) {
+
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -275,7 +276,13 @@ public class DataMovementService extends IntentService {
         locationManager = (LocationManager) c.getSystemService(
                 Context.LOCATION_SERVICE);
         // Register the listener with the Location Manager to receive location updates
+
+        SharedPreferences sharedPref = c.getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                Context.MODE_PRIVATE);
+        int samplingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
+                SAMPLING_INTERVAL_POWER_ON, "60"));
+
         locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
-                100000, 40, locationListener);
+                samplingInterval, 40, locationListener);
     }
 }

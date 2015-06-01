@@ -32,10 +32,11 @@ public class GeoBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         System.out.println("*******************Started GeoBroadcastReceiver ******");
 
+        SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                Context.MODE_PRIVATE);
+
         if (intent.getAction() != null) {
             if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-                SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
-                        Context.MODE_PRIVATE);
 
                 if (sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true)) {
                     System.out.println("Tracking ON ********** from BroadcastReceiver");
@@ -53,8 +54,8 @@ public class GeoBroadcastReceiver extends BroadcastReceiver {
                 System.out.println("--------POWER IS *NOT* CONNECTED---------------->");
             } else if (intent.getAction().equals("android.intent.action.ACTION_POWER_CONNECTED")) {
                 isConnected = true;
-
                 System.out.println("--------POWER IS CONNECTED---------------->");
+                DataMovementService.startService(context, sharedPref);
             }
         }
     }
