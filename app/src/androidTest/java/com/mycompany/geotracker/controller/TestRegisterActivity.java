@@ -7,9 +7,18 @@
 
 package com.mycompany.geotracker.controller;
 
+import android.net.Uri;
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 
 import com.robotium.solo.Solo;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.net.URI;
 
 /**
  * Created by danielkhieuson on 5/20/15.
@@ -64,14 +73,39 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
     }*/
 
     public void testSubmitButton() {
+        String email = "bl665@uujhjjyy.com";
+        String password = "password1";
+        String password2 = "password1";
+        String question = "What is your favorite pet's name?";
+        String answer = "leo";
+
         solo.clickOnButton("OK");
-        solo.enterText(0, "blah1566665@huujhyy.com");
-        solo.enterText(1, "password1");
-        solo.enterText(2, "password1");
+        solo.enterText(0, email);
+        solo.enterText(1, password);
+        solo.enterText(2, password2);
         solo.pressSpinnerItem(0, 0);
-        solo.enterText(3, "leo");
+        solo.enterText(3, answer);
         solo.clickOnCheckBox(0);
         solo.clickOnButton("Continue");
+        try {
+
+            String link = Uri.parse("http://450.atwebpages.com/adduser.php").buildUpon()
+                    .appendQueryParameter("email", email)
+                    .appendQueryParameter("password", password)
+                    .appendQueryParameter("question", question)
+                    .appendQueryParameter("answer", answer)
+                    .build().toString();
+
+            link = link.replaceFirst("%40", "@");
+
+            HttpClient client = new DefaultHttpClient();
+            HttpGet request = new HttpGet();
+            request.setURI(new URI(link));
+            HttpResponse response = client.execute(request);
+
+        } catch(Exception e){
+            System.out.println("Exception: " + e.getMessage());
+        }
         boolean textFound = solo.searchText("Validate your email from your inbox to finish registration.");
         assertTrue("Failed to send email", textFound);
     }

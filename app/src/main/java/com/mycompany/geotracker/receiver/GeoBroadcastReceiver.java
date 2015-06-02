@@ -52,6 +52,7 @@ public class GeoBroadcastReceiver extends BroadcastReceiver {
             if (intent.getAction().equals("android.intent.action.ACTION_POWER_DISCONNECTED")) {
                 isConnected = false;
                 System.out.println("--------POWER IS *NOT* CONNECTED---------------->");
+                DataMovementService.startService(context, sharedPref);
             } else if (intent.getAction().equals("android.intent.action.ACTION_POWER_CONNECTED")) {
                 isConnected = true;
                 System.out.println("--------POWER IS CONNECTED---------------->");
