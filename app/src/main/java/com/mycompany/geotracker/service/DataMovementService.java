@@ -273,16 +273,18 @@ public class DataMovementService extends IntentService {
             @Override
             public void onProviderDisabled(String provider) {}
         };
-        locationManager = (LocationManager) c.getSystemService(
-                Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
+
         // Register the listener with the Location Manager to receive location updates
+        if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
+            Log.i("GPS", "PASSIVE_PROVIDER ENABLED");
+            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
+                    100000, 40, locationListener);
+        } else {
+            Log.i("GPS", "GPS_PROVIDER ENABLED");
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    100000, 40, locationListener);
+        }
 
-        SharedPreferences sharedPref = c.getSharedPreferences(UserPreferenceActivity.USER_PREF,
-                Context.MODE_PRIVATE);
-        int samplingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
-                SAMPLING_INTERVAL_POWER_ON, "60"));
-
-        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
-                samplingInterval, 40, locationListener);
     }
 }

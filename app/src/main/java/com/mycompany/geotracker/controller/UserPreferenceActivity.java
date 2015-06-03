@@ -76,10 +76,12 @@ public class UserPreferenceActivity extends ActionBarActivity {
                 editor.commit();
 
                 if (isChecked) {
+                    Log.i(TAG, "Tracking ON");
                     Toast.makeText(that, "Location Service has been Enabled", Toast.LENGTH_SHORT).show();
                     DataMovementService.startService(that, sharedPref);
 
                 } else {
+                    Log.i(TAG, "Tracking OFF");
                     DataMovementService.stopService(that);
                     stopService(new Intent(that,DataMovementService.class));
 
