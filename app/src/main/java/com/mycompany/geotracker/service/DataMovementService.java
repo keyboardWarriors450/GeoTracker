@@ -43,11 +43,12 @@ import java.util.ArrayList;
  */
 public class DataMovementService extends IntentService {
 
-    private Location myLocation;
+    private static Location myLocation;
     public static LocationListener locationListener;
     public static LocationManager locationManager;
     static int counter = 0;
-    private ConnectivityManager mConnectivityManager;
+    private static ConnectivityManager mConnectivityManager;
+    private static boolean isConnected;
     public DataMovementService() {
         super("DataMovement");
     }
@@ -65,26 +66,26 @@ public class DataMovementService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         initial(this);
-        mConnectivityManager = (ConnectivityManager)
+        /*mConnectivityManager = (ConnectivityManager)
                 this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
-        System.out.println("Network connectivity: " + Boolean.toString(isConnected));
-        NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+//        System.out.println("Network connectivity: " + Boolean.toString(isConnected));*/
+//        NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        if (mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
-            myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-        }
-        if (myLocation == null ) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    100000, 40, locationListener);
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
-
-        }
+//        if (mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
+//            myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+//        }
+//        if (myLocation == null ) {
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+//                    100000, 40, locationListener);
+//            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//                myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//            }
+//
+//        }
 
         // test output before update location
         if (myLocation != null) {
@@ -274,17 +275,41 @@ public class DataMovementService extends IntentService {
             public void onProviderDisabled(String provider) {}
         };
         locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
+        mConnectivityManager = (ConnectivityManager)
+                c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
 
-        // Register the listener with the Location Manager to receive location updates
-        if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
-            Log.i("GPS", "PASSIVE_PROVIDER ENABLED");
+        System.out.println("Network connectivity: " + Boolean.toString(isConnected));
+
+        NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
+          //  myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
             locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
                     100000, 40, locationListener);
-        } else {
-            Log.i("GPS", "GPS_PROVIDER ENABLED");
+            Log.i("GPS", "PASSIVE_PROVIDER ENABLED");
+        }
+        if (myLocation == null ) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     100000, 40, locationListener);
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                Log.i("GPS", "GPS_PROVIDER ENABLED");
+            }
+
         }
+
+        // Register the listener with the Location Manager to receive location updates
+//        if () {
+//            Log.i("GPS", "PASSIVE_PROVIDER ENABLED");
+//            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
+//                    100000, 40, locationListener);
+//        } else {
+//            Log.i("GPS", "GPS_PROVIDER ENABLED");
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+//                    100000, 40, locationListener);
+//        }
 
     }
 }

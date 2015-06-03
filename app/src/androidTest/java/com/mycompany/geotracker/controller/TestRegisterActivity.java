@@ -73,7 +73,7 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
     }*/
 
     public void testSubmitButton() {
-        String email = "bl665@uujhjjyy.com";
+        String email = "bl66lkjlklkj5@uujhjjyy.com";
         String password = "password1";
         String password2 = "password1";
         String question = "What is your favorite pet's name?";
