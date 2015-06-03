@@ -25,6 +25,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.mycompany.geotracker.controller.MyAccountActivity;
 import com.mycompany.geotracker.controller.UserPreferenceActivity;
 import com.mycompany.geotracker.data.MyData;
@@ -41,7 +44,8 @@ import java.util.ArrayList;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class DataMovementService extends IntentService {
+public class DataMovementService extends IntentService implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static Location myLocation;
     public static LocationListener locationListener;
@@ -49,6 +53,7 @@ public class DataMovementService extends IntentService {
     static int counter = 0;
     private static ConnectivityManager mConnectivityManager;
     private static boolean isConnected;
+    private static GoogleApiClient mGoogleApiClient;
     public DataMovementService() {
         super("DataMovement");
     }
@@ -66,26 +71,28 @@ public class DataMovementService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         initial(this);
-        /*mConnectivityManager = (ConnectivityManager)
+        mConnectivityManager = (ConnectivityManager)
                 this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
-//        System.out.println("Network connectivity: " + Boolean.toString(isConnected));*/
-//        NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        System.out.println("Network connectivity: " + Boolean.toString(isConnected));
+        NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-//        if (mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
+        if (mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
 //            myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-//        }
-//        if (myLocation == null ) {
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-//                    100000, 40, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
+                    100000, 40, locationListener);
+        }
+        if (myLocation == null ) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    100000, 40, locationListener);
 //            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 //                myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 //            }
-//
-//        }
+
+        }
 
         // test output before update location
         if (myLocation != null) {
@@ -258,7 +265,7 @@ public class DataMovementService extends IntentService {
         }
     }
 
-    public static void initial(Context c) {
+    public void initial(Context c) {
 
         locationListener = new LocationListener() {
             @Override
@@ -274,6 +281,10 @@ public class DataMovementService extends IntentService {
             @Override
             public void onProviderDisabled(String provider) {}
         };
+
+        buildGoogleApiClient();
+        mGoogleApiClient.connect();
+
         locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
         mConnectivityManager = (ConnectivityManager)
                 c.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -284,21 +295,21 @@ public class DataMovementService extends IntentService {
         System.out.println("Network connectivity: " + Boolean.toString(isConnected));
 
         NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
-          //  myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
-                    100000, 40, locationListener);
-            Log.i("GPS", "PASSIVE_PROVIDER ENABLED");
-        }
-        if (myLocation == null ) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    100000, 40, locationListener);
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                Log.i("GPS", "GPS_PROVIDER ENABLED");
-            }
-
-        }
+//        if (mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
+//            myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+//            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
+//                    100000, 40, locationListener);
+//            Log.i("GPS", "PASSIVE_PROVIDER ENABLED");
+//        }
+//        if (myLocation == null ) {
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+//                    100000, 40, locationListener);
+//            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//                myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                Log.i("GPS", "GPS_PROVIDER ENABLED");
+//            }
+//
+//        }
 
         // Register the listener with the Location Manager to receive location updates
 //        if () {
@@ -310,6 +321,35 @@ public class DataMovementService extends IntentService {
 //            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 //                    100000, 40, locationListener);
 //        }
+
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        Log.i("Google", "called buildGoogleApiClient");
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        myLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        Log.i("Google", myLocation.getLatitude() + "");
+        if (myLocation != null) {
+            Log.i("Google", "not null");
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
 }
