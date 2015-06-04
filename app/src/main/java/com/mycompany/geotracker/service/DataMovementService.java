@@ -283,7 +283,7 @@ public class DataMovementService extends IntentService implements
         mConnectivityManager = (ConnectivityManager)
                 c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
+        isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
         System.out.println("Network connectivity: " + Boolean.toString(isConnected));
