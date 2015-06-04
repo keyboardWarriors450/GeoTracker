@@ -6,8 +6,7 @@
   ~ of Keyboard Warriors.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mycompany.geotracker"
-    android:sharedUserId="com.example.viet.betterlocationapi">
+    package="com.mycompany.geotracker">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
