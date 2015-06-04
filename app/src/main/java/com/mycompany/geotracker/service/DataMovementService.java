@@ -80,12 +80,6 @@ public class DataMovementService extends IntentService implements
         System.out.println("Network connectivity: " + Boolean.toString(isConnected));*/
         NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        if (myLocation != null && mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
-                    100000, 40, locationListener);
-            myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-            Log.i("NETWORK", "PASSIVE_PROVIDER");
-        } else
         if (myLocation != null ) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     100000, 40, locationListener);
@@ -94,7 +88,13 @@ public class DataMovementService extends IntentService implements
             }
 
             Log.i("NETWORK", "GPS_PROVIDER");
+        } else if (myLocation != null && mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
+            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
+                    100000, 40, locationListener);
+            myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+            Log.i("NETWORK", "PASSIVE_PROVIDER");
         }
+
 
         // test output before update location
         if (myLocation != null) {
