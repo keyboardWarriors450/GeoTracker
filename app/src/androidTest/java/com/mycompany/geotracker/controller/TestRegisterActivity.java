@@ -44,6 +44,9 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
         solo.finishOpenedActivities();
     }
 
+    /**
+     * Tests if the user can register while leaving fields blank.
+     */
     public void testRequiredFields() {
         solo.unlockScreen();
         solo.clickOnButton("OK");
@@ -72,8 +75,16 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
         assertTrue("Password change failed", textFound);
     }*/
 
+    /**
+     * Tests registering a user.
+     * To perform this test, you will need to change the email String.
+     * If you plan to test this multiple times, you will need to clear the app's
+     * settings in your emulator before you run this test.
+     * Otherwise, the first time you run this test, it will pass but
+     * subsequent times will fail.
+     */
     public void testSubmitButton() {
-        String email = "bl66lkjlklkj5@uujhjjyy.com";
+        String email = "blah6656@uujhjjyy.com";
         String password = "password1";
         String password2 = "password1";
         String question = "What is your favorite pet's name?";

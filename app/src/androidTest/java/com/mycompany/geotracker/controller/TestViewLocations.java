@@ -34,4 +34,33 @@ public class TestViewLocations extends ActivityInstrumentationTestCase2<ViewLoca
         //finishOpenedActivities() will finish all the activities that have been opened during the test execution.
         solo.finishOpenedActivities();
     }
+
+    /**
+     * Tests if the user selects the same dates for start and end date.
+     */
+    public void testSelectSameDates() {
+        solo.unlockScreen();
+        //solo.pressSpinnerItem(0, 0);
+        //solo.pressSpinnerItem(1, 0);
+        solo.clickOnButton("Start Date");
+
+        solo.clickOnButton("End Date");
+
+        boolean textFound = solo.searchText("End Date must greater than Start Date");
+        assertTrue("Dates are the same", textFound);
+    }
+
+    /**
+     * Tests if the user selects a start date that is greater than the end date.
+     */
+    public void testSelectGreaterStartDate() {
+        //solo.pressSpinnerItem(0, 1);
+        //solo.pressSpinnerItem(1, 0);
+        solo.clickOnButton("Start Date");
+
+        solo.clickOnButton("End Date");
+
+        boolean textFound = solo.searchText("End Date must greater than Start Date");
+        assertTrue("End date is less than start date", textFound);
+    }
 }
