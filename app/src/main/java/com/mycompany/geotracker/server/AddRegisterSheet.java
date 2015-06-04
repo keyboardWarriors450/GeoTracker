@@ -12,6 +12,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 
+import com.mycompany.geotracker.R;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -105,16 +107,18 @@ public class AddRegisterSheet extends AsyncTask<String, Void, String> {
 
                 String printedRegistration = sb.toString();
 
-                final AlertDialog alert = new AlertDialog.Builder(AddRegisterSheet.this.context).create();
-                alert.setMessage(printedRegistration);
-                alert.setButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-//                        context.startActivity(new Intent(AddRegisterSheet.this.context, RegisterActivity.class));
-                        alert.cancel();
-                    }
-                });
-                alert.show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddRegisterSheet.this.context);
+                builder.setTitle("User Agreement")
+                        .setMessage(printedRegistration)
+                        .setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                builder.create().show();
+
             } catch (JSONException e) {
 
             }
