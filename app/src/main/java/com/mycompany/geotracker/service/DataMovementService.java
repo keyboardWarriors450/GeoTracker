@@ -7,7 +7,7 @@
 
 package com.mycompany.geotracker.service;
 
-import android.annotation.SuppressLint;
+
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
@@ -337,9 +337,9 @@ public class DataMovementService extends IntentService implements
     public void onConnected(Bundle bundle) {
         myLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        Log.i("Google", myLocation.getLatitude() + "");
+
         if (myLocation != null) {
-            Log.i("Google", "not null");
+            Log.i("Google", "not null, location: " +  myLocation.getLatitude());
         }
     }
 
