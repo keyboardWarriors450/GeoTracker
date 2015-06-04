@@ -75,7 +75,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCgNpUaeI1-J4h4ZlkbbJ-KM7R9LV9yVew" />
+            android:value="AIzaSyAIN_SDM9eh_KMIMWji-9N7JfoRL3RzcAI" />
 
         <receiver
             android:name=".receiver.GeoBroadcastReceiver"
