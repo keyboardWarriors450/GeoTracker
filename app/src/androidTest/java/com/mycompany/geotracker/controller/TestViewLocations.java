@@ -26,6 +26,7 @@ public class TestViewLocations extends ActivityInstrumentationTestCase2<ViewLoca
     public void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
+        //currentActivity = getActivity();
     }
 
     @Override
@@ -40,11 +41,11 @@ public class TestViewLocations extends ActivityInstrumentationTestCase2<ViewLoca
      */
     public void testSelectSameDates() {
         solo.unlockScreen();
-        //solo.pressSpinnerItem(0, 0);
-        //solo.pressSpinnerItem(1, 0);
-        solo.clickOnButton("Start Date");
 
-        solo.clickOnButton("End Date");
+        solo.clickOnText("Start Date");
+        solo.clickOnButton("Done");
+        solo.clickOnText("End Date");
+        solo.clickOnButton("Done");
 
         boolean textFound = solo.searchText("End Date must greater than Start Date");
         assertTrue("Dates are the same", textFound);
@@ -54,12 +55,13 @@ public class TestViewLocations extends ActivityInstrumentationTestCase2<ViewLoca
      * Tests if the user selects a start date that is greater than the end date.
      */
     public void testSelectGreaterStartDate() {
-        //solo.pressSpinnerItem(0, 1);
-        //solo.pressSpinnerItem(1, 0);
-        solo.clickOnButton("Start Date");
-
-        solo.clickOnButton("End Date");
-
+        solo.clickOnText("Start Date");
+        solo.clickOnButton("Done");
+        solo.clickOnText("End Date");
+        //solo.pressSpinnerItem(0, -1);
+        //DatePicker datePicker = (DatePicker)currentActivity.findViewById(R.id.datePicker1);
+        //solo.setDatePicker(datePicker, 2015, 5, 4);
+        solo.clickOnButton("Done");
         boolean textFound = solo.searchText("End Date must greater than Start Date");
         assertTrue("End date is less than start date", textFound);
     }

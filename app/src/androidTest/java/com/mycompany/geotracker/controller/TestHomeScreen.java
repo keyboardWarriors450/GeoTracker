@@ -44,8 +44,8 @@ public class TestHomeScreen extends ActivityInstrumentationTestCase2<HomeScreen>
         solo.enterText(0, "danielk6@uw.edu");
         solo.enterText(1, "password2");
         //solo.clickOnMenuItem("Login");
-        //solo.clickOnButton("Login");
-        solo.clickOnActionBarItem(R.id.action_login);
+        solo.clickOnButton("Login");
+        //solo.clickOnActionBarItem(R.id.action_login);
         boolean textFound = solo.searchText("Incorrect email or password");
         assertTrue("Correct password", textFound);
     }
@@ -53,14 +53,14 @@ public class TestHomeScreen extends ActivityInstrumentationTestCase2<HomeScreen>
     /**
      * Tests if the user logs in with the wrong user name.
      */
-    public void testLogInWithWrongUserName() {
+    /*public void testLogInWithWrongUserName() {
         //solo.unlockScreen();
         solo.enterText(0, "danielk5@uw.edu");
         solo.enterText(1, "password1");
-        solo.clickOnButton(R.id.action_login);
-        //solo.clickOnButton("Login");
+        //solo.clickOnButton(R.id.action_login);
+        solo.clickOnButton("Login");
 //        solo.clickOnActionBarItem(R.id.action_login);
         boolean textFound = solo.searchText("Incorrect email or password");
         assertTrue("Correct username", textFound);
-    }
+    }*/
 }
