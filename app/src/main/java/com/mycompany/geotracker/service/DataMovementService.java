@@ -289,12 +289,12 @@ public class DataMovementService extends IntentService implements
         mConnectivityManager = (ConnectivityManager)
                 c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
+        isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
         System.out.println("Network connectivity: " + Boolean.toString(isConnected));
 
-        NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        //NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 //        if (mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
 //            myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 //            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
