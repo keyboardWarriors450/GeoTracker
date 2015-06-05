@@ -108,7 +108,7 @@
             android:layout_below="@+id/curr_upload_interval_text"
             android:layout_alignLeft="@+id/btn_tracking_interval_time"
             android:layout_alignStart="@+id/btn_tracking_interval_time"
-            android:background="#FFFFFF"
+            android:background="#939393"
             android:textColor="#000000" />
 
         <RadioButton
@@ -120,7 +120,7 @@
             android:layout_below="@+id/btn_one_min"
             android:layout_alignLeft="@+id/btn_one_min"
             android:layout_alignStart="@+id/btn_one_min"
-            android:background="#FFFFFF"
+            android:background="#939393"
             android:textColor="#000000"
             android:theme="@style/Base.V14.Theme.AppCompat.Dialog" />
 
@@ -133,7 +133,7 @@
             android:layout_alignLeft="@+id/btn_one_hr"
             android:layout_alignStart="@+id/btn_one_hr"
             android:checked="false"
-            android:background="#FFFFFF"
+            android:background="#939393"
             android:textColor="#000000"
             android:theme="@style/Base.V14.Theme.AppCompat.Dialog" />
 
@@ -146,7 +146,7 @@
             android:layout_below="@+id/btn_12_hr"
             android:layout_alignLeft="@+id/btn_12_hr"
             android:layout_alignStart="@+id/btn_12_hr"
-            android:background="#FFFFFF"
+            android:background="#939393"
             android:textColor="#000000"
             android:theme="@style/Base.V14.Theme.AppCompat.Dialog" />
 
