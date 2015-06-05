@@ -10,8 +10,7 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:id="@+id/reg_scrollView"
-    android:scrollbars="vertical"
-    android:background="#000000">
+    android:scrollbars="vertical" >
 
 <RelativeLayout
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
