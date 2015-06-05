@@ -10,12 +10,14 @@ package com.mycompany.geotracker.server;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.mycompany.geotracker.controller.MyAccountActivity;
+import com.mycompany.geotracker.controller.UserPreferenceActivity;
 import com.mycompany.geotracker.data.MyData;
 
 import org.apache.http.HttpResponse;
@@ -113,6 +115,12 @@ public class LoginToServer extends AsyncTask<String,Void,String> {
                         myData.deleteAllUsers();
                         myData.insertUser(uid, email, password, "", "");
                         myData.close();
+                        SharedPreferences sharedPref = context.getSharedPreferences(
+                                UserPreferenceActivity.USER_PREF, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putBoolean(UserPreferenceActivity.LOGIN_STATUS, true);
+                        editor.commit();
+
                     } catch (Exception e) {
                         Toast.makeText(LoginToServer.this.context, e.toString(), Toast.LENGTH_SHORT).show();
                         return;

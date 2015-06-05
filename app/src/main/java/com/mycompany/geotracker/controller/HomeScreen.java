@@ -7,7 +7,9 @@
 
 package com.mycompany.geotracker.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -36,6 +38,8 @@ public class HomeScreen extends ActionBarActivity {
     private EditText user_name, password;
     private MyData myData;
     private String userIDStr, passwordStr;
+    private Context that = this;
+    private SharedPreferences sharedPref;
 
     /**
      * Creates the login screen.
@@ -46,6 +50,14 @@ public class HomeScreen extends ActionBarActivity {
         Log.i(TAG, "*************************HomeScreen started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        sharedPref = that.getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                Context.MODE_PRIVATE);
+        boolean status = sharedPref.getBoolean(UserPreferenceActivity.LOGIN_STATUS, false);
+        Log.i("login", status + "");
+        if (status) {
+            this.startActivity(new Intent(this, MyAccountActivity.class));
+        }
 
         myData = new MyData(this);
         user_name = (EditText) findViewById(R.id.user_name);
@@ -93,6 +105,10 @@ public class HomeScreen extends ActionBarActivity {
         if (allData.size() != 0) {
             userIDStr = allData.get(allData.size()-1).getEmail();
             passwordStr = allData.get(allData.size()-1).getPassword();
+        } else {
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean(UserPreferenceActivity.LOGIN_STATUS, false);
+            editor.commit();
         }
 
     }

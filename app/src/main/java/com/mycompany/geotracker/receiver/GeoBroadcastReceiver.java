@@ -5,10 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.net.ConnectivityManager;
 
 import com.mycompany.geotracker.controller.UserPreferenceActivity;
 
@@ -30,10 +26,11 @@ public class GeoBroadcastReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        System.out.println("*******************Started GeoBroadcastReceiver ******");
+//        System.out.println("*******************Started GeoBroadcastReceiver ******");
 
         SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
                 Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
 
         if (intent.getAction() != null) {
             if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
@@ -48,14 +45,19 @@ public class GeoBroadcastReceiver extends BroadcastReceiver {
                 }
             }
 
-
             if (intent.getAction().equals("android.intent.action.ACTION_POWER_DISCONNECTED")) {
                 isConnected = false;
                 System.out.println("--------POWER IS *NOT* CONNECTED---------------->");
+                editor.putInt(UserPreferenceActivity.SAMPLING_STATUS, 0);
+                editor.putBoolean(UserPreferenceActivity.CHARGING_STATUS, false);
+                editor.commit();
                 DataMovementService.startService(context, sharedPref);
             } else if (intent.getAction().equals("android.intent.action.ACTION_POWER_CONNECTED")) {
                 isConnected = true;
                 System.out.println("--------POWER IS CONNECTED---------------->");
+                editor.putInt(UserPreferenceActivity.SAMPLING_STATUS, 0);
+                editor.putBoolean(UserPreferenceActivity.CHARGING_STATUS, true);
+                editor.commit();
                 DataMovementService.startService(context, sharedPref);
             }
         }

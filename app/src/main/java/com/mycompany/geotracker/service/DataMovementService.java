@@ -54,6 +54,7 @@ public class DataMovementService extends IntentService implements
     private static ConnectivityManager mConnectivityManager;
     private static boolean isConnected;
     private static GoogleApiClient mGoogleApiClient;
+    private SharedPreferences sharedPref;
     public DataMovementService() {
         super("DataMovement");
     }
@@ -62,99 +63,95 @@ public class DataMovementService extends IntentService implements
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         System.out.println( "service starting");
-        //initial(this);
 
         return START_NOT_STICKY;
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                Context.MODE_PRIVATE);
+        int status = sharedPref.getInt(UserPreferenceActivity.SAMPLING_STATUS, 0);
+ //       Log.i("status1", status + "");
+        if (status != 0) {
+            initial(this);
 
-        initial(this);
-/*        mConnectivityManager = (ConnectivityManager)
-                this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
+            NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        System.out.println("Network connectivity: " + Boolean.toString(isConnected));*/
-        NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-        if (myLocation != null && mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
-                    100000, 40, locationListener);
-            myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-            Log.i("NETWORK", "PASSIVE_PROVIDER");
-        } else
-        if (myLocation != null ) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    100000, 40, locationListener);
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
-
-            Log.i("NETWORK", "GPS_PROVIDER");
-        }
-
-        // test output before update location
-        if (myLocation != null) {
-            System.out.println("Updated current location: " + myLocation.getLatitude() + ", " +
-                    myLocation.getLongitude());
-        }
-
-        if (myLocation != null && isConnected) {
-
-            /*******....  *****/
-            SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
-                    Context.MODE_PRIVATE);
-
-            // now we have current location
-            String uid = sharedPref.getString(MyAccountActivity.UID, null);
-            String latStr = Double.toString(myLocation.getLatitude());
-            String lonStr = Double.toString(myLocation.getLongitude());
-            String speedStr = Double.toString((double) myLocation.getSpeed());
-            String headingStr = Double.toString((double) myLocation.getBearing());
-            String timestampStr = Long.toString(System.currentTimeMillis() / 1000);
-
-            int samplingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
-                    SAMPLING_INTERVAL_POWER_ON, "60"));
-            int uploadInterval = sharedPref.getInt(UserPreferenceActivity.UPLOAD_INTERVAL, 60);
-
-            /**
-             * This is the current battery tester. The times are not 100% correct yet, because the service will
-             * continue the upload every so often, more frequently than the sampling of the data.
-             */
-            if (GeoBroadcastReceiver.isConnected) {
-                System.out.println("battery cord is connected");
-                System.out.println("The interval is " + samplingInterval);
-                processLocation(this, samplingInterval, uploadInterval, uid, latStr, lonStr, speedStr,
-                        headingStr, timestampStr);
-            } else {
-                System.out.println("battery cord is disconnected" + " sampling interval " + samplingInterval);
-                if (samplingInterval < 300) {
-                    samplingInterval = 300;
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(UserPreferenceActivity.SAMPLING_INTERVAL_POWER_OFF,
-                            Integer.toString(samplingInterval));
-                    editor.commit();
-                    System.out.println("New sampling interval " + samplingInterval);
+            if (myLocation != null && mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
+                        100000, 40, locationListener);
+                myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+                Log.i("NETWORK", "PASSIVE_PROVIDER");
+            } else if (myLocation != null) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                        100000, 40, locationListener);
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 }
-                System.out.println("The interval is " + samplingInterval);
-                processLocation(this, samplingInterval, 0, uid, latStr, lonStr, speedStr,
-                        headingStr, timestampStr);
+
+                Log.i("NETWORK", "GPS_PROVIDER");
             }
 
-            System.out.println("Updated current location: " + myLocation.getLatitude() + ", " +
-                    myLocation.getLongitude());
-        } else {
-            if (myLocation == null) {
-                System.out.println("NO last location is found");
-            } else
-                System.out.println("NetWork is NOT available");
+            if (myLocation != null && isConnected) {
+                sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                        Context.MODE_PRIVATE);
+
+                // now we have current location
+                String uid = sharedPref.getString(MyAccountActivity.UID, null);
+                String latStr = Double.toString(myLocation.getLatitude());
+                String lonStr = Double.toString(myLocation.getLongitude());
+                String speedStr = Double.toString((double) myLocation.getSpeed());
+                String headingStr = Double.toString((double) myLocation.getBearing());
+                String timestampStr = Long.toString(System.currentTimeMillis() / 1000);
+
+                int samplingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity.
+                        SAMPLING_INTERVAL_POWER_ON, "60"));
+                int uploadInterval = sharedPref.getInt(UserPreferenceActivity.UPLOAD_INTERVAL, 60);
+
+                /**
+                 * This is the current battery tester. The times are not 100% correct yet, because the service will
+                 * continue the upload every so often, more frequently than the sampling of the data.
+                 */
+                boolean charging_status = sharedPref.getBoolean(UserPreferenceActivity.
+                        CHARGING_STATUS, false);
+                if (GeoBroadcastReceiver.isConnected || charging_status) {
+ //                   System.out.println("battery cord is connected");
+                    System.out.println("The interval is " + samplingInterval);
+                    processLocation(this, samplingInterval, uploadInterval, uid, latStr, lonStr, speedStr,
+                            headingStr, timestampStr);
+                } else {
+//                    System.out.println("battery cord is disconnected" + " sampling interval " + samplingInterval);
+                    if (samplingInterval < 300) {
+                        samplingInterval = 300;
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString(UserPreferenceActivity.SAMPLING_INTERVAL_POWER_OFF,
+                                Integer.toString(samplingInterval));
+                        editor.commit();
+   //                     System.out.println("New sampling interval " + samplingInterval);
+                    }
+   //                 System.out.println("The interval is " + samplingInterval);
+                    processLocation(this, samplingInterval, 0, uid, latStr, lonStr, speedStr,
+                            headingStr, timestampStr);
+                }
+
+                System.out.println("Updated current location: " + myLocation.getLatitude() + ", " +
+                        myLocation.getLongitude());
+            } else {
+                if (myLocation == null) {
+  //                  System.out.println("NO last location is found");
+                } else
+                    System.out.println("NetWork is NOT available");
+            }
+            locationManager.removeUpdates(locationListener);
+            locationManager = null;
+            //stopSelf();
         }
-        locationManager.removeUpdates(locationListener);
-        locationManager = null;
-        //stopSelf();
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(UserPreferenceActivity.SAMPLING_STATUS, 1);
+        editor.commit();
+        status = sharedPref.getInt(UserPreferenceActivity.SAMPLING_STATUS, 1);
+ //       Log.i("status2", status + "");
     }
 
    // @SuppressLint("LongLogTag")
@@ -179,8 +176,9 @@ public class DataMovementService extends IntentService implements
 
         try {
             myData.insertLocation(uid, latStr, lonStr, speedStr, headingStr, Long.parseLong(timestampStr));
-
-            if (GeoBroadcastReceiver.isConnected) {
+            boolean charging_status = sharedPref.getBoolean(UserPreferenceActivity.
+                    CHARGING_STATUS, false);
+            if (GeoBroadcastReceiver.isConnected || charging_status) {
 
                 if (counter >= interval || allDataLocation.size() > interval) {
                     Log.i("LocToServer", "UPloading to Server");
@@ -226,8 +224,8 @@ public class DataMovementService extends IntentService implements
     }
 
     /** start update location service*/
-    public static void startService(Context context, SharedPreferences sharedPref ) {
-        System.out.println("*******DataMovementService.startService started*******");
+    public static void startService(Context context, SharedPreferences sharedPref) {
+//        System.out.println("*******DataMovementService.startService started*******");
         boolean isOn = sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true);
         int samplingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
                 .SAMPLING_INTERVAL_POWER_OFF, "300"));
@@ -296,39 +294,10 @@ public class DataMovementService extends IntentService implements
                 activeNetwork.isConnectedOrConnecting();
 
         System.out.println("Network connectivity: " + Boolean.toString(isConnected));
-
-        //NetworkInfo mWifi = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-//        if (mWifi.isConnected() && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER) ) {
-//            myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-//            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
-//                    100000, 40, locationListener);
-//            Log.i("GPS", "PASSIVE_PROVIDER ENABLED");
-//        }
-//        if (myLocation == null ) {
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-//                    100000, 40, locationListener);
-//            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-//                myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                Log.i("GPS", "GPS_PROVIDER ENABLED");
-//            }
-//
-//        }
-
-        // Register the listener with the Location Manager to receive location updates
-//        if () {
-//            Log.i("GPS", "PASSIVE_PROVIDER ENABLED");
-//            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
-//                    100000, 40, locationListener);
-//        } else {
-//            Log.i("GPS", "GPS_PROVIDER ENABLED");
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-//                    100000, 40, locationListener);
-//        }
-
     }
 
     protected synchronized void buildGoogleApiClient() {
-        Log.i("Google", "called buildGoogleApiClient");
+//        Log.i("Google", "called buildGoogleApiClient");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -342,7 +311,8 @@ public class DataMovementService extends IntentService implements
                 mGoogleApiClient);
 
         if (myLocation != null) {
-            Log.i("Google", "not null, location: " +  myLocation.getLatitude());
+ //           Log.i("Google", "last known location: " +  myLocation.getLatitude() + " "
+ //                   + myLocation.getLongitude());
         }
     }
 

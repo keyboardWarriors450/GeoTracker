@@ -163,6 +163,11 @@ public class MyAccountActivity extends ActionBarActivity {
     }
 
     private void toHomeScreen() {
+        SharedPreferences sharedPref = getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(UserPreferenceActivity.LOGIN_STATUS, false);
+        editor.commit();
         startActivity(new Intent(this, HomeScreen.class));
     }
 

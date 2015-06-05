@@ -39,6 +39,9 @@ public class UserPreferenceActivity extends ActionBarActivity {
     public static final String SAMPLING_INTERVAL_POWER_OFF = "sampling_interval_power_off";
     public static final String UPLOAD_INTERVAL = "upload_interval";
     public static final String SAMPLING_INTERVAL_POWER_ON = "sampling_interval_power_on";
+    public static final String SAMPLING_STATUS = "sampling_status";
+    public static final String LOGIN_STATUS = "login_status";
+    public static final String CHARGING_STATUS = "charging_status";
     private static final String TAG = "UserPreferenceActivity";
     private TextView samplingInterval;
     private int uploadInterval;
@@ -50,7 +53,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "*****************UserPreferenceActivity started");
+ //       Log.i(TAG, "*****************UserPreferenceActivity started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_preference);
 
@@ -73,6 +76,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
                         Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putBoolean(TRACKING_SWITCH, tracking.isChecked());
+                editor.putInt(SAMPLING_STATUS, 0);
                 editor.commit();
 
                 if (isChecked) {
@@ -125,6 +129,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
                 } else {
                     radio_one_min.setEnabled(true);
                     editor.putInt(UPLOAD_INTERVAL, uploadInterval);
+                    editor.putInt(SAMPLING_STATUS, 0);
                     editor.commit();
                     DataMovementService.startService(that, sharedPref);
                     Log.i(TAG, Integer.toString(uploadInterval));
@@ -236,6 +241,7 @@ public class UserPreferenceActivity extends ActionBarActivity {
 
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.putString(SAMPLING_INTERVAL_POWER_ON, temp);
+                                editor.putInt(SAMPLING_STATUS, 0);
 
                                 if (Integer.parseInt(temp) > uploadInt) {
                                     editor.putInt(UPLOAD_INTERVAL, 3600);
@@ -251,6 +257,11 @@ public class UserPreferenceActivity extends ActionBarActivity {
     }
 
     private void toHomeScreen() {
+        SharedPreferences sharedPref = getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(UserPreferenceActivity.LOGIN_STATUS, false);
+        editor.commit();
         startActivity(new Intent(this, HomeScreen.class));
     }
 }

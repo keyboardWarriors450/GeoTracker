@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -243,6 +244,11 @@ public class ViewLocations extends ActionBarActivity {
     }
 
     private void toHomeScreen() {
+        SharedPreferences sharedPref = getSharedPreferences(UserPreferenceActivity.USER_PREF,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(UserPreferenceActivity.LOGIN_STATUS, false);
+        editor.commit();
         startActivity(new Intent(this, HomeScreen.class));
     }
 
