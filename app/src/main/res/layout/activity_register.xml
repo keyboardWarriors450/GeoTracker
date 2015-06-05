@@ -9,14 +9,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/reg_scrollView"
-    android:scrollbars="vertical"
-    android:background="@drawable/image2">
+    android:scrollbars="vertical" >
 
 <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingBottom="10dp"
-    android:background="@drawable/blackbackground">
+    android:paddingBottom="10dp" >
 
     <EditText
         android:layout_width="wrap_content"
@@ -27,8 +25,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="56dp"
         android:hint="@string/enter_user_id"
-        android:textColor="#ffffffff"
-        android:textColorHint="#ffb9b9b9" />
+        android:textColorHint="#ffb9b9b9"
+        android:textColor="#FFFFFF"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -40,8 +38,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:hint="@string/enter_password"
-        android:textColor="#ffffffff"
-        android:textColorHint="#ffb9b9b9" />
+        android:textColorHint="#ffb9b9b9"
+        android:textColor="#FFFFFF" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -53,8 +51,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:hint="@string/conf_password"
-        android:textColor="#ffffffff"
-        android:textColorHint="#ffb9b9b9" />
+        android:textColorHint="#ffb9b9b9"
+        android:textColor="#FFFFFF" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -64,8 +62,7 @@
         android:text="@string/txt_securityQuest"
         android:layout_below="@id/conf_password"
         android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ffffffff" />
+        android:layout_centerHorizontal="true" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -73,8 +70,6 @@
         android:id="@+id/reg_security_quest"
         android:layout_below="@id/txt_securityQuest"
         android:layout_centerHorizontal="true"
-        android:textColor="#FF0000"
-        android:popupBackground="#2E9AFE"
         android:paddingTop="10dp"
         android:theme="@style/Base.V14.Theme.AppCompat.Dialog" />
 
@@ -84,17 +79,16 @@
         android:ems="10"
         android:id="@+id/sec_answer"
         android:hint="@string/enter_answer"
-        android:textColor="#ffffffff"
         android:textColorHint="#ffb9b9b9"
         android:layout_below="@+id/reg_security_quest"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFF" />
 
     <TextView
         android:id="@+id/agreement"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:text="@string/agreement"
-        android:textColor="#ffffffff"
         android:layout_marginTop="35dp"
         android:layout_below="@+id/sec_answer"
         android:layout_centerHorizontal="true"
