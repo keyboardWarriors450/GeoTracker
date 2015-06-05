@@ -41,6 +41,7 @@ public class MyAccountActivity extends ActionBarActivity {
     private String user;
     private String uid;
     private Context that = this;
+    public static boolean pushNow;
 
     /**
      * Creates the page with all the buttons and shows the user name.
@@ -51,6 +52,7 @@ public class MyAccountActivity extends ActionBarActivity {
         Log.i(TAG, "***********************MyAccountActivity started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
+        pushNow = false;
 
         //**************** Check if tracking is on or off ************************
         SharedPreferences sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
@@ -108,6 +110,14 @@ public class MyAccountActivity extends ActionBarActivity {
             }
         });
 
+        Button push_data = (Button) findViewById(R.id.push_data);
+
+        push_data.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                pushNow = true;
+                Toast.makeText(that, "Push data", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**

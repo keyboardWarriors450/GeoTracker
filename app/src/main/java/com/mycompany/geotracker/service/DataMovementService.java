@@ -178,9 +178,9 @@ public class DataMovementService extends IntentService implements
             myData.insertLocation(uid, latStr, lonStr, speedStr, headingStr, Long.parseLong(timestampStr));
             boolean charging_status = sharedPref.getBoolean(UserPreferenceActivity.
                     CHARGING_STATUS, false);
-            if (GeoBroadcastReceiver.isConnected || charging_status) {
+            if (GeoBroadcastReceiver.isConnected || charging_status || MyAccountActivity.pushNow  ) {
 
-                if (counter >= interval || allDataLocation.size() > interval) {
+                if (counter >= interval || allDataLocation.size() > interval ||MyAccountActivity.pushNow ) {
                     Log.i("LocToServer", "UPloading to Server");
                     allDataLocation = myData.selectAllLocations();
                     for (com.mycompany.geotracker.model.Location loc : allDataLocation) {
@@ -191,7 +191,11 @@ public class DataMovementService extends IntentService implements
                     myData.deleteAllLocations();
 
                     counter = 0;
+                    MyAccountActivity.pushNow = false;
+                    Log.i("LocServer", "Push to server");
                 }
+
+
             }
         } catch (Exception e) {
             e.printStackTrace();
