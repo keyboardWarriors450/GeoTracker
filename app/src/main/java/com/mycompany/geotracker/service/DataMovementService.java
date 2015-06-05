@@ -183,6 +183,7 @@ public class DataMovementService extends IntentService implements
             if (GeoBroadcastReceiver.isConnected) {
 
                 if (counter >= interval || allDataLocation.size() > interval) {
+                    Log.i("LocToServer", "UPloading to Server");
                     allDataLocation = myData.selectAllLocations();
                     for (com.mycompany.geotracker.model.Location loc : allDataLocation) {
                         new LocationToServer().execute(uid, loc.getLat(), loc.getLon(),

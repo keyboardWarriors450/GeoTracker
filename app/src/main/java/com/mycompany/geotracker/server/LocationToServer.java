@@ -77,6 +77,7 @@ public class LocationToServer extends AsyncTask<String, Void, String> {
                 break;
             }
             in.close();
+            Log.i("SENT", "sent to server");
             return sb.toString();
 
         } catch(Exception e){
