@@ -14,11 +14,11 @@ import com.robotium.solo.Solo;
 /**
  * Created by danielkhieuson on 5/20/15.
  */
-public class TestViewLocations extends ActivityInstrumentationTestCase2<ViewLocations> {
+public class TestViewLocationsSameDate extends ActivityInstrumentationTestCase2<ViewLocations> {
 
     private Solo solo;
 
-    public TestViewLocations() {
+    public TestViewLocationsSameDate() {
         super(ViewLocations.class);
     }
 
@@ -26,7 +26,6 @@ public class TestViewLocations extends ActivityInstrumentationTestCase2<ViewLoca
     public void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
-        //currentActivity = getActivity();
     }
 
     @Override
@@ -51,18 +50,4 @@ public class TestViewLocations extends ActivityInstrumentationTestCase2<ViewLoca
         assertTrue("Dates are the same", textFound);
     }
 
-    /**
-     * Tests if the user selects a start date that is greater than the end date.
-     */
-    public void testSelectGreaterStartDate() {
-        solo.clickOnText("Start Date");
-        solo.clickOnButton("Done");
-        solo.clickOnText("End Date");
-        //solo.pressSpinnerItem(0, -1);
-        //DatePicker datePicker = (DatePicker)currentActivity.findViewById(R.id.datePicker1);
-        //solo.setDatePicker(datePicker, 2015, 5, 4);
-        solo.clickOnButton("Done");
-        boolean textFound = solo.searchText("End Date must greater than Start Date");
-        assertTrue("End date is less than start date", textFound);
-    }
 }
