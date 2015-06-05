@@ -35,7 +35,7 @@ public class TestShowMovementDataActivity extends ActivityInstrumentationTestCas
         solo.finishOpenedActivities();
     }
 
-    public void movementDataShowsUp() {
+    public void testMovementDataShowsUp() {
         solo.unlockScreen();
         boolean textFound = solo.searchText(" Timestamp       Latitude        Longitude    Heading ");
         assertTrue("Movement Data retrieved", textFound);
