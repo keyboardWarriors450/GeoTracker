@@ -26,7 +26,8 @@
         android:layout_marginTop="56dp"
         android:hint="@string/enter_user_id"
         android:textColorHint="#ffb9b9b9"
-        android:textColor="#FFFFFF"/>
+        android:textCursorDrawable="@null"
+        android:textColor="#FFFFFF" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -39,6 +40,7 @@
         android:layout_marginTop="20dp"
         android:hint="@string/enter_password"
         android:textColorHint="#ffb9b9b9"
+        android:textCursorDrawable="@null"
         android:textColor="#FFFFFF" />
 
     <EditText
@@ -52,6 +54,7 @@
         android:layout_marginTop="20dp"
         android:hint="@string/conf_password"
         android:textColorHint="#ffb9b9b9"
+        android:textCursorDrawable="@null"
         android:textColor="#FFFFFF" />
 
     <TextView
@@ -82,6 +85,7 @@
         android:textColorHint="#ffb9b9b9"
         android:layout_below="@+id/reg_security_quest"
         android:layout_centerHorizontal="true"
+        android:textCursorDrawable="@null"
         android:textColor="#FFFFFF" />
 
     <TextView
@@ -99,12 +103,11 @@
         android:layout_height="wrap_content"
         android:text="@string/accept"
         android:id="@+id/accept_checkBox"
-        android:textColor="#ffffffff"
-        android:buttonTint="#ffffff"
+        android:textColor="#000000"
+        android:background="#FFFFFF"
         android:layout_marginTop="51dp"
         android:layout_below="@+id/agreement"
-        android:layout_toLeftOf="@+id/reg_cancel"
-        android:layout_toStartOf="@+id/reg_cancel" />
+        android:layout_toLeftOf="@+id/reg_cancel" />
 
     <Button
         android:layout_width="wrap_content"
