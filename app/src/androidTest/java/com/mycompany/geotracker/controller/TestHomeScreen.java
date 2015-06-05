@@ -7,10 +7,20 @@
 
 package com.mycompany.geotracker.controller;
 
+import android.net.Uri;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.mycompany.geotracker.R;
 import com.robotium.solo.Solo;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URI;
 
 /**
  * Created by danielkhieuson on 6/1/15.
@@ -40,12 +50,45 @@ public class TestHomeScreen extends ActivityInstrumentationTestCase2<HomeScreen>
      * Tests if the user logs in with the wrong password.
      */
     public void testLogInWithWrongPassword() {
+        String email = "danielk6@uw.edu";
+        String password = "password2";
         solo.unlockScreen();
-        solo.enterText(0, "danielk6@uw.edu");
-        solo.enterText(1, "password2");
+        solo.enterText(0, email);
+        solo.enterText(1, password);
         //solo.clickOnMenuItem("Login");
-        solo.clickOnButton("Login");
-        //solo.clickOnActionBarItem(R.id.action_login);
+        //solo.clickOnButton("Login");
+        solo.clickOnActionBarItem(R.id.action_login);
+
+        try {
+
+
+            String link = Uri.parse("http://450.atwebpages.com/login.php").buildUpon()
+                    .appendQueryParameter("email", email)
+                    .appendQueryParameter("password", password)
+                    .build().toString();
+
+            link = link.replaceFirst("%40", "@");
+
+            HttpClient client = new DefaultHttpClient();
+            HttpGet request = new HttpGet();
+            request.setURI(new URI(link));
+
+            HttpResponse response = client.execute(request);
+            BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity()
+                    .getContent()));
+
+            StringBuilder sb = new StringBuilder("");
+            String line="";
+            while ((line = in.readLine()) != null) {
+                sb.append(line);
+                break;
+            }
+            in.close();
+            System.out.println(sb.toString());
+
+        } catch(Exception e){
+            System.out.println("Exception: " + e.getMessage());
+        }
         boolean textFound = solo.searchText("Incorrect email or password");
         assertTrue("Correct password", textFound);
     }
