@@ -44,8 +44,7 @@ public class AddRegisterSheet extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... args) {
         try {
-//            String link = Uri.parse("http://450.atwebpages.com/agreement.php").buildUpon()
-//                    .build().toString();
+
             URI link;
             URL url = new URL("http://450.atwebpages.com/agreement.php");
             link = url.toURI();
@@ -100,13 +99,11 @@ public class AddRegisterSheet extends AsyncTask<String, Void, String> {
                         }
                     }
 
-
                     sb.append(c);
 
                 }
 
                 String printedRegistration = sb.toString();
-
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddRegisterSheet.this.context);
                 builder.setTitle("User Agreement")

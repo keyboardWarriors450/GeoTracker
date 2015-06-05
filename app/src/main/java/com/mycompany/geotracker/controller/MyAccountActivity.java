@@ -96,7 +96,6 @@ public class MyAccountActivity extends ActionBarActivity {
 
         view_data.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //check the movement for that particular user
                 toMovementData();
             }
         });
