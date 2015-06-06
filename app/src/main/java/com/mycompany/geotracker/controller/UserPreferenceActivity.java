@@ -53,7 +53,6 @@ public class UserPreferenceActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
- //       Log.i(TAG, "*****************UserPreferenceActivity started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_preference);
 

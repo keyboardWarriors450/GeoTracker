@@ -26,7 +26,6 @@ public class GeoBroadcastReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-//        System.out.println("*******************Started GeoBroadcastReceiver ******");
 
         SharedPreferences sharedPref = context.getSharedPreferences(UserPreferenceActivity.USER_PREF,
                 Context.MODE_PRIVATE);

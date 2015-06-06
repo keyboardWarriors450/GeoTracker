@@ -34,13 +34,6 @@ public class PasswordEmailSent extends ActionBarActivity {
             }
         });
 
-        /*final Button btn_ok = (Button)findViewById(R.id.reg_continue);
-
-        btn_ok.setOnClickListener(new TextView.OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });*/
     }
 
     /**

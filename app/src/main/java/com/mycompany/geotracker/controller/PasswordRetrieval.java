@@ -16,8 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.mycompany.geotracker.R;
-import com.mycompany.geotracker.controller.PasswordEmailSent;
+import com.mycompany.geotracker.R; 
 
 /**
  * Created by Daniel on 4/13/2015.
@@ -44,12 +43,6 @@ public class PasswordRetrieval extends ActionBarActivity {
                 finish();
             }
         });
-
-  /*      btn_ok.setOnClickListener(new Button.OnClickListener() {
-            public void setOnClickListener(View v) {
-                toPassWordEmailSent();
-            }
-        });*/
 
         btn_ok.setOnClickListener(new Button.OnClickListener() {
 

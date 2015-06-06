@@ -60,7 +60,6 @@ public class LocationToServer extends AsyncTask<String, Void, String> {
                     .appendQueryParameter("source", uid)
                     .build().toString();
 
-       //     link = link.replaceFirst("%40", "@");
 
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();

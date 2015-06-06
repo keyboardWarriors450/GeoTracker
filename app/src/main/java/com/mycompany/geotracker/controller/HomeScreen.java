@@ -68,7 +68,6 @@ public class HomeScreen extends ActionBarActivity {
         create_user.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                create_user.setTextColor(Color.parseColor("#67818a"));
                 toRegisterActivity();
             }
         });

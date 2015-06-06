@@ -115,14 +115,4 @@ public class User {
     public void clear() {
 
     }
-
-//    @Override
-//    public String toString() {
-//        return "com.mycompany.geotracker.model.User{" +
-//                "email='" + email + '\'' +
-//                "password='" + password + '\'' +
-//                "question='" + question + '\'' +
-//                "answer='" + answer + '\'' +
-//                '}';
-//    }
 }

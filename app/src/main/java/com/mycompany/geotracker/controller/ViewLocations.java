@@ -135,9 +135,6 @@ public class ViewLocations extends ActionBarActivity {
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
-        //  private String type;
-
-
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
@@ -251,8 +248,5 @@ public class ViewLocations extends ActionBarActivity {
         editor.commit();
         startActivity(new Intent(this, HomeScreen.class));
     }
-
-
-
 }
 

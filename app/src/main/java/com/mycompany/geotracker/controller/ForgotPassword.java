@@ -22,10 +22,6 @@ import com.mycompany.geotracker.server.RecoverPassword;
  */
 public class ForgotPassword extends ActionBarActivity {
 
-//    private MyData myData;
-//    private boolean userExists;
-//    private ArrayList<User> allData;
-
     /**
      * Creates the screen where the user goes if they forgot their password.
      * @param savedInstanceState the saved password
@@ -37,7 +33,6 @@ public class ForgotPassword extends ActionBarActivity {
 
         final Button submit = (Button)findViewById(R.id.submit);
         final Button go_back = (Button)findViewById(R.id.go_back);
-//        myData = new MyData(this);
 
         submit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
@@ -52,11 +47,6 @@ public class ForgotPassword extends ActionBarActivity {
                 finish();
             }
         });
-    }
-
-
-    private void toPasswordRetrieval() {
-        startActivity(new Intent(this, PasswordRetrieval.class));
     }
 
 }

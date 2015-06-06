@@ -49,7 +49,7 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
      */
     public void testRequiredFields() {
         solo.unlockScreen();
-        solo.clickOnButton("OK");
+        solo.clickOnButton("I Agree");
         solo.enterText(0, "");
         solo.clickOnButton("Continue");
         boolean textFound = solo.searchText("Cannot leave it blank");
@@ -90,7 +90,7 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
         String question = "What is your favorite pet's name?";
         String answer = "leo";
 
-        solo.clickOnButton("OK");
+        solo.clickOnButton("I Agree");
         solo.enterText(0, email);
         solo.enterText(1, password);
         solo.enterText(2, password2);

@@ -72,7 +72,6 @@ public class DataMovementService extends IntentService implements
         sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
                 Context.MODE_PRIVATE);
         int status = sharedPref.getInt(UserPreferenceActivity.SAMPLING_STATUS, 0);
- //       Log.i("status1", status + "");
         if (status != 0) {
             initial(this);
 
@@ -116,21 +115,17 @@ public class DataMovementService extends IntentService implements
                 boolean charging_status = sharedPref.getBoolean(UserPreferenceActivity.
                         CHARGING_STATUS, false);
                 if (GeoBroadcastReceiver.isConnected || charging_status) {
- //                   System.out.println("battery cord is connected");
                     System.out.println("The interval is " + samplingInterval);
                     processLocation(this, samplingInterval, uploadInterval, uid, latStr, lonStr, speedStr,
                             headingStr, timestampStr);
                 } else {
-//                    System.out.println("battery cord is disconnected" + " sampling interval " + samplingInterval);
                     if (samplingInterval < 300) {
                         samplingInterval = 300;
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString(UserPreferenceActivity.SAMPLING_INTERVAL_POWER_OFF,
                                 Integer.toString(samplingInterval));
                         editor.commit();
-   //                     System.out.println("New sampling interval " + samplingInterval);
                     }
-   //                 System.out.println("The interval is " + samplingInterval);
                     processLocation(this, samplingInterval, 0, uid, latStr, lonStr, speedStr,
                             headingStr, timestampStr);
                 }
@@ -139,22 +134,18 @@ public class DataMovementService extends IntentService implements
                         myLocation.getLongitude());
             } else {
                 if (myLocation == null) {
-  //                  System.out.println("NO last location is found");
                 } else
                     System.out.println("NetWork is NOT available");
             }
             locationManager.removeUpdates(locationListener);
             locationManager = null;
-            //stopSelf();
         }
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(UserPreferenceActivity.SAMPLING_STATUS, 1);
         editor.commit();
         status = sharedPref.getInt(UserPreferenceActivity.SAMPLING_STATUS, 1);
- //       Log.i("status2", status + "");
     }
 
-   // @SuppressLint("LongLogTag")
     private void processLocation(Context context, int samplingInterval, int uploadInterval, String uid,
                                  String latStr, String lonStr, String speedStr, String headingStr,
                                  String timestampStr) {
@@ -229,7 +220,6 @@ public class DataMovementService extends IntentService implements
 
     /** start update location service*/
     public static void startService(Context context, SharedPreferences sharedPref) {
-//        System.out.println("*******DataMovementService.startService started*******");
         boolean isOn = sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true);
         int samplingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
                 .SAMPLING_INTERVAL_POWER_OFF, "300"));
@@ -247,7 +237,6 @@ public class DataMovementService extends IntentService implements
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         //set the alarm for particular time
-        // alarmManager.set(AlarmManager.RTC_WAKEUP,time, PendingIntent.getBroadcast(context,1,  intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
 
         if (isOn) {
             Log.i("start service", "Sampling Interval " + samplingInterval/1000);
@@ -261,9 +250,7 @@ public class DataMovementService extends IntentService implements
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP);
 
-            // Toast.makeText(context, "Location Update every 5 seconds", Toast.LENGTH_SHORT).show();
         } else {
-            //       System.out.println("Tracking off");
             alarmManager.cancel(pIntent);
             pIntent.cancel();
             Toast.makeText(context, "Tracking Off", Toast.LENGTH_SHORT).show();
@@ -301,7 +288,6 @@ public class DataMovementService extends IntentService implements
     }
 
     protected synchronized void buildGoogleApiClient() {
-//        Log.i("Google", "called buildGoogleApiClient");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -313,11 +299,6 @@ public class DataMovementService extends IntentService implements
     public void onConnected(Bundle bundle) {
         myLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-
-        if (myLocation != null) {
- //           Log.i("Google", "last known location: " +  myLocation.getLatitude() + " "
- //                   + myLocation.getLongitude());
-        }
     }
 
     @Override

@@ -30,7 +30,6 @@ import java.util.ArrayList;
  */
 public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCallback {
 
-    //  private LocationLog mLocationLog;
     private GoogleMap mGoogleMap;
     private com.mycompany.geotracker.model.Location myLocation;
 
@@ -42,8 +41,6 @@ public class ViewMapActivity extends ActionBarActivity implements OnMapReadyCall
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_map);
-
-        //   mLocationLog = (LocationLog) getIntent().getParcelableExtra("locations");
 
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.mapView);
