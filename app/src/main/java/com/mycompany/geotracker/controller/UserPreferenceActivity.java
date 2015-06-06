@@ -51,6 +51,11 @@ public class UserPreferenceActivity extends ActionBarActivity {
     RadioButton radio_12_hr;
     RadioButton radio_24_hr;
 
+    /**
+     * Creates the screen where the user can set their preferences on how the app gets locations and
+     * sends them to the server.
+     * @param savedInstanceState the default settings
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,18 +164,25 @@ public class UserPreferenceActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Inflate the menu; this adds items to the action bar if it is present.
+     * @param menu the menu
+     * @return true if the menu is there
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_user_preference, menu);
         return true;
     }
 
+    /**
+     * Handle action bar item clicks here. The action bar will automatically handle clicks on
+     * the Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
+     * @param item the menu item
+     * @return the item being selected
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

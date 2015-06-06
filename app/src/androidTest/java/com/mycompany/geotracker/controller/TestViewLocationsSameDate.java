@@ -18,16 +18,27 @@ public class TestViewLocationsSameDate extends ActivityInstrumentationTestCase2<
 
     private Solo solo;
 
+    /**
+     * The constructor.
+     */
     public TestViewLocationsSameDate() {
         super(ViewLocations.class);
     }
 
+    /**
+     * Sets up the test.
+     * @throws Exception
+     */
     @Override
     public void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
+    /**
+     * Stops the app after the test is finished.
+     * @throws Exception
+     */
     @Override
     public void tearDown() throws Exception {
         //tearDown() is run after a test case has finished.

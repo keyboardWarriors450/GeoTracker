@@ -52,6 +52,10 @@ public class ViewLocations extends ActionBarActivity {
     private static TextView startDatePicker;
     private static TextView endDatePicker;
 
+    /**
+     * Creates the screen where we select the dates and then view the movement data or the map.
+     * @param savedInstanceState the default settings
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,10 +135,17 @@ public class ViewLocations extends ActionBarActivity {
         });
     }
 
-    // Date Picker
+    /**
+     * Static class to pick the dates.
+     */
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
+        /**
+         * Creates the dialog box that allows the user to select the date.
+         * @param savedInstanceState the default settings
+         * @return the date
+         */
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
@@ -147,6 +158,13 @@ public class ViewLocations extends ActionBarActivity {
             return new DatePickerDialog(getActivity(), this, year, month, day);
         }
 
+        /**
+         * Sets the date
+         * @param view the DatePicker
+         * @param year the year
+         * @param month the month
+         * @param day the day
+         */
         public void onDateSet(DatePicker view, int year, int month, int day) {
             Bundle bundle = new Bundle();
             bundle = getArguments();

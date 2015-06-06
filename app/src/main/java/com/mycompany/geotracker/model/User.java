@@ -63,7 +63,7 @@ public class User {
     }
 
     /**
-     *
+     * Returns the user id.
      * @return user ID as email address
      */
     public String getUserID() {
@@ -71,7 +71,7 @@ public class User {
     }
 
     /**
-     *
+     * Returns the email address.
      * @return user email address
      */
     public String getEmail() {
@@ -79,7 +79,7 @@ public class User {
     }
 
     /**
-     *
+     * Returns the password.
      * @return password when reset
      */
     public String getPassword() {
@@ -87,7 +87,7 @@ public class User {
     }
 
     /**
-     *
+     * Returns the secret question.
      * @return secret question
      */
     public String getQuestion() {
@@ -95,8 +95,8 @@ public class User {
     }
 
     /**
-     *
-     * @return secrete answer
+     * Returns the secret answer.
+     * @return secret answer
      */
     public String getAnswer() {
         return answer;

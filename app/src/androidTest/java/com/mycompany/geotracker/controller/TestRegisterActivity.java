@@ -27,16 +27,27 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
 
     private Solo solo;
 
+    /**
+     * The constructor.
+     */
     public TestRegisterActivity() {
         super(RegisterActivity.class);
     }
 
+    /**
+     * Sets up the test.
+     * @throws Exception
+     */
     @Override
     public void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
+    /**
+     * Stops the app after the test is finished.
+     * @throws Exception
+     */
     @Override
     public void tearDown() throws Exception {
         //tearDown() is run after a test case has finished.
@@ -49,31 +60,12 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
      */
     public void testRequiredFields() {
         solo.unlockScreen();
-        solo.clickOnButton("I Agree");
+        solo.clickOnButton("I Accept");
         solo.enterText(0, "");
         solo.clickOnButton("Continue");
         boolean textFound = solo.searchText("Cannot leave it blank");
         assertTrue("Required field validation failed", textFound);
     }
-
-    /*public void testOrientation() {
-        solo.clickOnButton("OK");
-        solo.enterText(0, "danielk6@uw.edu");
-        solo.enterText(1, "password1");
-        solo.enterText(2, "password1");
-        solo.pressSpinnerItem(0, 0);
-        solo.enterText(3, "leo");
-        solo.clickOnCheckBox(0);
-        solo.clickOnButton("Continue");
-
-        solo.setActivityOrientation(Solo.LANDSCAPE);
-        boolean textFound = solo.searchText("danielk6@uw.edu");
-        assertTrue("Password change failed", textFound);
-
-        solo.setActivityOrientation(Solo.PORTRAIT);
-        textFound = solo.searchText("danielk6@uw.edu");
-        assertTrue("Password change failed", textFound);
-    }*/
 
     /**
      * Tests registering a user.
@@ -90,7 +82,7 @@ public class TestRegisterActivity extends ActivityInstrumentationTestCase2<Regis
         String question = "What is your favorite pet's name?";
         String answer = "leo";
 
-        solo.clickOnButton("I Agree");
+        solo.clickOnButton("I Accept");
         solo.enterText(0, email);
         solo.enterText(1, password);
         solo.enterText(2, password2);

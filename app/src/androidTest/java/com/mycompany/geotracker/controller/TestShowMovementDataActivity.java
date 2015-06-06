@@ -18,16 +18,27 @@ public class TestShowMovementDataActivity extends ActivityInstrumentationTestCas
 
     private Solo solo;
 
+    /**
+     * The constructor.
+     */
     public TestShowMovementDataActivity() {
         super(ShowMovementDataActivity.class);
     }
 
+    /**
+     * Sets up the test.
+     * @throws Exception
+     */
     @Override
     public void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
+    /**
+     * Stops the app after the test is finished.
+     * @throws Exception
+     */
     @Override
     public void tearDown() throws Exception {
         //tearDown() is run after a test case has finished.

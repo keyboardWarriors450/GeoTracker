@@ -29,6 +29,9 @@ public class LocationToServer extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "LocationToServer";
 
+    /**
+     * The constructor.
+     */
     public LocationToServer() {
     }
 

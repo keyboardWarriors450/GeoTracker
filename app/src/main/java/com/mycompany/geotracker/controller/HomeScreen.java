@@ -94,7 +94,7 @@ public class HomeScreen extends ActionBarActivity {
     }
 
     /**
-     *
+     * Starts the app.
      */
     @Override
     protected void onStart() {

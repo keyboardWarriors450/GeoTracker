@@ -40,6 +40,10 @@ public class MyData
     private static final String INSERT_LOC = "INSERT INTO " + TABLE_NAME_LOC
             + "(uid, lat, lon, speed, heading, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
 
+    /**
+     * Constructor.
+     * @param context the context
+     */
     public MyData(Context context)
     {
         OpenHelper openHelper = new OpenHelper(context);
@@ -49,7 +53,7 @@ public class MyData
     }
 
     /**
-     * Close the connection
+     * Close the connection.
      */
     public void close()
     {
@@ -57,7 +61,7 @@ public class MyData
     }
 
     /**
-     * Delete everything from locations
+     * Delete everything from locations.
      */
     public void deleteAllLocations()
     {
@@ -65,7 +69,7 @@ public class MyData
     }
 
     /**
-     * Delete everything from users
+     * Delete everything from users.
      */
     public void deleteAllUsers()
     {
@@ -173,6 +177,10 @@ public class MyData
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
+        /**
+         * Creates the SQLite database.
+         * @param db the database
+         */
         @Override
         public void onCreate(SQLiteDatabase db)
         {
@@ -185,6 +193,12 @@ public class MyData
                     "heading TEXT, timestamp INTEGER PRIMARY KEY)");
         }
 
+        /**
+         * Upgrades the database.
+         * @param db the database
+         * @param oldVersion the old version of the database
+         * @param newVersion the new version of the database
+         */
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
         {

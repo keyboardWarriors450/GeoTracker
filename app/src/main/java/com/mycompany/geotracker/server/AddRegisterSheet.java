@@ -32,6 +32,10 @@ public class AddRegisterSheet extends AsyncTask<String, Void, String> {
 
     private Context context;
 
+    /**
+     * The constructor.
+     * @param context the context
+     */
     public AddRegisterSheet(Context context) {
         this.context = context;
     }

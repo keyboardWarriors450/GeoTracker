@@ -59,6 +59,13 @@ public class DataMovementService extends IntentService implements
         super("DataMovement");
     }
 
+    /**
+     * Starts the service.
+     * @param intent the intent
+     * @param flags the flags
+     * @param startId the start id
+     * @return start the service
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
@@ -67,6 +74,10 @@ public class DataMovementService extends IntentService implements
         return START_NOT_STICKY;
     }
 
+    /**
+     * Handles all of the location information, network connectivity, and the battery.
+     * @param intent the intent
+     */
     @Override
     protected void onHandleIntent(Intent intent) {
         sharedPref = this.getSharedPreferences(UserPreferenceActivity.USER_PREF,
@@ -195,7 +206,10 @@ public class DataMovementService extends IntentService implements
         myData.close();
     }
 
-
+    /**
+     * Stops the service.
+     * @param context the context
+     */
     public static void stopService(Context context) {
 
         Intent intentAlarm = new Intent(context, DataMovementService.class);
@@ -218,7 +232,11 @@ public class DataMovementService extends IntentService implements
         Toast.makeText(context, "Location Service has been Disable", Toast.LENGTH_SHORT).show();
     }
 
-    /** start update location service*/
+    /**
+     * Starts update location service.
+     * @param context the context
+     * @param sharedPref the shared preferences
+     */
     public static void startService(Context context, SharedPreferences sharedPref) {
         boolean isOn = sharedPref.getBoolean(UserPreferenceActivity.TRACKING_SWITCH, true);
         int samplingInterval = Integer.parseInt(sharedPref.getString(UserPreferenceActivity
@@ -257,6 +275,10 @@ public class DataMovementService extends IntentService implements
         }
     }
 
+    /**
+     * Initializes the network connectivity.
+     * @param c the context
+     */
     public void initial(Context c) {
 
         locationListener = new LocationListener() {
@@ -287,6 +309,9 @@ public class DataMovementService extends IntentService implements
         System.out.println("Network connectivity: " + Boolean.toString(isConnected));
     }
 
+    /**
+     * Builds the google api client.
+     */
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -295,6 +320,10 @@ public class DataMovementService extends IntentService implements
                 .build();
     }
 
+    /**
+     * Connects to the google api.
+     * @param bundle the bundle
+     */
     @Override
     public void onConnected(Bundle bundle) {
         myLocation = LocationServices.FusedLocationApi.getLastLocation(

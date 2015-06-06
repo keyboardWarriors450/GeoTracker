@@ -26,6 +26,10 @@ public class AddNewUserToServer extends AsyncTask<String,Void,String>{
     private ProgressDialog pDialog;
     private Context context;
 
+    /**
+     * The constructor.
+     * @param context the context
+     */
     public AddNewUserToServer(Context context) {
         this.context = context;
     }
