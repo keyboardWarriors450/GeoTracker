@@ -46,20 +46,6 @@ public class TestShowMovementDataActivity extends ActivityInstrumentationTestCas
         solo.finishOpenedActivities();
     }
 
-    /*public void testMovementDataShowsUp() {
-        solo.unlockScreen();
-        solo.clickOnText("Start Date");
-        solo.clickOnButton("Done");
-        solo.clickOnText("End Date");
-        solo.setDatePicker(0, 2016, 5, 4);
-        solo.clickOnButton("Done");
-        solo.clickOnButton("Show Movement Data");
-        boolean textFound1 = solo.searchText("Downloading..");
-        assertTrue("Movement Data retrieved", textFound1);
-        //boolean textFound2 = solo.searchText(" Timestamp       Latitude        Longitude    Heading\n\n");
-        //assertTrue("Movement Data retrieved", textFound2);
-    }*/
-
     public void testMovementDataShowsUp() {
         solo.unlockScreen();
         boolean textFound = solo.searchText(" Timestamp       Latitude        Longitude    Heading\n\n");
