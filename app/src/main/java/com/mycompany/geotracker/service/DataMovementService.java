@@ -22,6 +22,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -148,6 +149,7 @@ public class DataMovementService extends IntentService implements
                 } else
                     System.out.println("NetWork is NOT available");
             }
+            SystemClock.sleep(5000);
             locationManager.removeUpdates(locationListener);
             locationManager = null;
         }
